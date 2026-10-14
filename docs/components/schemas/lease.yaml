@@ -1,0 +1,136 @@
+Lease:
+  type: object
+  required:
+    - propertyId
+    - tenantId
+    - startDate
+    - endDate
+    - rentAmount
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    tenantId:
+      $ref: 'common.yaml#/ObjectId'
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    terms:
+      type: string
+    status:
+      type: string
+      enum: [Active, InProcess, FutureLease, Expiring90, Expired, Terminated, Approved, Rejected]
+    documents:
+      type: array
+      items:
+        type: string
+    notes:
+      type: array
+      items:
+        type: string
+  example:
+    _id: "60bc8defe1c9080015d1dcbc"
+    propertyId: "60ac8defe1c9080015d1dbad"
+    tenantId: "60bc8defe1c9080015d1dca0"
+    startDate: "2026-08-01"
+    endDate: "2027-07-31"
+    rentAmount: 2500
+    securityDeposit: 2500
+    terms: "Monthly rent due on 1st of each month. 10% late fee after 5th."
+    status: "Active"
+    documents:
+      - "https://api.propmv.com/uploads/leases/lease-60bc8defe1c9080015d1dcbc.pdf"
+    notes:
+      - "Initial security deposit paid via bank transfer."
+
+CreateLeaseRequest:
+  type: object
+  required:
+    - propertyId
+    - tenantId
+    - startDate
+    - endDate
+    - rentAmount
+  properties:
+    propertyId:
+      type: string
+    tenantId:
+      type: string
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    terms:
+      type: string
+  example:
+    propertyId: "60ac8defe1c9080015d1dbad"
+    tenantId: "60bc8defe1c9080015d1dca0"
+    startDate: "2026-08-01"
+    endDate: "2027-07-31"
+    rentAmount: 2500
+    securityDeposit: 2500
+    terms: "Monthly rent due on 1st of each month. 10% late fee after 5th."
+
+
+UpdateLeaseRequest:
+  type: object
+  properties:
+    propertyId:
+      type: string
+    tenantId:
+      type: string
+    startDate:
+      type: string
+      format: date
+    endDate:
+      type: string
+      format: date
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    terms:
+      type: string
+
+RenewLeaseRequest:
+  type: object
+  required:
+    - endDate
+    - rentAmount
+  properties:
+    endDate:
+      type: string
+      format: date
+    rentAmount:
+      type: number
+
+LeaseTemplate:
+  type: object
+  required:
+    - name
+    - content
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    content:
+      type: string
+    description:
+      type: string
+    category:
+      type: string

@@ -1,0 +1,19 @@
+This is the mail system at host relay.mailchannels.net.
+
+I'm sorry to have to inform you that your message could not
+be delivered to one or more recipients. It's attached below.
+
+For further assistance, please send mail to postmaster.
+
+If you do so, please include this product report. You can
+delete your own text from the attached returned message.
+
+                   The mail system
+
+<pawardurva406@gmail.com>: host gmail-smtp-in.l.google.com[142.250.107.27]
+    said: 550-5.1.1 The email account that you tried to reach does not exist.
+    Please try 550-5.1.1 double-checking the recipient's email address for
+    typos or 550-5.1.1 unnecessary spaces. For more information, go to 550
+    5.1.1  https://support.google.com/mail/?p=NoSuchUser
+    d2e1a72fcca58-84edc63477esi2147185b3a.122 - gsmtp (in reply to RCPT TO
+    command)

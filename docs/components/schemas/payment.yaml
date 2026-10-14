@@ -1,0 +1,84 @@
+StraddleCustomer:
+  type: object
+  properties:
+    id:
+      type: string
+    email:
+      type: string
+    firstName:
+      type: string
+    lastName:
+      type: string
+    metadata:
+      type: object
+
+CreateCustomerRequest:
+  type: object
+  required:
+    - email
+    - firstName
+    - lastName
+  properties:
+    email:
+      type: string
+      format: email
+    firstName:
+      type: string
+    lastName:
+      type: string
+
+StraddleBankAccount:
+  type: object
+  properties:
+    id:
+      type: string
+    customerId:
+      type: string
+    bankName:
+      type: string
+    accountNumberLast4:
+      type: string
+    routingNumber:
+      type: string
+    status:
+      type: string
+
+LinkBankAccountRequest:
+  type: object
+  required:
+    - customerId
+    - publicToken
+    - accountId
+  properties:
+    customerId:
+      type: string
+    publicToken:
+      type: string
+    accountId:
+      type: string
+
+StraddleCharge:
+  type: object
+  properties:
+    id:
+      type: string
+    customerId:
+      type: string
+    amount:
+      type: number
+    status:
+      type: string
+
+CreateChargeRequest:
+  type: object
+  required:
+    - customerId
+    - bankAccountId
+    - amount
+  properties:
+    customerId:
+      type: string
+    bankAccountId:
+      type: string
+    amount:
+      type: number

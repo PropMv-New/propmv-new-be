@@ -1,0 +1,79 @@
+HOA:
+  type: object
+  required:
+    - hoaName
+    - communityName
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    hoaName:
+      type: string
+    communityName:
+      type: string
+    address:
+      $ref: 'common.yaml#/Address'
+    associationType:
+      type: string
+    numberOfUnits:
+      type: number
+
+HOAMember:
+  type: object
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    email:
+      type: string
+    role:
+      type: string
+    status:
+      type: string
+
+Owner:
+  type: object
+  required:
+    - firstName
+    - lastName
+    - email
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    firstName:
+      type: string
+    lastName:
+      type: string
+    email:
+      type: string
+    phone:
+      type: string
+
+Unit:
+  type: object
+  required:
+    - title
+    - propertyId
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    title:
+      type: string
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    associatedOwnerIds:
+      type: array
+      items:
+        $ref: 'common.yaml#/ObjectId'
+
+LedgerEntry:
+  type: object
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    amount:
+      type: number
+    type:
+      type: string
+    description:
+      type: string

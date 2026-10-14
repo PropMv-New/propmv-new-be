@@ -1,0 +1,170 @@
+/api/v1/landlord/properties:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: List properties with pagination/filters
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Create a property (JSON or multipart data)
+    responses:
+      '201':
+        description: Property created.
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Update a property
+    responses:
+      '200':
+        description: Property updated.
+
+/api/v1/landlord/properties/check-name:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Check if property name already exists
+    responses:
+      '200':
+        description: Availability check result.
+
+/api/v1/landlord/property/search:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Search properties by keyword
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/property/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Export landlord properties (multi-format)
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/landlord/property/template:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Download property import CSV template
+    responses:
+      '200':
+        description: CSV file stream.
+
+/api/v1/landlord/property/properties/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Import properties from CSV
+    responses:
+      '200':
+        description: Import task initiated.
+
+
+/api/v1/landlord/properties/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Get property details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Delete property
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Property deleted.
+
+/api/v1/landlord/properties/{id}/archive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Archive property
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Property archived.
+
+/api/v1/landlord/properties/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Add internal note to property record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/landlord/properties/{id}/profile-image:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Set property primary thumbnail/profile picture
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+/api/v1/landlord/properties/{id}/images:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Upload images to property portfolio
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Uploaded successfully.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Properties)
+    summary: Delete specific property images
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Images deleted.

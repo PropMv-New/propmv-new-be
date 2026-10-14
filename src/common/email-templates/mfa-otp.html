@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Verification code - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Use this verification code to complete {{actionLabel}}. Code expires in {{expiryMinutes}} minutes.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">Verification code</h1>
+              <p class="pmv-text">Hi {{userName}},</p>
+              <p class="pmv-text">Use this code to complete <strong>{{actionLabel}}</strong>. It expires in <strong>{{expiryMinutes}} minutes</strong>.</p>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-otp" align="center">
+                    <span class="pmv-otp-code">{{otp}}</span>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted">If you didn&rsquo;t request this code, secure your account or contact support.</p>
+              <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

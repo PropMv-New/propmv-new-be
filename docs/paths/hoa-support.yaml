@@ -1,0 +1,49 @@
+/api/v1/hoa/support/init:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Support Chat
+    summary: Initialize a helpdesk chat session
+    responses:
+      '201':
+        description: Session initialized.
+
+/api/v1/hoa/support/message:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Support Chat
+    summary: Send chat helpdesk message
+    responses:
+      '200':
+        description: Message sent.
+
+/api/v1/hoa/support/history:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Support Chat
+    summary: Get chat history lists
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/support/close/{chatId}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Support Chat
+    summary: Close support ticket session
+    parameters:
+      - name: chatId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Chat closed.

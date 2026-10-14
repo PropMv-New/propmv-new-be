@@ -1,0 +1,85 @@
+User:
+  type: object
+  required:
+    - email
+    - firstName
+    - lastName
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    email:
+      type: string
+      format: email
+    firstName:
+      type: string
+    lastName:
+      type: string
+    phone:
+      type: string
+    profilePic:
+      type: string
+    role:
+      type: string
+    companyId:
+      $ref: 'common.yaml#/ObjectId'
+    companyRoleId:
+      $ref: 'common.yaml#/ObjectId'
+    isAdministrator:
+      type: boolean
+    isLocked:
+      type: boolean
+    isActive:
+      type: boolean
+    isDeleted:
+      type: boolean
+
+UserProfileUpdate:
+  type: object
+  properties:
+    firstName:
+      type: string
+    lastName:
+      type: string
+    phone:
+      type: string
+    address:
+      type: string
+    state:
+      type: string
+    zipCode:
+      type: string
+    bio:
+      type: string
+
+CreateUserRequest:
+  type: object
+  required:
+    - email
+    - firstName
+    - lastName
+    - roleId
+  properties:
+    email:
+      type: string
+      format: email
+    firstName:
+      type: string
+    lastName:
+      type: string
+    phone:
+      type: string
+    roleId:
+      type: string
+    companyRoleId:
+      type: string
+
+AssignRoleRequest:
+  type: object
+  required:
+    - userId
+    - roleId
+  properties:
+    userId:
+      type: string
+    roleId:
+      type: string

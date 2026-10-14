@@ -1,0 +1,894 @@
+name: Deploy Backend to EC2
+
+# Three-stage model:
+#   development -> no deployment (integration branch only)
+#   staging     -> Testing EC2      (automatic on push)
+#   production  -> Production EC2   (manual dispatch only, for now)
+#
+# To enable automatic production deploys later, add `production` to the
+# `on.push.branches` list below - nothing else needs to change.
+#
+# This workflow deploys the backend PM2 application ONLY - Testing EC2 runs it
+# under the PM2 name `propmv-api`, Production under `propmv-backend`. It never
+# touches the notification service, never installs system packages, and never
+# runs `git clean` or `git stash`.
+
+on:
+  push:
+    branches: [staging]
+  # PRs into development/staging/production run `verify` only - every deploy job is
+  # guarded by github.event_name, so a pull_request event can never deploy.
+  # development is included so emptied critical modules fail before merge.
+  pull_request:
+    branches: [development, staging, production]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Install & sanity-check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies (mirrors production install)
+        run: npm ci
+
+      - name: Syntax-check Node.js files
+        run:  find src -name "*.js" -print0 | xargs -0 -n1 node --check
+
+      # Fast fail: empty/truncated service files pass node --check but 500 at runtime.
+      - name: Critical module export contracts
+        run: npm run test:critical-exports
+
+      - name: Run unit test suites
+        run: |
+          npm run test:expense-notes
+          npm run test:lease-onboarding-emails
+          npm run test:tenant-transactions
+          npm run test:invoice-transactions
+          npm run test:listing-transactions
+          npm run test:expense-transactions
+          npm run test:maintenance-transactions
+
+      - name: HOA invoice regression suite
+        run: npm run test:hoa-invoice-regression
+
+      - name: Landlord invoice suite
+        run: npm run test:landlord-invoice
+
+      - name: Email delivery unit tests
+        run: npm run test:email-delivery
+        env:
+          EMAIL_VALIDATION_LOG: 'false'
+          EMAIL_SUPPRESSION_ENABLED: 'false'
+
+  email-delivery-smoke:
+    name: Email delivery smoke test (staging)
+    # Run only on a manual STAGING dispatch so it can target a real/mocked staging mailbox
+    if: github.event_name == 'workflow_dispatch' && inputs.environment == 'staging'
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 1 – RCPT probe: confirm outbound :25 can reach Gmail MX and reject bad locals
+      # Expects: smtpRcpt.status=reject, code=550
+      - name: SMTP RCPT probe (bad Gmail local)
+        run: npm run check:smtp-rcpt -- pawardurva406@gmail.com
+        env:
+          EMAIL_SMTP_RCPT_VERIFY_ENABLED: 'true'
+          EMAIL_SMTP_RCPT_VERIFY_ON_ERROR: 'reject'
+          FROM_EMAIL: ${{ secrets.STAGING_FROM_EMAIL }}
+
+      # Step 2 – IMAP webhook ingest: parse a sample Hostinger DSN and verify suppression path
+      - name: IMAP bounce ingest (fixture DSN)
+        run: npm run ingest:email-bounce -- ./scripts/fixtures/sample-hostinger-bounce.txt
+        env:
+          EMAIL_SUPPRESSION_ENABLED: 'false'
+          EMAIL_VALIDATION_LOG: 'false'
+
+  # ───────────────────────── STAGING → Testing EC2 ─────────────────────────
+  deploy-staging:
+    name: Deploy to Testing EC2 (staging)
+    needs: verify
+    if: >-
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && inputs.environment == 'staging')
+    runs-on: ubuntu-latest
+    environment: staging
+    concurrency:
+      group: backend-deploy-staging
+      cancel-in-progress: false
+    steps:
+      - name: Guard - staging deploys must come from the staging branch
+        run: |
+          if [ "${{ github.ref_name }}" != "staging" ]; then
+            echo "::error::Refusing to deploy to Testing EC2 from '${{ github.ref_name }}'. Expected 'staging'."
+            exit 1
+          fi
+
+      - name: Guard - STAGING_BACKEND_APP_DIR must be set
+        env:
+          APP_DIR: ${{ secrets.STAGING_BACKEND_APP_DIR }}
+        run: |
+          if [ -z "${APP_DIR:-}" ]; then
+            echo "::error::STAGING_BACKEND_APP_DIR is not set in the 'staging' environment. Set it to the backend checkout path on Testing EC2 and re-run. Nothing was changed."
+            exit 1
+          fi
+          echo "STAGING_BACKEND_APP_DIR is set."
+
+      - name: Deploy over SSH (with health-check + auto-rollback)
+        uses: appleboy/ssh-action@v1
+        env:
+          # Run-scoped, read-only (see `permissions: contents: read`). Forwarded to
+          # the remote shell by `envs:` below and used ONLY for `git fetch`.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.STAGING_EC2_HOST }}
+          username: ${{ secrets.STAGING_EC2_USER }}
+          key: ${{ secrets.STAGING_EC2_SSH_KEY }}
+          port: ${{ secrets.STAGING_EC2_SSH_PORT || 22 }}
+          envs: GH_TOKEN
+          script: |
+            set -euo pipefail
+            APP_DIR="${{ secrets.STAGING_BACKEND_APP_DIR }}"
+            BRANCH="staging"
+            ENV_NAME="staging"
+            # Testing EC2 runs the backend under the PM2 name `propmv-api`, which
+            # does NOT match the `propmv-backend` app declared in that box's
+            # ecosystem.config.js. Address the process by name so the workflow
+            # never has to reconcile the two - the server is not modified.
+            PM2_APP="propmv-api"
+
+            # Paths that belong to the SERVER, not to the branch.
+            #  - PROTECTED_CONFIG  : server-owned env, always restored after a sync.
+            #  - PROTECTED_DATA    : runtime/generated trees, merge-restored (never overwritten).
+            #  - PROTECTED_TRACKED : tracked files the server is allowed to own; restored
+            #                        only when they actually differ, and always reported.
+            PROTECTED_CONFIG=".env .env.local .env.production"
+            PROTECTED_DATA="uploads mock_s3 public/feeds"
+            PROTECTED_TRACKED="public/feeds/zillow/latest.txt"
+
+            cd "$APP_DIR"
+
+            # Capture BOTH, so a rollback can put the server back on exactly the
+            # branch and commit it was serving before this deploy (important on
+            # the first staging run, which switches the box off `development`).
+            PREV_BRANCH=$(git branch --show-current)
+            PREV_COMMIT=$(git rev-parse HEAD)
+            echo "[$ENV_NAME] Current branch before deploy: ${PREV_BRANCH:-<detached HEAD>}"
+            echo "[$ENV_NAME] Current commit before deploy: $PREV_COMMIT"
+
+            # Fetch with the run-scoped GITHUB_TOKEN when the action forwards it
+            # (`envs: GH_TOKEN`). The inline credential helper reads the token from the
+            # environment at invocation time, so it never appears in argv, in
+            # .git/config, in the remote URL, or anywhere on disk. It authenticates
+            # THIS fetch only - no other command uses it. Falls back to the server's
+            # existing credentials (e.g. an SSH remote) when GH_TOKEN is absent.
+            fetch_branch() {
+              if [ -n "${GH_TOKEN:-}" ]; then
+                GH_TOKEN="$GH_TOKEN" git -c credential.helper= -c credential.helper='!f() { echo username=x-access-token; echo "password=$GH_TOKEN"; }; f' fetch origin "$BRANCH"
+              else
+                git fetch origin "$BRANCH"
+              fi
+            }
+
+            echo "[$ENV_NAME] Fetching latest $BRANCH..."
+            if ! fetch_branch; then
+              echo "git fetch failed. Nothing was changed. Aborting."
+              exit 1
+            fi
+
+            # ---- 1. Timestamped backup, outside the repository ---------------
+            BACKUP_DIR="${HOME}/.deploy-backups/backend-${ENV_NAME}-$(date +%Y%m%d-%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+
+            for p in $PROTECTED_CONFIG $PROTECTED_DATA; do
+              if [ -e "$p" ]; then
+                mkdir -p "$BACKUP_DIR/$(dirname "$p")"
+                cp -a "$p" "$BACKUP_DIR/$(dirname "$p")/"
+                echo "  backed up $p"
+              fi
+            done
+
+            # Files under the protected data trees that are TRACKED by git. The
+            # tree backup above already holds them; the reason for this list is
+            # that `git reset --hard` rewrites tracked files with the branch
+            # version, and the `cp -an` merge-restore cannot put the server copy
+            # back because the path then exists. They are restored explicitly.
+            TRACKED_DATA="$(git -c core.quotePath=false ls-files -- $PROTECTED_DATA 2>/dev/null || true)"
+            if [ -n "$TRACKED_DATA" ]; then
+              echo "[$ENV_NAME] Tracked files inside protected data trees (server copies will be preserved):"
+              printf '%s\n' "$TRACKED_DATA" | sed 's/^/    /'
+            fi
+
+            # Prune here (not at the end) so it runs whatever the outcome.
+            # The just-created backup is the newest, so 5 are always kept.
+            ls -1dt "${HOME}/.deploy-backups"/backend-${ENV_NAME}-* 2>/dev/null \
+              | tail -n +6 | xargs -r rm -rf || true
+
+            # ---- 2. Detect server-side modifications to TRACKED files ---------
+            # Nothing is overwritten silently: every locally-modified tracked file
+            # is backed up and reported. Only paths listed in PROTECTED_TRACKED are
+            # automatically restored - application-code drift is surfaced, not pinned.
+            LOCAL_MODS="$(git -c core.fileMode=false diff --name-only HEAD || true)"
+            DRIFTED_TRACKED=""
+            if [ -n "$LOCAL_MODS" ]; then
+              echo "::warning::[$ENV_NAME] Server has locally-modified tracked files. All are backed up to $BACKUP_DIR before syncing."
+              for p in $LOCAL_MODS; do
+                if [ -e "$p" ]; then
+                  mkdir -p "$BACKUP_DIR/local-mods/$(dirname "$p")"
+                  cp -a "$p" "$BACKUP_DIR/local-mods/$p"
+                fi
+                case " $PROTECTED_TRACKED " in
+                  *" $p "*)
+                    DRIFTED_TRACKED="$DRIFTED_TRACKED $p"
+                    mkdir -p "$BACKUP_DIR/$(dirname "$p")"
+                    [ -e "$p" ] && cp -a "$p" "$BACKUP_DIR/$(dirname "$p")/"
+                    echo "  PROTECTED  $p  (server copy will be restored after sync)"
+                    ;;
+                  *)
+                    echo "  REPORTED   $p  (branch version will be applied; server copy kept in $BACKUP_DIR/local-mods)"
+                    ;;
+                esac
+              done
+              git --no-pager diff --stat HEAD || true
+            fi
+
+            echo "[$ENV_NAME] Protected paths saved to $BACKUP_DIR"
+
+            restore_config() {
+              for p in $PROTECTED_CONFIG; do
+                if [ -e "$BACKUP_DIR/$p" ]; then
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored config $p"
+                fi
+              done
+            }
+
+            restore_tracked() {
+              for p in $DRIFTED_TRACKED; do
+                if [ -e "$BACKUP_DIR/$p" ]; then
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored server-owned tracked file $p"
+                fi
+              done
+            }
+
+            # Merge-restore: puts back anything the sync removed, never clobbers
+            # a file that is currently on disk. Protects tracked uploads that a
+            # future commit untracks, without touching newer runtime files.
+            restore_data() {
+              for p in $PROTECTED_DATA; do
+                if [ -d "$BACKUP_DIR/$p" ]; then
+                  mkdir -p "$p"
+                  cp -an "$BACKUP_DIR/$p/." "$p/" 2>/dev/null || true
+                  echo "  merge-restored data $p"
+                elif [ -e "$BACKUP_DIR/$p" ] && [ ! -e "$p" ]; then
+                  mkdir -p "$(dirname "$p")"
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored data $p"
+                fi
+              done
+
+              # Tracked files inside those trees were just rewritten from the
+              # branch by `git reset --hard`, and the merge-restore above skipped
+              # them because the paths now exist. Put the server's copies back
+              # explicitly. Read line by line so paths containing spaces survive
+              # (e.g. "mock_s3/HOA Documents/...").
+              if [ -n "$TRACKED_DATA" ]; then
+                printf '%s\n' "$TRACKED_DATA" | while IFS= read -r f; do
+                  [ -n "$f" ] || continue
+                  if [ -e "$BACKUP_DIR/$f" ]; then
+                    mkdir -p "$(dirname "$f")"
+                    cp -a "$BACKUP_DIR/$f" "$f"
+                    echo "  restored tracked data file $f"
+                  fi
+                done
+              fi
+            }
+
+            restore_server_state() {
+              restore_config
+              restore_tracked
+              restore_data
+            }
+
+            # Put the working tree back on the branch AND commit that were checked
+            # out before this deploy, rather than leaving the deploy branch pointed
+            # at an old commit.
+            restore_previous_checkout() {
+              if [ -n "$PREV_BRANCH" ]; then
+                git checkout -f "$PREV_BRANCH" 2>/dev/null \
+                  || echo "::warning::[$ENV_NAME] could not check out '$PREV_BRANCH' during rollback - resetting in place."
+                git reset --hard "$PREV_COMMIT" \
+                  || echo "::warning::[$ENV_NAME] git reset to $PREV_COMMIT failed - continuing to PM2 recovery."
+              else
+                git checkout -f --detach "$PREV_COMMIT" \
+                  || echo "::warning::[$ENV_NAME] could not restore detached HEAD at $PREV_COMMIT - continuing to PM2 recovery."
+              fi
+              echo "  restored checkout to ${PREV_BRANCH:-detached HEAD} @ $PREV_COMMIT"
+            }
+
+            # ---- 3. Sync source ----------------------------------------------
+            # `git reset --hard` rewrites TRACKED files only; untracked uploads and
+            # ignored env files are not touched by it. `git clean` is never run and
+            # `git stash` is never used - nothing is hidden inside git.
+            git checkout -f "$BRANCH" 2>/dev/null || git checkout -f -b "$BRANCH" "origin/$BRANCH"
+            git reset --hard "origin/$BRANCH"
+
+            # Keep the branch's version of each protected tracked file so the log
+            # can show exactly what was skipped.
+            for p in $DRIFTED_TRACKED; do
+              if [ -e "$p" ]; then
+                mkdir -p "$BACKUP_DIR/incoming/$(dirname "$p")"
+                cp -a "$p" "$BACKUP_DIR/incoming/$p"
+              fi
+            done
+
+            restore_server_state
+
+            if [ -n "$DRIFTED_TRACKED" ]; then
+              echo "::warning::[$ENV_NAME] DEPLOYMENT DRIFT - tracked files preserved from the server instead of $BRANCH:$DRIFTED_TRACKED"
+              echo "  Server copies kept at : $BACKUP_DIR"
+              echo "  $BRANCH copies kept at: $BACKUP_DIR/incoming"
+              echo "  To reconcile: commit the server-side change to $BRANCH, then remove the path from PROTECTED_TRACKED."
+              for p in $DRIFTED_TRACKED; do
+                if [ -e "$BACKUP_DIR/incoming/$p" ]; then
+                  echo "  ----- $p : '-' = $BRANCH version, '+' = server version kept -----"
+                  diff -u "$BACKUP_DIR/incoming/$p" "$p" || true
+                else
+                  echo "  ----- $p : not present on $BRANCH; server copy retained -----"
+                fi
+              done
+            fi
+
+            # ---- 4. Fail fast BEFORE install/reload if env is missing ----------
+            if [ ! -f .env.production ]; then
+              echo "::error::.env.production is missing in $APP_DIR after sync."
+              echo "The deployment was aborted before npm install and before any PM2 reload."
+              echo "Restore the server's .env.production (a copy may exist under $BACKUP_DIR), then re-run."
+              restore_previous_checkout
+              restore_server_state
+              exit 1
+            fi
+
+            # From here on, ANY failure (install, reload, or health check) triggers rollback below.
+            FAILED=0
+
+            echo "[$ENV_NAME] Installing production dependencies..."
+            npm ci --omit=dev || FAILED=1
+
+            if [ "$FAILED" -eq 0 ]; then
+              echo "[$ENV_NAME] Reloading $PM2_APP via PM2 (zero-downtime)..."
+              pm2 reload "$PM2_APP" --update-env || pm2 restart "$PM2_APP" --update-env || FAILED=1
+              echo "Waiting 10s for the process to boot before health-checking..."
+              sleep 10
+            fi
+
+            if [ "$FAILED" -eq 0 ]; then
+              PORT=5000
+              if [ -f .env.production ]; then
+                DETECTED=$( (grep -E '^PORT=' .env.production | cut -d '=' -f2- | tr -d '[:space:]') || true)
+                [ -n "$DETECTED" ] && PORT="$DETECTED"
+              fi
+
+              echo "PM2 status before health check:"
+              pm2 status
+
+              echo "[$ENV_NAME] Health-checking http://127.0.0.1:${PORT}/health ..."
+              ok=0
+              for i in $(seq 1 20); do
+                if curl -fv -o /dev/null "http://127.0.0.1:${PORT}/health"; then
+                  ok=1
+                  echo "Health check passed on attempt $i/20."
+                  break
+                fi
+                echo "  attempt $i/20 not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              [ "$ok" -eq 1 ] || FAILED=1
+            fi
+
+            if [ "$FAILED" -eq 1 ]; then
+              echo "Deploy step failed. Capturing diagnostics before rollback..."
+              echo "===== pm2 logs $PM2_APP (last 100 lines) ====="
+              pm2 logs "$PM2_APP" --lines 100 --nostream || true
+              echo "===== pm2 describe $PM2_APP ====="
+              pm2 describe "$PM2_APP" || true
+
+              echo "Rolling back to $PREV_COMMIT..."
+              restore_previous_checkout
+              restore_server_state
+
+              # A failed reinstall must NOT abort the rollback. The existing
+              # node_modules may still be serviceable, and PM2 recovery plus the
+              # rollback health check have to run either way.
+              rb_install_ok=1
+              npm ci --omit=dev || rb_install_ok=0
+              if [ "$rb_install_ok" -eq 0 ]; then
+                echo "::warning::[$ENV_NAME] npm ci failed during rollback - attempting PM2 recovery with the existing node_modules."
+              fi
+
+              pm2 reload "$PM2_APP" --update-env || pm2 restart "$PM2_APP" --update-env || true
+              pm2 status || true
+
+              echo "[$ENV_NAME] Verifying the rollback actually recovered the service..."
+              rb_ok=0
+              for i in $(seq 1 12); do
+                if curl -fs -o /dev/null "http://127.0.0.1:${PORT:-5000}/health"; then
+                  rb_ok=1
+                  echo "Rollback health check passed on attempt $i/12."
+                  break
+                fi
+                echo "  rollback attempt $i/12 not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              if [ "$rb_ok" -eq 1 ]; then
+                if [ "$rb_install_ok" -eq 0 ]; then
+                  echo "::warning::[$ENV_NAME] Rolled back to $PREV_COMMIT and $PM2_APP is healthy, but the rollback npm ci failed - node_modules may not match $PREV_COMMIT. Verify manually."
+                else
+                  echo "Rolled back to $PREV_COMMIT and the service is healthy. Deploy aborted."
+                fi
+              else
+                echo "::error::[$ENV_NAME] ROLLBACK DID NOT RECOVER - $PM2_APP is not answering /health on port ${PORT:-5000}. Manual intervention required."
+                if [ "$rb_install_ok" -eq 0 ]; then
+                  echo "  Note: npm ci also failed during the rollback, so node_modules may be inconsistent."
+                fi
+                pm2 logs "$PM2_APP" --lines 50 --nostream || true
+              fi
+              exit 1
+            fi
+            # QA invoice cleanup - STAGING ONLY, runs before re-seed so the QA
+            # board account starts each deploy without stale test invoices.
+            # Same non-blocking convention as the seed step below: a cleanup
+            # failure never fails or rolls back an otherwise-healthy deploy.
+            # Scope + 2-day staleness cutoff are defined in the script itself
+            # (scripts/cleanup-qa-board-invoices.js) - only QA board/community
+            # invoices older than the cutoff are hard-deleted.
+            echo "[$ENV_NAME] Cleaning up stale QA board invoices..."
+            node -r dotenv/config scripts/cleanup-qa-board-invoices.js dotenv_config_path=.env.production --apply \
+              || echo "::warning::[$ENV_NAME] QA invoice cleanup failed - deploy still succeeded; investigate manually."
+            # QA account seeding - STAGING ONLY. This block lives solely in the
+            # deploy-staging job's SSH script; deploy-production has no equivalent
+            # step, so this can never run against Production EC2. Non-blocking:
+            # a seed failure never fails or rolls back an otherwise-healthy deploy.
+            echo "[$ENV_NAME] Seeding QA accounts..."
+            node -r dotenv/config scripts/seed-qa-accounts.js dotenv_config_path=.env.production \
+              || echo "::warning::[$ENV_NAME] QA account seeding failed - deploy still succeeded; investigate manually."
+            echo "Deploy succeeded. Testing EC2 now running $BRANCH @ $(git rev-parse HEAD)"
+
+      - name: Trigger E2E post-deploy smoke
+        if: success()
+        continue-on-error: true
+        run: |
+          curl -fsS -X POST \
+            -H "Authorization: Bearer ${{ secrets.E2E_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/PropMv/PropMv_TestCases/dispatches \
+            -d '{"event_type":"post-deploy-smoke","client_payload":{"source":"backend","ref":"${{ github.sha }}"}}' \
+          || echo "::warning::Could not trigger propmv_e2e post-deploy smoke - deploy already succeeded; trigger manually if needed."
+
+  # ─────────────────────── PRODUCTION → Production EC2 ───────────────────────
+  deploy-production:
+    name: Deploy to Production EC2 (production)
+    needs: verify
+    if: github.event_name == 'workflow_dispatch' && inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: backend-deploy-production
+      cancel-in-progress: false
+    steps:
+      - name: Guard - production deploys must come from the production branch
+        run: |
+          if [ "${{ github.ref_name }}" != "production" ]; then
+            echo "::error::Refusing to deploy to Production EC2 from '${{ github.ref_name }}'. Re-run this workflow with the 'production' branch selected."
+            exit 1
+          fi
+
+      - name: Check out repository history for the ancestry guard
+        uses: actions/checkout@v4
+        with:
+          # Full history is required for `git merge-base --is-ancestor`.
+          fetch-depth: 0
+
+      - name: Guard - production must contain the tested staging history
+        run: |
+          set -euo pipefail
+
+          # Fetch both tips into explicit remote-tracking refs so the comparison
+          # can never pick up a stale or unrelated LOCAL branch of the same name.
+          if ! git fetch --no-tags origin "+refs/heads/staging:refs/remotes/origin/staging"; then
+            echo "::error::Could not fetch origin/staging. The ancestry guard cannot verify that production was tested. Nothing was deployed."
+            exit 1
+          fi
+          if ! git fetch --no-tags origin "+refs/heads/production:refs/remotes/origin/production"; then
+            echo "::error::Could not fetch origin/production. Nothing was deployed."
+            exit 1
+          fi
+
+          STAGING_SHA="$(git rev-parse refs/remotes/origin/staging)"
+          PRODUCTION_SHA="$(git rev-parse refs/remotes/origin/production)"
+
+          echo "origin/staging    : $STAGING_SHA"
+          echo "origin/production : $PRODUCTION_SHA"
+          echo "run dispatched at : ${{ github.sha }}"
+
+          # origin/production is the exact commit the Production EC2 will reset to,
+          # so that is the commit the guard checks - not the local checkout.
+          if [ "$PRODUCTION_SHA" != "${{ github.sha }}" ]; then
+            echo "::warning::origin/production moved from ${{ github.sha }} to $PRODUCTION_SHA after this run was dispatched. The guard checks the commit that will actually be deployed."
+          fi
+
+          if git merge-base --is-ancestor "$STAGING_SHA" "$PRODUCTION_SHA"; then
+            echo "OK - origin/production contains every commit on origin/staging."
+          else
+            echo "::error::Refusing to deploy to Production EC2: origin/production ($PRODUCTION_SHA) does not contain the tested origin/staging history ($STAGING_SHA). Promote staging into production first (development -> staging -> Testing EC2 -> production), then re-run. Nothing was deployed."
+            exit 1
+          fi
+
+      - name: Guard - PRODUCTION_BACKEND_APP_DIR must be set
+        env:
+          APP_DIR: ${{ secrets.PRODUCTION_BACKEND_APP_DIR }}
+        run: |
+          if [ -z "${APP_DIR:-}" ]; then
+            echo "::error::PRODUCTION_BACKEND_APP_DIR is not set in the 'production' environment. Set it to the backend checkout path on Production EC2 and re-run. Nothing was changed."
+            exit 1
+          fi
+          echo "PRODUCTION_BACKEND_APP_DIR is set."
+
+      - name: Deploy over SSH (with health-check + auto-rollback)
+        uses: appleboy/ssh-action@v1
+        env:
+          # Run-scoped, read-only (see `permissions: contents: read`). Forwarded to
+          # the remote shell by `envs:` below and used ONLY for `git fetch`.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.PRODUCTION_EC2_HOST }}
+          username: ${{ secrets.PRODUCTION_EC2_USER }}
+          key: ${{ secrets.PRODUCTION_EC2_SSH_KEY }}
+          port: ${{ secrets.PRODUCTION_EC2_SSH_PORT || 22 }}
+          envs: GH_TOKEN
+          script: |
+            set -euo pipefail
+            APP_DIR="${{ secrets.PRODUCTION_BACKEND_APP_DIR }}"
+            BRANCH="production"
+            ENV_NAME="production"
+            PM2_APP="propmv-backend"
+
+            # Paths that belong to the SERVER, not to the branch.
+            #  - PROTECTED_CONFIG  : server-owned env, always restored after a sync.
+            #  - PROTECTED_DATA    : runtime/generated trees, merge-restored (never overwritten).
+            #  - PROTECTED_TRACKED : tracked files the server is allowed to own; restored
+            #                        only when they actually differ, and always reported.
+            PROTECTED_CONFIG=".env .env.local .env.production"
+            PROTECTED_DATA="uploads mock_s3 public/feeds"
+            PROTECTED_TRACKED="public/feeds/zillow/latest.txt"
+
+            cd "$APP_DIR"
+
+            # Capture BOTH, so a rollback can put the server back on exactly the
+            # branch and commit it was serving before this deploy (important on
+            # the first staging run, which switches the box off `development`).
+            PREV_BRANCH=$(git branch --show-current)
+            PREV_COMMIT=$(git rev-parse HEAD)
+            echo "[$ENV_NAME] Current branch before deploy: ${PREV_BRANCH:-<detached HEAD>}"
+            echo "[$ENV_NAME] Current commit before deploy: $PREV_COMMIT"
+
+            # Fetch with the run-scoped GITHUB_TOKEN when the action forwards it
+            # (`envs: GH_TOKEN`). The inline credential helper reads the token from the
+            # environment at invocation time, so it never appears in argv, in
+            # .git/config, in the remote URL, or anywhere on disk. It authenticates
+            # THIS fetch only - no other command uses it. Falls back to the server's
+            # existing credentials (e.g. an SSH remote) when GH_TOKEN is absent.
+            fetch_branch() {
+              if [ -n "${GH_TOKEN:-}" ]; then
+                GH_TOKEN="$GH_TOKEN" git -c credential.helper= -c credential.helper='!f() { echo username=x-access-token; echo "password=$GH_TOKEN"; }; f' fetch origin "$BRANCH"
+              else
+                git fetch origin "$BRANCH"
+              fi
+            }
+
+            echo "[$ENV_NAME] Fetching latest $BRANCH..."
+            if ! fetch_branch; then
+              echo "git fetch failed. Nothing was changed. Aborting."
+              exit 1
+            fi
+
+            # ---- 1. Timestamped backup, outside the repository ---------------
+            BACKUP_DIR="${HOME}/.deploy-backups/backend-${ENV_NAME}-$(date +%Y%m%d-%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+
+            for p in $PROTECTED_CONFIG $PROTECTED_DATA; do
+              if [ -e "$p" ]; then
+                mkdir -p "$BACKUP_DIR/$(dirname "$p")"
+                cp -a "$p" "$BACKUP_DIR/$(dirname "$p")/"
+                echo "  backed up $p"
+              fi
+            done
+
+            # Files under the protected data trees that are TRACKED by git. The
+            # tree backup above already holds them; the reason for this list is
+            # that `git reset --hard` rewrites tracked files with the branch
+            # version, and the `cp -an` merge-restore cannot put the server copy
+            # back because the path then exists. They are restored explicitly.
+            TRACKED_DATA="$(git -c core.quotePath=false ls-files -- $PROTECTED_DATA 2>/dev/null || true)"
+            if [ -n "$TRACKED_DATA" ]; then
+              echo "[$ENV_NAME] Tracked files inside protected data trees (server copies will be preserved):"
+              printf '%s\n' "$TRACKED_DATA" | sed 's/^/    /'
+            fi
+
+            # Prune here (not at the end) so it runs whatever the outcome.
+            # The just-created backup is the newest, so 5 are always kept.
+            ls -1dt "${HOME}/.deploy-backups"/backend-${ENV_NAME}-* 2>/dev/null \
+              | tail -n +6 | xargs -r rm -rf || true
+
+            # ---- 2. Detect server-side modifications to TRACKED files ---------
+            # Nothing is overwritten silently: every locally-modified tracked file
+            # is backed up and reported. Only paths listed in PROTECTED_TRACKED are
+            # automatically restored - application-code drift is surfaced, not pinned.
+            LOCAL_MODS="$(git -c core.fileMode=false diff --name-only HEAD || true)"
+            DRIFTED_TRACKED=""
+            if [ -n "$LOCAL_MODS" ]; then
+              echo "::warning::[$ENV_NAME] Server has locally-modified tracked files. All are backed up to $BACKUP_DIR before syncing."
+              for p in $LOCAL_MODS; do
+                if [ -e "$p" ]; then
+                  mkdir -p "$BACKUP_DIR/local-mods/$(dirname "$p")"
+                  cp -a "$p" "$BACKUP_DIR/local-mods/$p"
+                fi
+                case " $PROTECTED_TRACKED " in
+                  *" $p "*)
+                    DRIFTED_TRACKED="$DRIFTED_TRACKED $p"
+                    mkdir -p "$BACKUP_DIR/$(dirname "$p")"
+                    [ -e "$p" ] && cp -a "$p" "$BACKUP_DIR/$(dirname "$p")/"
+                    echo "  PROTECTED  $p  (server copy will be restored after sync)"
+                    ;;
+                  *)
+                    echo "  REPORTED   $p  (branch version will be applied; server copy kept in $BACKUP_DIR/local-mods)"
+                    ;;
+                esac
+              done
+              git --no-pager diff --stat HEAD || true
+            fi
+
+            echo "[$ENV_NAME] Protected paths saved to $BACKUP_DIR"
+
+            restore_config() {
+              for p in $PROTECTED_CONFIG; do
+                if [ -e "$BACKUP_DIR/$p" ]; then
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored config $p"
+                fi
+              done
+            }
+
+            restore_tracked() {
+              for p in $DRIFTED_TRACKED; do
+                if [ -e "$BACKUP_DIR/$p" ]; then
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored server-owned tracked file $p"
+                fi
+              done
+            }
+
+            # Merge-restore: puts back anything the sync removed, never clobbers
+            # a file that is currently on disk. Protects tracked uploads that a
+            # future commit untracks, without touching newer runtime files.
+            restore_data() {
+              for p in $PROTECTED_DATA; do
+                if [ -d "$BACKUP_DIR/$p" ]; then
+                  mkdir -p "$p"
+                  cp -an "$BACKUP_DIR/$p/." "$p/" 2>/dev/null || true
+                  echo "  merge-restored data $p"
+                elif [ -e "$BACKUP_DIR/$p" ] && [ ! -e "$p" ]; then
+                  mkdir -p "$(dirname "$p")"
+                  cp -a "$BACKUP_DIR/$p" "$p"
+                  echo "  restored data $p"
+                fi
+              done
+
+              # Tracked files inside those trees were just rewritten from the
+              # branch by `git reset --hard`, and the merge-restore above skipped
+              # them because the paths now exist. Put the server's copies back
+              # explicitly. Read line by line so paths containing spaces survive
+              # (e.g. "mock_s3/HOA Documents/...").
+              if [ -n "$TRACKED_DATA" ]; then
+                printf '%s\n' "$TRACKED_DATA" | while IFS= read -r f; do
+                  [ -n "$f" ] || continue
+                  if [ -e "$BACKUP_DIR/$f" ]; then
+                    mkdir -p "$(dirname "$f")"
+                    cp -a "$BACKUP_DIR/$f" "$f"
+                    echo "  restored tracked data file $f"
+                  fi
+                done
+              fi
+            }
+
+            restore_server_state() {
+              restore_config
+              restore_tracked
+              restore_data
+            }
+
+            # Put the working tree back on the branch AND commit that were checked
+            # out before this deploy, rather than leaving the deploy branch pointed
+            # at an old commit.
+            restore_previous_checkout() {
+              if [ -n "$PREV_BRANCH" ]; then
+                git checkout -f "$PREV_BRANCH" 2>/dev/null \
+                  || echo "::warning::[$ENV_NAME] could not check out '$PREV_BRANCH' during rollback - resetting in place."
+                git reset --hard "$PREV_COMMIT" \
+                  || echo "::warning::[$ENV_NAME] git reset to $PREV_COMMIT failed - continuing to PM2 recovery."
+              else
+                git checkout -f --detach "$PREV_COMMIT" \
+                  || echo "::warning::[$ENV_NAME] could not restore detached HEAD at $PREV_COMMIT - continuing to PM2 recovery."
+              fi
+              echo "  restored checkout to ${PREV_BRANCH:-detached HEAD} @ $PREV_COMMIT"
+            }
+
+            # ---- 3. Sync source ----------------------------------------------
+            # `git reset --hard` rewrites TRACKED files only; untracked uploads and
+            # ignored env files are not touched by it. `git clean` is never run and
+            # `git stash` is never used - nothing is hidden inside git.
+            git checkout -f "$BRANCH" 2>/dev/null || git checkout -f -b "$BRANCH" "origin/$BRANCH"
+            git reset --hard "origin/$BRANCH"
+
+            # Keep the branch's version of each protected tracked file so the log
+            # can show exactly what was skipped.
+            for p in $DRIFTED_TRACKED; do
+              if [ -e "$p" ]; then
+                mkdir -p "$BACKUP_DIR/incoming/$(dirname "$p")"
+                cp -a "$p" "$BACKUP_DIR/incoming/$p"
+              fi
+            done
+
+            restore_server_state
+
+            if [ -n "$DRIFTED_TRACKED" ]; then
+              echo "::warning::[$ENV_NAME] DEPLOYMENT DRIFT - tracked files preserved from the server instead of $BRANCH:$DRIFTED_TRACKED"
+              echo "  Server copies kept at : $BACKUP_DIR"
+              echo "  $BRANCH copies kept at: $BACKUP_DIR/incoming"
+              echo "  To reconcile: commit the server-side change to $BRANCH, then remove the path from PROTECTED_TRACKED."
+              for p in $DRIFTED_TRACKED; do
+                if [ -e "$BACKUP_DIR/incoming/$p" ]; then
+                  echo "  ----- $p : '-' = $BRANCH version, '+' = server version kept -----"
+                  diff -u "$BACKUP_DIR/incoming/$p" "$p" || true
+                else
+                  echo "  ----- $p : not present on $BRANCH; server copy retained -----"
+                fi
+              done
+            fi
+
+            # ---- 4. Fail fast BEFORE install/reload if env is missing ----------
+            if [ ! -f .env.production ]; then
+              echo "::error::.env.production is missing in $APP_DIR after sync."
+              echo "The deployment was aborted before npm install and before any PM2 reload."
+              echo "Restore the server's .env.production (a copy may exist under $BACKUP_DIR), then re-run."
+              restore_previous_checkout
+              restore_server_state
+              exit 1
+            fi
+
+            # From here on, ANY failure (install, reload, or health check) triggers rollback below.
+            FAILED=0
+
+            echo "[$ENV_NAME] Installing production dependencies..."
+            npm ci --omit=dev || FAILED=1
+
+            if [ "$FAILED" -eq 0 ]; then
+              echo "[$ENV_NAME] Reloading $PM2_APP via PM2 (zero-downtime)..."
+              pm2 reload "$PM2_APP" --update-env || pm2 restart "$PM2_APP" --update-env || FAILED=1
+              echo "Waiting 10s for the process to boot before health-checking..."
+              sleep 10
+            fi
+
+            if [ "$FAILED" -eq 0 ]; then
+              PORT=5000
+              if [ -f .env.production ]; then
+                DETECTED=$( (grep -E '^PORT=' .env.production | cut -d '=' -f2- | tr -d '[:space:]') || true)
+                [ -n "$DETECTED" ] && PORT="$DETECTED"
+              fi
+
+              echo "PM2 status before health check:"
+              pm2 status
+
+              echo "[$ENV_NAME] Health-checking http://127.0.0.1:${PORT}/health ..."
+              ok=0
+              for i in $(seq 1 20); do
+                if curl -fv -o /dev/null "http://127.0.0.1:${PORT}/health"; then
+                  ok=1
+                  echo "Health check passed on attempt $i/20."
+                  break
+                fi
+                echo "  attempt $i/20 not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              [ "$ok" -eq 1 ] || FAILED=1
+            fi
+
+            if [ "$FAILED" -eq 1 ]; then
+              echo "Deploy step failed. Capturing diagnostics before rollback..."
+              echo "===== pm2 logs $PM2_APP (last 100 lines) ====="
+              pm2 logs "$PM2_APP" --lines 100 --nostream || true
+              echo "===== pm2 describe $PM2_APP ====="
+              pm2 describe "$PM2_APP" || true
+
+              echo "Rolling back to $PREV_COMMIT..."
+              restore_previous_checkout
+              restore_server_state
+
+              # A failed reinstall must NOT abort the rollback. The existing
+              # node_modules may still be serviceable, and PM2 recovery plus the
+              # rollback health check have to run either way.
+              rb_install_ok=1
+              npm ci --omit=dev || rb_install_ok=0
+              if [ "$rb_install_ok" -eq 0 ]; then
+                echo "::warning::[$ENV_NAME] npm ci failed during rollback - attempting PM2 recovery with the existing node_modules."
+              fi
+
+              pm2 reload "$PM2_APP" --update-env || pm2 restart "$PM2_APP" --update-env || true
+              pm2 status || true
+
+              echo "[$ENV_NAME] Verifying the rollback actually recovered the service..."
+              rb_ok=0
+              for i in $(seq 1 12); do
+                if curl -fs -o /dev/null "http://127.0.0.1:${PORT:-5000}/health"; then
+                  rb_ok=1
+                  echo "Rollback health check passed on attempt $i/12."
+                  break
+                fi
+                echo "  rollback attempt $i/12 not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              if [ "$rb_ok" -eq 1 ]; then
+                if [ "$rb_install_ok" -eq 0 ]; then
+                  echo "::warning::[$ENV_NAME] Rolled back to $PREV_COMMIT and $PM2_APP is healthy, but the rollback npm ci failed - node_modules may not match $PREV_COMMIT. Verify manually."
+                else
+                  echo "Rolled back to $PREV_COMMIT and the service is healthy. Deploy aborted."
+                fi
+              else
+                echo "::error::[$ENV_NAME] ROLLBACK DID NOT RECOVER - $PM2_APP is not answering /health on port ${PORT:-5000}. Manual intervention required."
+                if [ "$rb_install_ok" -eq 0 ]; then
+                  echo "  Note: npm ci also failed during the rollback, so node_modules may be inconsistent."
+                fi
+                pm2 logs "$PM2_APP" --lines 50 --nostream || true
+              fi
+              exit 1
+            fi
+
+            echo "Deploy succeeded. Production EC2 now running $BRANCH @ $(git rev-parse HEAD)"

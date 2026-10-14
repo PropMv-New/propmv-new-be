@@ -1,0 +1,152 @@
+/api/v1/company:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: List all companies
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Create a company
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/company.yaml#/Company'
+    responses:
+      '201':
+        description: Company created.
+
+/api/v1/company/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Get company by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Update company details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/company.yaml#/Company'
+    responses:
+      '200':
+        description: Company updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Delete company (soft)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Company deleted.
+
+/api/v1/company/{id}/roles:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Get company roles
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Create/Add role to company
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/company.yaml#/CompanyRole'
+    responses:
+      '201':
+        description: Role added.
+
+/api/v1/company/{id}/roles/{roleId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Get specific company role
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Update role in company
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/company.yaml#/CompanyRole'
+    responses:
+      '200':
+        description: Role updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Company Management
+    summary: Delete role from company
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: roleId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Role deleted.

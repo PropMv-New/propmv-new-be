@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balance waived - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">A balance of {{waivedAmount}} was waived on invoice {{invoiceNumber}}.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+        <tr><td class="pmv-card-inner">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <span class="pmv-pill" style="background:#ede9fe;color:#6d28d9;">Balance waived</span>
+          <h1 class="pmv-title">Invoice balance adjusted</h1>
+          <p class="pmv-greet">Hi {{recipientName}},</p>
+          <p class="pmv-text">A portion of your invoice balance was waived.</p>
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="pmv-details-label">Invoice #</td><td class="pmv-details-value">{{invoiceNumber}}</td></tr>
+            <tr><td class="pmv-details-label">Waived amount</td><td class="pmv-details-value">{{waivedAmount}}</td></tr>
+            <tr><td class="pmv-details-label">Remaining balance</td><td class="pmv-details-value">{{remainingBalance}}</td></tr>
+            <tr><td class="pmv-details-label">Waived on</td><td class="pmv-details-value">{{waivedOn}}</td></tr>
+            <tr><td class="pmv-details-label">Waived by</td><td class="pmv-details-value">{{waivedByName}}</td></tr>
+            <tr><td class="pmv-details-label">Property</td><td class="pmv-details-value">{{propertyName}} · {{unitNumber}}</td></tr>
+            {{#if reason}}<tr><td class="pmv-details-label">Reason</td><td class="pmv-details-value">{{reason}}</td></tr>{{/if}}
+          </table>
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                  <a href="{{viewInvoiceUrl}}" class="pmv-cta" target="_blank">View invoice</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

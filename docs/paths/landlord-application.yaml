@@ -1,0 +1,231 @@
+/api/v1/landlord/application:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: List screening applications
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Create an application entry
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/application.yaml#/CreateApplicationRequest'
+    responses:
+      '201':
+        description: Created.
+
+/api/v1/landlord/application/submit/{leaseId}/{tenantId}:
+  post:
+    tags:
+      - Landlord (Screening Applications)
+    summary: Submit screening application for tenant (public link)
+    parameters:
+      - name: leaseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Submission accepted.
+
+/api/v1/landlord/application/submit:
+  post:
+    tags:
+      - Landlord (Screening Applications)
+    summary: Submit a generic application form (public)
+    responses:
+      '200':
+        description: Submission accepted.
+
+/api/v1/landlord/application/tenant/blank:
+  post:
+    tags:
+      - Landlord (Screening Applications)
+    summary: Create blank placeholder application (when tenant accepts invite)
+    responses:
+      '200':
+        description: Placeholder created.
+
+/api/v1/landlord/application/lease-invite-ack:
+  post:
+    tags:
+      - Landlord (Screening Applications)
+    summary: Acknowledge lease invite from deep link
+    responses:
+      '200':
+        description: Acknowledged.
+
+/api/v1/landlord/application/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Export applications list (multi-format)
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/landlord/application/names:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Get filter applicant names helper array
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/application/{id}/lease-screening-summary:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Lease screening summary for application detail
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/application/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Get application details by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Update application details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Soft delete application
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.
+
+/api/v1/landlord/application/{id}/approve:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Approve screening application
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Approved.
+
+/api/v1/landlord/application/{id}/reject:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Reject screening application
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Rejected.
+
+/api/v1/landlord/application/{id}/screening:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Update screening report criteria / results
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+
+/api/v1/landlord/application/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Add comment/note to application timeline
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/landlord/application/{id}/share-email:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Share application with team via email
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Shared.
+
+/api/v1/landlord/application/{id}/share-url:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Get shared link URL for screening details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/application/request:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Applications)
+    summary: Send application invitation to prospective tenant
+    responses:
+      '200':
+        description: Invite dispatched.

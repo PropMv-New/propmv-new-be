@@ -1,0 +1,102 @@
+{
+  "ranAt": "2026-10-09T14:43:50.800Z",
+  "attempt": "production_canary_verification",
+  "outcome": "no_go",
+  "enablementAllowed": false,
+  "broadEnablementPerformed": false,
+  "stoppedReason": "Canary preflight failed: no designated production Vendor/HOA/invoice/Owner, runner is sandbox-only, production Payload credentials not available in an approved production environment for this session.",
+  "hardConstraintsHonored": {
+    "PAYLOAD_VENDOR_PAY_ENABLED_remains_false": true,
+    "no_board_to_vendor": true,
+    "no_treasury": true,
+    "no_hoa_two_way": true,
+    "no_hoa_routing_primary": true,
+    "no_autopay_check21_rainforest_straddle_changes": true,
+    "no_prod_secrets_in_non_prod": true,
+    "no_broad_enablement": true
+  },
+  "preflight": {
+    "PHASE4_PROD_CANARY": null,
+    "PAYLOAD_ENVIRONMENT": "sandbox",
+    "isProductionEnvironment": false,
+    "secretKeyLooksSandbox": true,
+    "PAYLOAD_WEBHOOK_BEARER_configured": false,
+    "PHASE4_CANARY_VENDOR_USER_ID": null,
+    "PHASE4_CANARY_HOA_ID": null,
+    "PHASE4_CANARY_VENDOR_INVOICE_ID": null,
+    "PHASE4_CANARY_OWNER_USER_ID": null,
+    "liveRailAllowed": false
+  },
+  "gates": [
+    {
+      "gate": "G1_PA_ACTIVE_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production canary Vendor designated; cannot verify live ACTIVE PA."
+    },
+    {
+      "gate": "G2_DEFAULT_BANK_ONLY",
+      "status": "FAIL",
+      "message": "Code path previously verified; live production default-bank readiness for designated Vendor not evidenced in this canary (no canary target)."
+    },
+    {
+      "gate": "G3_CARD_LIFECYCLE_PRODUCTION",
+      "status": "FAIL",
+      "message": "No live production Card charge executed — sandbox runner / no designated canary."
+    },
+    {
+      "gate": "G4_ACH_LIFECYCLE_PRODUCTION",
+      "status": "FAIL",
+      "message": "No live production ACH charge executed — sandbox runner / no designated canary."
+    },
+    {
+      "gate": "G5_WEBHOOK_DELIVERY_PRODUCTION",
+      "status": "FAIL",
+      "message": "No live webhook delivery evidence to production PropMV URL."
+    },
+    {
+      "gate": "G6_WEBHOOK_AUTH_PRODUCTION",
+      "status": "FAIL",
+      "message": "PAYLOAD_WEBHOOK_BEARER not configured on this runner; no live auth proof."
+    },
+    {
+      "gate": "G7_REFETCH_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production transaction re-fetch evidence captured."
+    },
+    {
+      "gate": "G8_IDEMPOTENCY_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production duplicate webhook / attempt-id drill executed."
+    },
+    {
+      "gate": "G9_RECOVERY_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production timeout/crash recovery drill executed."
+    },
+    {
+      "gate": "G10_CONCURRENCY_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production concurrency/overpay drill executed."
+    },
+    {
+      "gate": "G11_BOOKS_PRODUCTION",
+      "status": "FAIL",
+      "message": "No production VendorInvoice settlement/reversal evidence captured."
+    },
+    {
+      "gate": "G12_MONITORING",
+      "status": "FAIL",
+      "message": "Monitoring drill not executed — canary not armed."
+    },
+    {
+      "gate": "G13_ROLLBACK_DRILL",
+      "status": "FAIL",
+      "message": "Rollback drill not executed — canary not armed. Global flag already OFF (precondition only)."
+    },
+    {
+      "gate": "G14_REGRESSION_PACK",
+      "status": "PARTIAL",
+      "message": "Prior sandbox unit/UI/HOA helper regression remains PASS from readiness harness; not re-claimed as production-rail evidence."
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+/api/v1/email/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: List all emails from IMAP inbox
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/sent:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: List sent emails
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/send:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Send email via SMTP
+    responses:
+      '200':
+        description: Email sent.
+
+/api/v1/email/contacts:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Get email contact list (tenants / landlords / owners)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/check-access:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Check if SMTP/IMAP settings are configured for active user
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/mark-read/{emailId}:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Mark email message as read
+    parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/{emailId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Get email details
+    parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/draft/save:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: Save email draft
+    responses:
+      '200':
+        description: Draft saved.
+
+/api/v1/email/draft/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: List email drafts
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/failed/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: List failed outboxes
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/draft/{draftId}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: Delete email draft permanently
+    parameters:
+      - name: draftId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Draft deleted.
+
+/api/v1/email/draft/{draftId}/discard:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: Soft discard email draft
+    parameters:
+      - name: draftId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Draft discarded.
+
+/api/v1/email/draft/bulk-discard:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: Bulk soft-discard email drafts
+    responses:
+      '200':
+        description: Drafts discarded.
+
+/api/v1/email/draft/{draftId}/send:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (Drafts)
+    summary: Send stored email draft
+    parameters:
+      - name: draftId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Sent successfully.
+
+/api/v1/email/upload-attachments:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Upload files to draft attachments
+    responses:
+      '200':
+        description: Uploaded.
+
+/api/v1/email/{emailId}/attachment/{attachmentId}/download:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Download email attachment
+    parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: attachmentId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/email/{emailId}/attachment/{attachmentId}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails
+    summary: Delete attachment from email draft
+    parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: attachmentId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Attachment removed.
+
+/api/v1/email/smtp/test:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (SMTP/IMAP Configuration)
+    summary: Test SMTP settings without saving
+    responses:
+      '200':
+        description: SMTP Test succeeded.
+
+/api/v1/email/smtp/configure:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (SMTP/IMAP Configuration)
+    summary: Configure SMTP/IMAP settings
+    responses:
+      '200':
+        description: Settings saved.
+
+/api/v1/email/smtp/config:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (SMTP/IMAP Configuration)
+    summary: Get configured SMTP settings
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Emails (SMTP/IMAP Configuration)
+    summary: Delete user SMTP configuration
+    responses:
+      '200':
+        description: Deleted.

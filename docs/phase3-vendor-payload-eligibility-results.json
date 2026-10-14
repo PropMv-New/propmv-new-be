@@ -1,0 +1,139 @@
+{
+  "ranAt": "2026-10-09T14:05:47.554Z",
+  "outcome": "pass",
+  "transactionPostsAttempted": 0,
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Sandbox configured; vendorMerchantEnabled=true; PAYLOAD_VENDOR_PAY_ENABLED unset",
+      "data": {
+        "environment": "sandbox",
+        "vendorMerchantEnabled": true,
+        "vendorPayEnabledEnv": null
+      }
+    },
+    {
+      "gate": "ATLAS_CONNECT",
+      "status": "PASS",
+      "message": "Connected to Atlas / Mongo"
+    },
+    {
+      "gate": "SANDBOX_PA_READONLY",
+      "status": "PASS",
+      "message": "Created Vendor PA for eligibility fixtures (no transactions)",
+      "data": {
+        "vendorPaId": "acct_3fTiiqf8kmEoHdbXw49Zh",
+        "status": "incomplete"
+      }
+    },
+    {
+      "gate": "ATLAS_FIXTURES",
+      "status": "PASS",
+      "message": "Vendor ACTIVE + INCOMPLETE + other-Vendor accounts persisted",
+      "data": {
+        "activeId": "6ac8f4b3a47e1c834bee1507",
+        "inactiveId": "6ac8f4b3a47e1c834bee150d",
+        "otherId": "6ac8f4b6a47e1c834bee1527"
+      }
+    },
+    {
+      "gate": "SANDBOX_DEFAULT_BANK",
+      "status": "PASS",
+      "message": "Default receive-only bank persisted for Vendor PA",
+      "data": {
+        "pm": "pm_3fTiirmOuBUpyt85XkFkY",
+        "default": true,
+        "otherPm": "pm_other_vendor_1791554737587"
+      }
+    },
+    {
+      "gate": "OWNER_PM_FIXTURE",
+      "status": "PASS",
+      "message": "Owner HOA-scoped PM fixture created"
+    },
+    {
+      "gate": "ELIGIBILITY_INACTIVE_PA",
+      "status": "PASS",
+      "message": "Inactive/incomplete Vendor PA returns blockers; pay not executable",
+      "data": {
+        "blockers": [
+          "VENDOR_PA_NOT_ACTIVE",
+          "VENDOR_BANK_MISSING"
+        ],
+        "electronicPayAvailable": false,
+        "electronicPayExecutable": false
+      }
+    },
+    {
+      "gate": "ELIGIBILITY_DEFAULT_BANK",
+      "status": "PASS",
+      "message": "Eligibility resolves Vendor default deposit bank",
+      "data": {
+        "expected": "pm_3fTiirmOuBUpyt85XkFkY",
+        "got": {
+          "payloadDepositMethodLocalId": "6ac8f4b7a47e1c834bee1534",
+          "paymentMethodId": "pm_3fTiirmOuBUpyt85XkFkY",
+          "isDefaultDepositMethod": true,
+          "status": "ACTIVE",
+          "verificationStatus": "verified",
+          "transferType": "receive-only",
+          "last4": "7890",
+          "bankName": null
+        },
+        "vendorProcessingAccountId": "acct_3fTiiqf8kmEoHdbXw49Zh"
+      }
+    },
+    {
+      "gate": "CROSS_VENDOR_ISOLATION",
+      "status": "PASS",
+      "message": "Destination bank is Vendor-scoped; other Vendor pm_ not selected",
+      "data": {
+        "selected": "pm_3fTiirmOuBUpyt85XkFkY",
+        "otherVendorPm": "pm_other_vendor_1791554737587"
+      }
+    },
+    {
+      "gate": "OWNER_PAYER_READINESS",
+      "status": "PASS",
+      "message": "Owner payer readiness resolved server-side",
+      "data": {
+        "evaluated": true,
+        "ready": true,
+        "eligiblePaymentMethodCount": 1,
+        "hasPayloadCustomerContext": true,
+        "blockers": []
+      }
+    },
+    {
+      "gate": "ELECTRONIC_PAY_GATED",
+      "status": "PASS",
+      "message": "Electronic pay never executable; broken HOA path gated; Record Payment preserved",
+      "data": {
+        "electronicPayAvailable": false,
+        "electronicPayExecutable": false,
+        "brokenHoaPayinPathGated": true,
+        "manualRecordPaymentPreserved": true,
+        "boardStrategy": "deferred"
+      }
+    },
+    {
+      "gate": "NO_VENDOR_PAY_FLAG_REQUIRED",
+      "status": "PASS",
+      "message": "PAYLOAD_VENDOR_MERCHANT_ENABLED sufficient; PAYLOAD_VENDOR_PAY_ENABLED not introduced"
+    },
+    {
+      "gate": "AUTH_MODEL_PRESERVED",
+      "status": "PASS",
+      "message": "Eligibility refuses unrelated actor (existing VendorInvoice assignment auth)"
+    },
+    {
+      "gate": "ZERO_TRANSACTIONS",
+      "status": "PASS",
+      "message": "Phase 3 gates created zero Payload payment transactions",
+      "data": {
+        "transactionPostsAttempted": 0
+      }
+    }
+  ]
+}

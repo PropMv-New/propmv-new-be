@@ -1,0 +1,1554 @@
+openapi: 3.0.3
+info:
+  title: PropMv - Property Management API
+  version: "1.0.0"
+  description: |
+    API for PropMv property management platform.
+    Contains Authentication & Access Control and core feature groups: Rent & Payments, Leasing & Applications, Accounting, Maintenance, Management, Marketing, Tenant Services, Property Types, and Resources.
+servers:
+  - url: https://api.propmv.com
+    description: Production
+  - url: http://localhost:5000
+    description: Local
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        status:
+          type: string
+        tenantId:
+          type: string
+        propertyId:
+          type: string
+    Lease:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        tenantId:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        signed:
+          type: boolean
+    MaintenanceRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        tenantId:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: string
+    Property:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: [residential, student, commercial, affordable, mobile_home]
+        address:
+          type: string
+        managerId:
+          type: string
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+        propertyId:
+          type: string
+        name:
+          type: string
+        contact:
+          type: string
+        status:
+          type: string
+    Article:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+    
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [rent, deposit, other]
+        status:
+          type: string
+          enum: [pending, paid, partially_paid, overdue]
+        lease_id:
+          type: string
+        propertyId:
+          type: string
+        unit:
+          type: string
+        tenants:
+          type: array
+          items:
+            type: string
+        invoiceItemDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              invoiceItem:
+                type: string
+              description:
+                type: string
+              quantity:
+                type: number
+              rate:
+                type: number
+              amount:
+                type: number
+        subAmount:
+          type: number
+        alreadyPaid:
+          type: number
+        balanceDue:
+          type: number
+        isPartialPaymentAllowed:
+          type: boolean
+        dueDate:
+          type: string
+          format: date
+        paidOn:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+    
+    InvoiceListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Invoice"
+        meta:
+          type: object
+          properties:
+            total:
+              type: number
+            page:
+              type: number
+            pageSize:
+              type: number
+        landlordSummary:
+          type: object
+          properties:
+            collectedAmount:
+              type: number
+            outstandingAmount:
+              type: number
+            overdueAmount:
+              type: number
+            collectionRate:
+              type: number
+    
+    Expense:
+      type: object
+      properties:
+        id:
+          type: string
+        category:
+          type: string
+        subCategory:
+          type: string
+        vendor:
+          type: string
+        vendorContact:
+          type: string
+        vendorPhone:
+          type: string
+        vendorEmail:
+          type: string
+        propertyId:
+          type: string
+        unit:
+          type: string
+        amount:
+          type: number
+        tax:
+          type: number
+        totalAmount:
+          type: number
+        status:
+          type: string
+          enum: [pending, paid, unpaid, overdue]
+        expenseDate:
+          type: string
+          format: date
+        paymentDate:
+          type: string
+          format: date
+        paymentMethod:
+          type: string
+        referenceNumber:
+          type: string
+        memo:
+          type: string
+        isRecurring:
+          type: boolean
+        recurringInterval:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    
+    TenantListItem:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        name:
+          type: string
+        propertyName:
+          type: string
+        unitName:
+          type: string
+        address:
+          type: string
+        accountStatus:
+          type: string
+        tenantStatus:
+          type: string
+        rent:
+          type: number
+        roommates:
+          type: number
+    
+    TenantListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TenantListItem"
+        total:
+          type: number
+        page:
+          type: number
+        pageSize:
+          type: number
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password, name]
+              properties:
+                email: { type: string }
+                password: { type: string }
+                name: { type: string }
+                phone: { type: string }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /auth/login:
+    post:
+      summary: Login
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+              required: [email, password]
+            example:
+              email: "user@example.com"
+              password: "<your-password>"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+
+  /auth/refresh:
+    post:
+      summary: Refresh token
+      tags: [Auth]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                refreshToken: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/logout:
+    post:
+      summary: Logout (invalidate refresh token)
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Logged out
+
+  /users:
+    get:
+      summary: List users (RBAC Admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create user (admin invite)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Created
+
+  /roles:
+    get:
+      summary: List roles
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+
+  /payments:
+    post:
+      summary: Create payment intent / process payment
+      tags: [Payments]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                tenantId: { type: string }
+                propertyId: { type: string }
+                amount: { type: number }
+                currency: { type: string, default: "USD" }
+                method: { type: string, enum: [card, ach, wallet] }
+      responses:
+        "201":
+          description: Payment started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+
+  /payments/webhook:
+    post:
+      summary: Payment gateway webhook (Stripe/PayPal)
+      tags: [Payments]
+      requestBody:
+        content:
+          application/json: {}
+      responses:
+        "200":
+          description: Received
+
+  /payments/walkin:
+    post:
+      summary: Register walk-in payment (PayNearMe)
+      tags: [Payments]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                tenantId: { type: string }
+                amount: { type: number }
+                providerRef: { type: string }
+      responses:
+        "201":
+          description: Walk-in payment recorded
+
+  /payments/rent-report:
+    post:
+      summary: Report rent payment to credit bureaus
+      tags: [Payments]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                paymentId: { type: string }
+      responses:
+        "202":
+          description: Accepted - reporting initiated
+
+  /leases/applications:
+    post:
+      summary: Submit rental application
+      tags: [Leasing]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                propertyId: { type: string }
+                applicant: { $ref: "#/components/schemas/User" }
+      responses:
+        "201":
+          description: Application received
+
+  /leases/{leaseId}/sign:
+    post:
+      summary: Sign lease (e-sign)
+      tags: [Leasing]
+      parameters:
+        - name: leaseId
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                signerId: { type: string }
+                signatureToken: { type: string }
+      responses:
+        "200":
+          description: Signed
+
+  /tenants/screen:
+    post:
+      summary: Run tenant screening (credit/background/eviction)
+      tags: [Leasing]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                applicantId: { type: string }
+      responses:
+        "200":
+          description: Screening result ready
+
+  /maintenance/requests:
+    post:
+      summary: Create maintenance request
+      tags: [Maintenance]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                propertyId: { type: string }
+                tenantId: { type: string }
+                description: { type: string }
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "201":
+          description: Request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MaintenanceRequest"
+
+    get:
+      summary: List maintenance requests
+      tags: [Maintenance]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+
+  /maintenance/{id}/assign:
+    post:
+      summary: Assign maintenance request to vendor/team
+      tags: [Maintenance]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                vendorId: { type: string }
+                scheduledAt: { type: string, format: date-time }
+      responses:
+        "200":
+          description: Assigned
+
+  /accounting/properties/{propertyId}/balance:
+    get:
+      summary: Get property accounting summary
+      tags: [Accounting]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: propertyId
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+
+  /accounting/reconciliation:
+    post:
+      summary: Submit bank statement for reconciliation
+      tags: [Accounting]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                propertyId: { type: string }
+                bankStatementUrl: { type: string }
+      responses:
+        "202":
+          description: Reconciliation queued
+
+  /accounting/1099/generate:
+    post:
+      summary: Generate 1099 forms for a year
+      tags: [Accounting]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                year: { type: integer }
+      responses:
+        "200":
+          description: 1099 generation started
+
+  /management/team:
+    get:
+      summary: List team members & roles
+      tags: [Management]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+
+  /management/rbac/roles:
+    post:
+      summary: Create custom role & permissions
+      tags: [Management]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Role"
+      responses:
+        "201":
+          description: Role created
+
+  /marketing/listings:
+    post:
+      summary: Create property listing & syndicate
+      tags: [Marketing]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                propertyId: { type: string }
+                title: { type: string }
+                description: { type: string }
+      responses:
+        "201":
+          description: Listing created & queued for syndication
+
+  /marketing/leads:
+    post:
+      summary: Create / ingest lead
+      tags: [Marketing]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lead"
+      responses:
+        "201":
+          description: Lead created
+
+  /tenant/portal:
+    get:
+      summary: Tenant portal summary
+      tags: [Tenant]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+
+  /tenant/payments/split:
+    post:
+      summary: Create flexible rent payment plan (split monthly rent)
+      tags: [Tenant]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                tenantId: { type: string }
+                schedule:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      dueDate: { type: string, format: date }
+                      amount: { type: number }
+      responses:
+        "201":
+          description: Payment plan created
+
+  /properties:
+    post:
+      summary: Create property
+      tags: [Properties]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Property"
+      responses:
+        "201":
+          description: Created
+
+    get:
+      summary: List properties
+      tags: [Properties]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+
+  /resources/articles:
+    get:
+      summary: List blog articles
+      tags: [Resources]
+      responses:
+        "200":
+          description: OK
+    post:
+      summary: Create article (editor)
+      tags: [Resources]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Article"
+      responses:
+        "201":
+          description: Created
+
+  /invoices:
+    get:
+      summary: List invoices with comprehensive filtering and landlord summary
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: landlordId
+          in: query
+          schema:
+            type: string
+        - name: unit
+          in: query
+          schema:
+            type: string
+        - name: tenantId
+          in: query
+          schema:
+            type: string
+        - name: paymentMethod
+          in: query
+          schema:
+            type: string
+        - name: invoiceType
+          in: query
+          schema:
+            type: string
+            enum: [rent, deposit, other]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, paid, partially_paid, overdue]
+        - name: leaseId
+          in: query
+          schema:
+            type: string
+        - name: minAmount
+          in: query
+          schema:
+            type: number
+        - name: maxAmount
+          in: query
+          schema:
+            type: number
+        - name: isPartialPaymentAllowed
+          in: query
+          schema:
+            type: boolean
+        - name: createdBy
+          in: query
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: sentOn
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: paidOn
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: groupBy
+          in: query
+          schema:
+            type: string
+            enum: [property, tenant, na]
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: List of invoices with landlord summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvoiceListResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    post:
+      summary: Create a new invoice
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [type, propertyId, unit, tenants, invoiceItemDetails, subAmount, balanceDue, isPartialPaymentAllowed, dueDate]
+              properties:
+                data:
+                  type: string
+                  description: JSON string containing invoice data
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "201":
+          description: Invoice created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /invoices/{id}:
+    get:
+      summary: Get invoice by ID
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Invoice details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "404":
+          description: Invoice not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    put:
+      summary: Update invoice
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: JSON string containing invoice updates
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "200":
+          description: Invoice updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "404":
+          description: Invoice not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    delete:
+      summary: Delete invoice
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Invoice deleted
+        "404":
+          description: Invoice not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /invoices/statistics:
+    get:
+      summary: Get invoice statistics
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: landlordId
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Invoice statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalInvoiceAmount:
+                    type: number
+                  totalOpenInvoice:
+                    type: number
+                  overdue:
+                    type: number
+                  partiallyPaid:
+                    type: number
+                  fullyPaid:
+                    type: number
+
+  /invoices/export:
+    get:
+      summary: Export invoices as CSV
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: landlordId
+          in: query
+          schema:
+            type: string
+        - name: groupBy
+          in: query
+          schema:
+            type: string
+            enum: [property, tenant, na]
+      responses:
+        "200":
+          description: CSV file
+          content:
+            text/csv:
+              schema:
+                type: string
+
+  /expenses:
+    get:
+      summary: List expenses with comprehensive filtering and landlord summary
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: landlordId
+          in: query
+          schema:
+            type: string
+        - name: vendor
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: subCategory
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, paid, unpaid, overdue]
+        - name: unit
+          in: query
+          schema:
+            type: string
+        - name: vendorContact
+          in: query
+          schema:
+            type: string
+        - name: vendorPhone
+          in: query
+          schema:
+            type: string
+        - name: vendorEmail
+          in: query
+          schema:
+            type: string
+        - name: paymentMethod
+          in: query
+          schema:
+            type: string
+        - name: referenceNumber
+          in: query
+          schema:
+            type: string
+        - name: minAmount
+          in: query
+          schema:
+            type: number
+        - name: maxAmount
+          in: query
+          schema:
+            type: number
+        - name: minTotalAmount
+          in: query
+          schema:
+            type: number
+        - name: maxTotalAmount
+          in: query
+          schema:
+            type: number
+        - name: isRecurring
+          in: query
+          schema:
+            type: boolean
+        - name: recurringInterval
+          in: query
+          schema:
+            type: string
+        - name: linkedMaintenance
+          in: query
+          schema:
+            type: string
+        - name: createdBy
+          in: query
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: paymentStartDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: paymentEndDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: List of expenses with landlord summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpenseListResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    post:
+      summary: Create a new expense
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [category, vendor, amount, totalAmount]
+              properties:
+                category:
+                  type: string
+                subCategory:
+                  type: string
+                vendor:
+                  type: string
+                vendorContact:
+                  type: string
+                vendorPhone:
+                  type: string
+                vendorEmail:
+                  type: string
+                  format: email
+                vendorWebsite:
+                  type: string
+                  format: uri
+                propertyId:
+                  type: string
+                unit:
+                  type: string
+                address:
+                  type: string
+                amount:
+                  type: number
+                  minimum: 0
+                tax:
+                  type: number
+                  minimum: 0
+                totalAmount:
+                  type: number
+                  minimum: 0
+                status:
+                  type: string
+                  enum: [pending, paid, unpaid, overdue]
+                expenseDate:
+                  type: string
+                  format: date
+                paymentDate:
+                  type: string
+                  format: date
+                paymentMethod:
+                  type: string
+                referenceNumber:
+                  type: string
+                memo:
+                  type: string
+                isRecurring:
+                  type: boolean
+                recurringInterval:
+                  type: string
+                linkedMaintenance:
+                  type: string
+      responses:
+        "201":
+          description: Expense created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  expense:
+                    $ref: "#/components/schemas/Expense"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /expenses/{id}:
+    get:
+      summary: Get expense by ID
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Expense details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  expense:
+                    $ref: "#/components/schemas/Expense"
+        "404":
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    put:
+      summary: Update expense
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                subCategory:
+                  type: string
+                vendor:
+                  type: string
+                vendorContact:
+                  type: string
+                vendorPhone:
+                  type: string
+                vendorEmail:
+                  type: string
+                  format: email
+                propertyId:
+                  type: string
+                unit:
+                  type: string
+                amount:
+                  type: number
+                  minimum: 0
+                tax:
+                  type: number
+                  minimum: 0
+                totalAmount:
+                  type: number
+                  minimum: 0
+                status:
+                  type: string
+                  enum: [pending, paid, unpaid, overdue]
+                paymentMethod:
+                  type: string
+                memo:
+                  type: string
+      responses:
+        "200":
+          description: Expense updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  expense:
+                    $ref: "#/components/schemas/Expense"
+        "404":
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    delete:
+      summary: Delete expense (soft delete)
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Expense deleted
+        "404":
+          description: Expense not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /expenses/{id}/receipts:
+    get:
+      summary: Get receipts for expense
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Expense receipts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  receipts:
+                    type: array
+                    items:
+                      type: object
+
+  /tenants/list-with-details:
+    get:
+      summary: List tenants with property and lease details
+      tags: [Tenants]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: landlordId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenantId
+          in: query
+          schema:
+            type: string
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+        - name: unit
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: pageNumber
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        "200":
+          description: List of tenants with details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/TenantListResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    
+    post:
+      summary: Upload receipts for expense
+      tags: [Expenses]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                receipts:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "201":
+          description: Receipts uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  expense:
+                    $ref: "#/components/schemas/Expense"

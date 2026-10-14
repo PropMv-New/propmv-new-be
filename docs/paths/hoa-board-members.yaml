@@ -1,0 +1,186 @@
+/api/v1/hoa/board-members:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Create a new HOA Association
+    responses:
+      '201':
+        description: HOA created.
+
+/api/v1/hoa/board-members/invite-preview:
+  get:
+    tags:
+      - HOA board management
+    summary: Public endpoint for fetching invitee details (on onboarding UI)
+    parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/board-members/my-hoas:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Get all HOA associations the logged-in user belongs to
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/board-members/accept-invite:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Accept token invitation and complete onboarding
+    responses:
+      '200':
+        description: Onboarding complete.
+
+/api/v1/hoa/board-members/{hoaId}/profile:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Update HOA Association profile parameters (address, category, etc.)
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Profile updated.
+
+/api/v1/hoa/board-members/{hoaId}/invite/validate:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Verify if email address has already been invited
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Pre-check completed.
+
+/api/v1/hoa/board-members/{hoaId}/invite:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Send invitation link to a member email
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Invitation sent.
+
+/api/v1/hoa/board-members/{hoaId}/members:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: List all active members of an HOA association
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/board-members/{hoaId}/members/{membershipId}/revoke:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Revoke active member access permissions
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: membershipId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Access revoked.
+
+/api/v1/hoa/board-members/{hoaId}/members/{membershipId}/restore:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Restore active member access permissions
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: membershipId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Access restored.
+
+/api/v1/hoa/board-members/{hoaId}/members/{membershipId}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA board management
+    summary: Permanently delete member record
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: membershipId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Deleted.

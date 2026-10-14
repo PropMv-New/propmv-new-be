@@ -1,0 +1,84 @@
+{
+  "info": {
+    "_postman_id": "propv-expense-collection-001",
+    "name": "PropMv API - Expense Module",
+    "description": "Postman collection for PropMv backend API (expense endpoints). Generated to include new expense endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "token", "value": "<JWT_TOKEN>" }
+  ],
+  "item": [
+    {
+      "name": "Create Expense",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category\": \"Maintenance\",\n  \"vendor\": \"ACME Plumbing\",\n  \"amount\": 150.00,\n  \"tax\": 0,\n  \"totalAmount\": 150.00,\n  \"propertyId\": \"<PROPERTY_ID>\",\n  \"expenseDate\": \"2025-12-22\",\n  \"memo\": \"Fix leaky sink\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/v1/expense", "host": ["{{baseUrl}}"], "path": ["api","v1","expense"] }
+      }
+    },
+    {
+      "name": "List Expenses",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/v1/expense?pageNumber=1&pageSize=20", "host": ["{{baseUrl}}"], "path": ["api","v1","expense"], "query": [ { "key": "pageNumber", "value": "1" }, { "key": "pageSize", "value": "20" } ] }
+      }
+    },
+    {
+      "name": "Get Expense by ID",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/v1/expense/:id", "host": ["{{baseUrl}}"], "path": ["api","v1","expense", ":id"] }
+      }
+    },
+    {
+      "name": "Update Expense",
+      "request": {
+        "method": "PUT",
+        "header": [ { "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "body": { "mode": "raw", "raw": "{ \"memo\": \"Updated memo\", \"amount\": 175.0, \"totalAmount\": 175.0 }" },
+        "url": { "raw": "{{baseUrl}}/api/v1/expense/:id", "host": ["{{baseUrl}}"], "path": ["api","v1","expense", ":id"] }
+      }
+    },
+    {
+      "name": "Delete Expense",
+      "request": {
+        "method": "DELETE",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/v1/expense/:id", "host": ["{{baseUrl}}"], "path": ["api","v1","expense", ":id"] }
+      }
+    },
+    {
+      "name": "Upload Receipts (multipart)",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "receipts", "type": "file", "src": "" }
+          ]
+        },
+        "url": { "raw": "{{baseUrl}}/api/v1/expense/:id/receipts", "host": ["{{baseUrl}}"], "path": ["api","v1","expense", ":id","receipts"] }
+      }
+    },
+    {
+      "name": "Get Receipts for Expense",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/v1/expense/:id/receipts", "host": ["{{baseUrl}}"], "path": ["api","v1","expense", ":id","receipts"] }
+      }
+    }
+  ]
+}

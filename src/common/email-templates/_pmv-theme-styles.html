@@ -1,0 +1,522 @@
+<style type="text/css">
+  body.pmv-body,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    background-color: #f8fafc !important;
+    font-family: 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif !important;
+    color: #0f172a !important;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  table.pmv-shell,
+  table.pmv-card-table {
+    border-collapse: collapse;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+  }
+
+  .pmv-shell-pad {
+    padding: 24px 12px !important;
+  }
+
+  .pmv-card-table {
+    max-width: 600px !important;
+    width: 100% !important;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: visible !important;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  .pmv-card-table.pmv-wide {
+    max-width: 640px !important;
+  }
+
+  .pmv-top-accent {
+    height: 4px;
+    line-height: 4px;
+    font-size: 4px;
+    background: linear-gradient(135deg, #f97316 0%, #db2777 100%);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .pmv-card-inner {
+    padding: 24px 28px !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .pmv-hero {
+    background: linear-gradient(135deg, #f97316 0%, #db2777 100%);
+    color: #ffffff;
+    padding: 24px 28px 20px;
+  }
+
+  .pmv-hero h1 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #ffffff;
+  }
+
+  .pmv-hero p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .pmv-hero-icon {
+    display: inline-block;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .pmv-brand-table td {
+    vertical-align: middle;
+  }
+
+  .pmv-logo-img {
+    display: block;
+    max-width: 88px;
+    width: 88px;
+    height: auto;
+    border: 0;
+  }
+
+  h1.pmv-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    line-height: 1.3;
+    color: #0f172a;
+    word-wrap: break-word;
+  }
+
+  h2.pmv-subtitle {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #0f172a;
+  }
+
+  p.pmv-text,
+  .pmv-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #0f172a;
+    margin: 0 0 14px;
+    word-wrap: break-word;
+  }
+
+  .pmv-muted {
+    color: #64748b !important;
+    font-size: 13px;
+    line-height: 1.55;
+    word-wrap: break-word;
+  }
+
+  .pmv-greet {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: #0f172a;
+  }
+
+  .pmv-intro-box {
+    background: #fff7ed;
+    border-left: 4px solid #f97316;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    margin: 0 0 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    word-wrap: break-word;
+  }
+
+  .pmv-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: #fdf2f8;
+    color: #db2777;
+    margin-bottom: 12px;
+  }
+
+  .pmv-pill-warning {
+    background: #fef3c7;
+    color: #b45309;
+  }
+
+  .pmv-cta-wrap {
+    margin: 20px 0 8px;
+    text-align: center;
+  }
+
+  .pmv-cta-cell {
+    border-radius: 12px;
+    background-color: #f97316;
+    background-image: linear-gradient(135deg, #f97316 0%, #db2777 100%);
+  }
+
+  a.pmv-cta,
+  .pmv-cta {
+    display: inline-block;
+    padding: 14px 28px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.25;
+    mso-padding-alt: 0;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  a.pmv-cta-secondary {
+    display: inline-block;
+    padding: 11px 18px;
+    color: #f97316 !important;
+    text-decoration: none !important;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    margin: 4px;
+  }
+
+  .pmv-otp {
+    background: linear-gradient(135deg, #fff7ed 0%, #fdf2f8 100%);
+    border: 2px dashed rgba(249, 115, 22, 0.35);
+    padding: 18px 12px;
+    text-align: center;
+    margin: 18px 0;
+    border-radius: 12px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: visible !important;
+  }
+
+  .pmv-otp-code {
+    display: inline-block;
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #f97316;
+    line-height: 1.35;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+    padding: 0 4px;
+    font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+
+  .pmv-info-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    word-wrap: break-word;
+  }
+
+  .pmv-info-box-accent {
+    border-left: 4px solid #f97316;
+    background: #fff7ed;
+  }
+
+  table.pmv-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  table.pmv-details-table td {
+    padding: 10px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+
+  table.pmv-details-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .pmv-details-label {
+    color: #64748b;
+    font-weight: 600;
+    width: 40%;
+  }
+
+  .pmv-details-value {
+    color: #0f172a;
+    font-weight: 500;
+  }
+
+  .pmv-amount-due {
+    color: #dc2626;
+    font-weight: 700;
+  }
+
+  table.pmv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    table-layout: fixed;
+  }
+
+  table.pmv-table th,
+  table.pmv-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    font-size: 13px;
+    word-wrap: break-word;
+  }
+
+  table.pmv-table th {
+    background: #fff7ed;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .pmv-grid-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+  }
+
+  .pmv-grid-cell {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+
+  .pmv-grid-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .pmv-grid-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    word-break: break-word;
+  }
+
+  .pmv-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 0 0 10px;
+  }
+
+  .pmv-total {
+    font-weight: 800;
+    font-size: 16px;
+    color: #f97316;
+  }
+
+  .pmv-success-banner {
+    display: inline-block;
+    background: #dcfce7;
+    color: #16a34a;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 14px;
+  }
+
+  .pmv-checks {
+    margin: 14px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pmv-checks li {
+    background: #f8fafc;
+    border-left: 4px solid #f97316;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+
+  .pmv-steps {
+    background: linear-gradient(135deg, #fff7ed 0%, #fdf2f8 100%);
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+
+  .pmv-steps ul {
+    margin: 8px 0 0;
+    padding: 0 0 0 18px;
+  }
+
+  .pmv-steps li {
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #334155;
+  }
+
+  .pmv-link {
+    color: #f97316 !important;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    font-weight: 600;
+  }
+
+  .pmv-footer-minimal {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+    line-height: 1.55;
+  }
+
+  .pmv-signoff {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .pmv-contact-block {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #475569;
+  }
+
+  .pmv-contact-block strong {
+    color: #0f172a;
+  }
+
+  .pmv-preheader {
+    display: none !important;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    max-height: 0;
+    overflow: hidden;
+    mso-hide: all;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .pmv-shell-pad {
+      padding: 12px 8px !important;
+    }
+
+    .pmv-card-inner {
+      padding: 18px 16px !important;
+    }
+
+    .pmv-hero {
+      padding: 20px 16px 16px !important;
+    }
+
+    h1.pmv-title {
+      font-size: 20px !important;
+    }
+
+    .pmv-otp-code {
+      font-size: 24px !important;
+      letter-spacing: 4px !important;
+    }
+
+    a.pmv-cta,
+    .pmv-cta {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    .pmv-brand-table tr {
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .pmv-brand-logo-cell,
+    .pmv-brand-meta-cell {
+      display: block !important;
+      width: 100% !important;
+      text-align: left !important;
+    }
+
+    .pmv-brand-logo-cell {
+      padding-bottom: 6px !important;
+    }
+
+    .pmv-brand-meta-cell {
+      font-size: 10px !important;
+    }
+
+    .pmv-logo-img {
+      max-width: 76px !important;
+      width: 76px !important;
+    }
+
+    table.pmv-details-table td,
+    table.pmv-table th,
+    table.pmv-table td {
+      font-size: 13px !important;
+      padding: 8px 10px !important;
+    }
+
+    .pmv-details-label {
+      width: 42% !important;
+    }
+
+    .pmv-grid-table,
+    .pmv-grid-table tbody,
+    .pmv-grid-table tr,
+    .pmv-grid-table td {
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .pmv-grid-table tr {
+      margin-bottom: 8px;
+    }
+  }
+</style>

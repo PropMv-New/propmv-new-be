@@ -1,0 +1,190 @@
+/api/v1/payments/customers:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get payment customers
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Create a customer profile in Straddle
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/payment.yaml#/CreateCustomerRequest'
+    responses:
+      '201':
+        description: Straddle customer created.
+
+/api/v1/payments/customers/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get Straddle customer by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/payments/bank-accounts:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: List linked bank accounts
+    parameters:
+      - name: customerId
+        in: query
+        required: false
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Link a bank account to Straddle
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/payment.yaml#/LinkBankAccountRequest'
+    responses:
+      '201':
+        description: Account linked.
+
+/api/v1/payments/bank-accounts/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get bank account details by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Update bank account status
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/payments/bank-accounts/{id}/verify:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Verify bank account via micro-deposits
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Bank account verified.
+
+/api/v1/payments/charges:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get ACH charges
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Initiate an ACH charge
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/payment.yaml#/CreateChargeRequest'
+    responses:
+      '201':
+        description: Charge initiated.
+
+/api/v1/payments/charges/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get charge details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/payments/payouts:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: List payouts
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Initiate a payout
+    responses:
+      '201':
+        description: Payout scheduled.
+
+/api/v1/payments/payouts/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Get payout details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/payments/bridge/session:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Payments (Straddle)
+    summary: Create a Bridge session for verification
+    responses:
+      '201':
+        description: Bridge session created.

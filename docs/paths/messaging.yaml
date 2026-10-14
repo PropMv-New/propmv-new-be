@@ -1,0 +1,99 @@
+/api/v1/messaging/conversations:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Get conversation list
+    responses:
+      '200':
+        description: Success
+
+/api/v1/messaging/contacts:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Get chat contacts
+    responses:
+      '200':
+        description: Success
+
+/api/v1/messaging/conversations/{otherUserId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Get conversation thread with user
+    parameters:
+      - name: otherUserId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/messaging/send:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Send chat message
+    responses:
+      '200':
+        description: Message sent.
+
+/api/v1/messaging/mark-read:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Mark chat thread as read
+    responses:
+      '200':
+        description: Success
+
+/api/v1/messaging/upload:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Upload chat attachments
+    responses:
+      '200':
+        description: Uploaded.
+
+/api/v1/messaging/{messageId}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Delete a single chat message
+    parameters:
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/messaging/unread-count:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Chat Messaging
+    summary: Get total unread messages count
+    responses:
+      '200':
+        description: Success

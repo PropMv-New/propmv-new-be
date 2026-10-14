@@ -1,0 +1,436 @@
+/api/v1/auth/signup:
+  post:
+    tags:
+      - Auth
+    summary: Sign up a new user
+    description: Registers a new user (landlord, tenant, HOA board member, etc.) along with role-specific profile details.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/SignupRequest'
+    responses:
+      '201':
+        description: User signed up successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yaml#/StandardResponse'
+      '400':
+        $ref: '../components/responses/common.yaml#/ValidationError400'
+      '500':
+        $ref: '../components/responses/common.yaml#/ServerError500'
+
+/api/v1/auth/login:
+  post:
+    tags:
+      - Auth
+    summary: User login
+    description: Authenticates user credentials and returns access and refresh JWT tokens.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/LoginRequest'
+    responses:
+      '200':
+        description: Login successful.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+                - statuscode
+                - data
+              properties:
+                message:
+                  type: string
+                  example: Login successful
+                statuscode:
+                  type: integer
+                  example: 200
+                data:
+                  oneOf:
+                    - $ref: '../components/schemas/auth.yaml#/LoginResponse'
+                    - $ref: '../components/schemas/auth.yaml#/MfaLoginRequiredResponse'
+
+      '400':
+        $ref: '../components/responses/common.yaml#/ValidationError400'
+      '401':
+        $ref: '../components/responses/common.yaml#/Unauthorized401'
+      '500':
+        $ref: '../components/responses/common.yaml#/ServerError500'
+
+/api/v1/auth/check-identity:
+  get:
+    tags:
+      - Auth
+    summary: Check if email or phone is already registered
+    parameters:
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+          format: email
+      - name: phone
+        in: query
+        required: false
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Returns registration availability state.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yaml#/StandardResponse'
+      '400':
+        $ref: '../components/responses/common.yaml#/ValidationError400'
+
+/api/v1/auth/forgot-password:
+  post:
+    tags:
+      - Auth
+    summary: Request password reset OTP
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/ForgotPasswordRequest'
+    responses:
+      '200':
+        description: Password reset OTP sent successfully.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yaml#/StandardResponse'
+
+/api/v1/auth/verify-reset-otp:
+  post:
+    tags:
+      - Auth
+    summary: Verify reset OTP
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/VerifyResetOtpRequest'
+    responses:
+      '200':
+        description: OTP verified.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yaml#/StandardResponse'
+
+/api/v1/auth/verify-otp-reset-password:
+  put:
+    tags:
+      - Auth
+    summary: Verify OTP and reset password
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/VerifyOtpResetPasswordRequest'
+    responses:
+      '200':
+        description: Password reset successful.
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/common.yaml#/StandardResponse'
+
+/api/v1/auth/send-mfa-otp:
+  post:
+    tags:
+      - Auth
+    summary: Send MFA OTP
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/SendMfaOtpRequest'
+    responses:
+      '200':
+        description: MFA OTP sent.
+
+/api/v1/auth/verify-mfa-otp:
+  post:
+    tags:
+      - Auth
+    summary: Verify MFA OTP
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/VerifyMfaOtpRequest'
+    responses:
+      '200':
+        description: MFA OTP verified.
+
+/api/v1/auth/refresh-token:
+  get:
+    deprecated: true
+    tags:
+      - Auth
+    summary: Refresh JWT token (GET)
+    description: >
+      Deprecated: Use the POST `/api/v1/auth/refresh` endpoint instead for better security practices 
+      (transmitting credentials in HTTP request body rather than query strings).
+    parameters:
+      - name: refreshToken
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Token refreshed.
+
+
+/api/v1/auth/refresh:
+  post:
+    tags:
+      - Auth
+    summary: Refresh JWT token (POST)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/RefreshTokenRequest'
+    responses:
+      '200':
+        description: Token refreshed.
+
+/api/v1/auth/logout:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth
+    summary: Logout user
+    responses:
+      '200':
+        description: Logout successful.
+
+/api/v1/auth/lock-account:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth
+    summary: Lock a user account (Admin only)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/LockAccountRequest'
+    responses:
+      '200':
+        description: Account locked successfully.
+
+/api/v1/auth/unlock-account:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth
+    summary: Unlock a user account (Admin only)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/LockAccountRequest'
+    responses:
+      '200':
+        description: Account unlocked successfully.
+
+/api/v1/auth/session:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth
+    summary: Get current authenticated session details
+    responses:
+      '200':
+        description: Current session claims returned.
+
+/api/v1/auth/reset-password:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth
+    summary: Reset password while logged in
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/ResetPasswordRequest'
+    responses:
+      '200':
+        description: Password reset successful.
+
+/api/v1/auth/signup-roles:
+  get:
+    tags:
+      - Auth
+    summary: List signup-eligible roles
+    responses:
+      '200':
+        description: List of roles available for registration.
+
+/api/v1/auth/role:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: List roles
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: Create a role
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/Role'
+    responses:
+      '201':
+        description: Role created.
+
+/api/v1/auth/role/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: Get role by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: Update a role
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/Role'
+    responses:
+      '200':
+        description: Role updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: Delete a role
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Role deleted.
+
+/api/v1/auth/permissions:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: List all system permissions/functions
+    responses:
+      '200':
+        description: Success
+
+/api/v1/auth/modules:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Auth (Roles)
+    summary: List all system modules
+    responses:
+      '200':
+        description: Success
+
+/api/v1/auth/portal-invite/validate:
+  get:
+    tags:
+      - Auth
+    summary: Validate portal invitation token
+    parameters:
+      - name: userId
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Invitation verified.
+
+/api/v1/auth/portal-invite/complete:
+  post:
+    tags:
+      - Auth
+    summary: Complete portal invitation and set password
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/auth.yaml#/PortalInviteCompleteRequest'
+    responses:
+      '200':
+        description: Invitation accepted, user configured.
+
+/api/v1/auth/public/masterdata:
+  get:
+    tags:
+      - Auth
+    summary: Get public master data keys
+    parameters:
+      - name: keys
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Comma-separated allowlisted keys (e.g. HOA_Association_Types)
+    responses:
+      '200':
+        description: Success

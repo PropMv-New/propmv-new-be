@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{{documentTitle}} - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body" bgcolor="#f8fafc" style="background-color:#f8fafc;">
+  <span class="pmv-preheader">{{emailPreheader}}</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="background-color:#f8fafc;">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;width:100%;background-color:#ffffff;border:1px solid #e2e8f0;border-radius:16px;">
+        <tr><td class="pmv-top-accent" bgcolor="#f97316" height="4" style="height:4px;line-height:4px;font-size:4px;background:linear-gradient(135deg,#f97316 0%,#db2777 100%);border-radius:16px 16px 0 0;">&nbsp;</td></tr>
+        {{#if showNextYearBanner}}
+        <tr><td style="padding:16px 28px 0;">
+          <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:10px;padding:12px 14px;font-size:13px;color:#9a3412;font-weight:600;">
+            {{nextYearBannerText}}
+          </div>
+        </td></tr>
+        {{/if}}
+        <tr><td class="pmv-card-inner" style="padding:24px 28px;">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <h1 class="pmv-title" style="font-size:22px;font-weight:800;margin:0 0 12px;color:#0f172a;">{{documentTitle}}</h1>
+          <p class="pmv-greet" style="font-size:15px;font-weight:700;margin:0 0 12px;color:#0f172a;">Hi {{recipientName}},</p>
+          <p class="pmv-text" style="font-size:15px;line-height:1.6;color:#0f172a;margin:0 0 14px;">{{{introText}}}</p>
+
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="width:100%;border-collapse:collapse;margin:16px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Billing year</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:700;text-align:right;border-bottom:1px solid #e2e8f0;">{{invoiceYear}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Invoice count</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:700;text-align:right;border-bottom:1px solid #e2e8f0;">{{invoiceCount}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;">Total amount due</td><td class="pmv-details-value pmv-total" style="padding:10px 14px;font-size:16px;color:#f97316;font-weight:800;text-align:right;">{{totalAmountDue}}</td></tr>
+          </table>
+
+          <div class="pmv-section-title" style="margin-top:18px;">INVOICE DETAILS</div>
+          <table class="pmv-table" role="table" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;margin:12px 0;table-layout:fixed;">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:8px 6px;font-size:12px;font-weight:700;color:#0f172a;background:#fff7ed;border-bottom:1px solid #e2e8f0;width:34%;">Invoice #</th>
+                {{#if showOwnerColumn}}<th style="text-align:left;padding:8px 6px;font-size:12px;font-weight:700;color:#0f172a;background:#fff7ed;border-bottom:1px solid #e2e8f0;width:18%;">Owner</th>{{/if}}
+                <th style="text-align:left;padding:8px 6px;font-size:12px;font-weight:700;color:#0f172a;background:#fff7ed;border-bottom:1px solid #e2e8f0;width:18%;">Period</th>
+                <th style="text-align:left;padding:8px 6px;font-size:12px;font-weight:700;color:#0f172a;background:#fff7ed;border-bottom:1px solid #e2e8f0;width:18%;">Due date</th>
+                <th style="text-align:left;padding:8px 6px;font-size:12px;font-weight:700;color:#0f172a;background:#fff7ed;border-bottom:1px solid #e2e8f0;width:12%;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each invoiceRows}}
+              <tr>
+                <td style="padding:10px 6px;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;vertical-align:top;word-wrap:break-word;">
+                  <strong>{{invoiceNumber}}</strong><br />
+                  <span style="color:#64748b;font-size:12px;">{{propertyName}} &middot; {{unitNumber}}</span><br />
+                  {{#if locationUrl}}
+                  <a href="{{locationUrl}}" target="_blank" style="color:#2563eb;font-size:12px;text-decoration:underline;word-break:break-word;">{{location}}</a>
+                  {{else}}
+                  <span style="color:#64748b;font-size:12px;word-break:break-word;">{{location}}</span>
+                  {{/if}}
+                </td>
+                {{#if ../showOwnerColumn}}<td style="padding:10px 6px;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;vertical-align:top;word-wrap:break-word;">{{ownerName}}</td>{{/if}}
+                <td style="padding:10px 6px;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;vertical-align:top;word-wrap:break-word;">{{term}}</td>
+                <td style="padding:10px 6px;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;vertical-align:top;word-wrap:break-word;">{{dueDate}}</td>
+                <td style="padding:10px 6px;font-size:13px;color:#0f172a;border-bottom:1px solid #f1f5f9;vertical-align:top;word-wrap:break-word;">
+                  <strong>{{amountDue}}</strong><br />
+                  <span style="color:#64748b;font-size:12px;">{{applicability}}</span>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px 0 8px;text-align:center;">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#f97316" style="background:linear-gradient(135deg,#f97316 0%,#db2777 100%);border-radius:12px;">
+                  <a href="{{viewInvoicesUrl}}" class="pmv-cta" target="_blank" style="display:inline-block;padding:14px 28px;color:#ffffff !important;text-decoration:none !important;border-radius:12px;font-weight:700;font-size:15px;">{{ctaLabel}}</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <div class="pmv-footer-minimal" style="font-size:12px;color:#64748b;margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;">This is an automated message - please do not reply.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

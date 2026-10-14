@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>New HOA document - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">A new document was shared with you: {{documentTitle}}</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">New community document</h1>
+              <p class="pmv-greet">Hi {{recipientName}},</p>
+              <p class="pmv-text">A document was shared with you in <strong>{{hoaName}}</strong>.</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Document</td>
+                  <td class="pmv-details-value">{{documentTitle}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Category</td>
+                  <td class="pmv-details-value">{{categoryName}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Uploaded by</td>
+                  <td class="pmv-details-value">{{uploadedBy}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Upload date</td>
+                  <td class="pmv-details-value">{{uploadDate}}</td>
+                </tr>
+                {{#if description}}
+                <tr>
+                  <td class="pmv-details-label">Description</td>
+                  <td class="pmv-details-value">{{description}}</td>
+                </tr>
+                {{/if}}
+              </table>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{documentUrl}}" class="pmv-cta" target="_blank">View document</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted">Sign in to PropMv to view or download this document.</p>
+              <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

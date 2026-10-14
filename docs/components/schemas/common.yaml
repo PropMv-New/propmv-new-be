@@ -1,0 +1,123 @@
+StandardResponse:
+  type: object
+  description: Standard API response envelope used across all endpoints.
+  properties:
+    message:
+      type: string
+      description: Human-readable status message.
+      example: Success
+    statuscode:
+      type: integer
+      description: HTTP status code.
+      example: 200
+    data:
+      type: object
+      description: Response payload (type varies per endpoint).
+      nullable: true
+  required:
+    - message
+    - statuscode
+    - data
+
+ErrorResponse:
+  type: object
+  description: Standard error response.
+  properties:
+    message:
+      type: string
+      description: Error description.
+      example: Internal Server Error
+    statuscode:
+      type: integer
+      description: HTTP status code.
+      example: 500
+    data:
+      type: object
+      nullable: true
+      example: null
+  required:
+    - message
+    - statuscode
+    - data
+
+ValidationErrorResponse:
+  type: object
+  description: Validation error response with field-level details.
+  properties:
+    message:
+      type: string
+      example: Validation failed
+    statuscode:
+      type: integer
+      example: 400
+    data:
+      type: object
+      nullable: true
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: email
+              message:
+                type: string
+                example: '"email" is required'
+
+ObjectId:
+  type: string
+  pattern: '^[0-9a-fA-F]{24}$'
+  description: MongoDB ObjectId (24-character hex string).
+  example: 60f7a0b8c2a3f2b1c0d4e5f6
+
+PaginationMeta:
+  type: object
+  description: Pagination metadata returned with list endpoints.
+  properties:
+    page:
+      type: integer
+      minimum: 1
+      example: 1
+    pageSize:
+      type: integer
+      minimum: 1
+      example: 10
+    totalCount:
+      type: integer
+      example: 42
+    totalPages:
+      type: integer
+      example: 5
+
+Address:
+  type: object
+  description: Reusable address object.
+  properties:
+    street:
+      type: string
+      example: 123 Main Street
+    city:
+      type: string
+      example: New York
+    state:
+      type: string
+      example: NY
+    zip:
+      type: string
+      example: '10001'
+    country:
+      type: string
+      example: USA
+
+TimestampFields:
+  type: object
+  description: Common Mongoose timestamp fields.
+  properties:
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time

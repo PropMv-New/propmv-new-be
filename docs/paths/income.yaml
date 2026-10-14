@@ -1,0 +1,54 @@
+/api/v1/income:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Income Ledger
+    summary: Get incomes with filters
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Income Ledger
+    summary: Record a new income entry
+    responses:
+      '201':
+        description: Income recorded.
+
+/api/v1/income/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Income Ledger
+    summary: Get income details by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Income Ledger
+    summary: Update income record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Income updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Income Ledger
+    summary: Soft-delete income
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Income deleted.

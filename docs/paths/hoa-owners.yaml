@@ -1,0 +1,450 @@
+/api/v1/hoa/owners:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: List HOA Owners
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Create Owner profile record
+    responses:
+      '201':
+        description: Owner created.
+
+/api/v1/hoa/owners/me/units:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Owner self-service
+    summary: Get owned assigned properties and units (Owner self-service)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/me/units/{id}/balance:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Owner self-service
+    summary: Get ledger outstanding balance for owned unit (Owner self-service)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/me/units/balances:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Owner self-service
+    summary: Batch lookup outstanding balances for multiple owned units
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/picker:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Dropdown search list autocomplete picker for Owners
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Upload Owners list CSV
+    responses:
+      '200':
+        description: Completed.
+
+/api/v1/hoa/owners/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Export Owners database file
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/hoa/owners/template:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Download Owner CSV import template
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/hoa/owners/units/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Import Units roster CSV
+    responses:
+      '200':
+        description: Job scheduled.
+
+/api/v1/hoa/owners/units/import/{jobId}/status:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Check status of Units import job
+    parameters:
+      - name: jobId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Export Units roster
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/hoa/owners/units/template:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Download Unit import template CSV
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/deposit-bank-accounts/{bankAccountId}/usage:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get usage profile of specific bank account linked to units deposits
+    parameters:
+      - name: bankAccountId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/deposit-bank-accounts/reassign:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Reassign bank accounts linked to deposits to another bank account
+    responses:
+      '200':
+        description: Saved.
+
+/api/v1/hoa/owners/units:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Create HOA property Unit
+    responses:
+      '201':
+        description: Unit created.
+
+/api/v1/hoa/owners/units/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get Unit details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Update Unit details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Delete Unit record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/adjustment:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Apply ledger adjustment transaction to Unit account
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/balances:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Batch retrieve Unit ledger balances
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/balance:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get Unit outstanding ledger balance
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/ledger:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get Unit complete transaction ledger history list
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/ledger/invoice/{invoiceId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get ledger list scoped by invoiceId
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: invoiceId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/add-owner:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Link Owner identity to Unit profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/remove-owner:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Unlink Owner from Unit profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/units/{id}/change-ownership:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Change ownership list on Unit profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get Owner profile by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Update Owner parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Delete Owner record profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/{id}/resend-invite:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Resend portal registration invite link to Owner email
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Invite sent.
+
+/api/v1/hoa/owners/{id}/archive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Archive Owner profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/{id}/delete-preview:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Get dependency preview metrics before deleting Owner
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/owners/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Create internal note for Owner file
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/hoa/owners/{id}/notes/{noteId}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Update specific Owner note
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Owners & Units)
+    summary: Remove specific Owner note
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success

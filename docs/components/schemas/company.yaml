@@ -1,0 +1,32 @@
+Company:
+  type: object
+  required:
+    - name
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    address:
+      type: string
+    roles:
+      type: array
+      items:
+        $ref: '#/CompanyRole'
+
+CompanyRole:
+  type: object
+  required:
+    - name
+    - privileges
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    privileges:
+      type: array
+      items:
+        type: string
+    isActive:
+      type: boolean

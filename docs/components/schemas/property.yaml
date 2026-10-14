@@ -1,0 +1,150 @@
+Property:
+  type: object
+  required:
+    - name
+    - propertyType
+    - ownershipType
+    - address
+    - ownerName
+    - ownerEmail
+    - ownerPhone
+    - ownerType
+    - unitDetails
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    propertyType:
+      type: string
+    description:
+      type: string
+    ownershipType:
+      type: string
+    address:
+      $ref: 'common.yaml#/Address'
+    ownerName:
+      type: string
+    ownerEmail:
+      type: string
+      format: email
+    ownerPhone:
+      type: string
+    ownerType:
+      type: string
+    unitDetails:
+      type: array
+      items:
+        $ref: '#/UnitDetail'
+    images:
+      type: array
+      items:
+        type: string
+    notes:
+      type: array
+      items:
+        $ref: '#/PropertyNote'
+    isArchived:
+      type: boolean
+    isDeleted:
+      type: boolean
+
+UnitDetail:
+  type: object
+  required:
+    - unitName
+    - unitType
+    - squareFeet
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    unitName:
+      type: string
+    unitType:
+      type: string
+    squareFeet:
+      type: number
+    bedRooms:
+      type: number
+    bathRoom:
+      type: number
+
+PropertyNote:
+  type: object
+  required:
+    - text
+    - createdBy
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    text:
+      type: string
+    createdBy:
+      $ref: 'common.yaml#/ObjectId'
+    createdAt:
+      type: string
+      format: date-time
+
+CreatePropertyRequest:
+  type: object
+  required:
+    - name
+    - propertyType
+    - ownershipType
+    - address
+    - ownerName
+    - ownerEmail
+    - ownerPhone
+    - ownerType
+    - unitDetails
+  properties:
+    name:
+      type: string
+    propertyType:
+      type: string
+    description:
+      type: string
+    ownershipType:
+      type: string
+    address:
+      $ref: 'common.yaml#/Address'
+    ownerName:
+      type: string
+    ownerEmail:
+      type: string
+      format: email
+    ownerPhone:
+      type: string
+    ownerType:
+      type: string
+    unitDetails:
+      type: array
+      items:
+        $ref: '#/UnitDetail'
+
+UpdatePropertyRequest:
+  type: object
+  properties:
+    name:
+      type: string
+    propertyType:
+      type: string
+    description:
+      type: string
+    ownershipType:
+      type: string
+    address:
+      $ref: 'common.yaml#/Address'
+    ownerName:
+      type: string
+    ownerEmail:
+      type: string
+      format: email
+    ownerPhone:
+      type: string
+    ownerType:
+      type: string
+    unitDetails:
+      type: array
+      items:
+        $ref: '#/UnitDetail'

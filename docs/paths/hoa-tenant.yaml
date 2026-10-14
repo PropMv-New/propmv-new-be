@@ -1,0 +1,194 @@
+/api/v1/hoa/tenants:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: List tenants within HOA properties
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Add tenant profile record
+    responses:
+      '201':
+        description: Tenant created.
+
+/api/v1/hoa/tenants/setup:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Setup tenant login portal credentials
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/update-setup:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Update tenant credential sync metadata
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/setup/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Link tenant setup parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Export tenants roster CSV file
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/list-with-details:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Get detailed tenants list (with active lease balances)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/names:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Quick dropdown lookup list of tenant names
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/details:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Get tenant lease status lookup metrics
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Upload tenants CSV data file
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/resend-invite:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Resend portal onboarding credentials link
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Get tenant details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Update tenant details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Delete tenant record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/{id}/documents:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Upload scanned documents to tenant profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/{id}/archive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Archive tenant profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/tenants/{id}/unarchive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Tenants)
+    summary: Restore tenant status from archive
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success

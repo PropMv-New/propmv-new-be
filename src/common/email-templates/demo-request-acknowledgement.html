@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Your PropMv demo request</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">We received your PropMv demo request and will be in touch shortly.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">Thanks, {{userName}}</h1>
+              <p class="pmv-text">We have your demo request and someone from the PropMv team will be in touch shortly to arrange a time.</p>
+
+              {{#if hasPreferredSlot}}
+              <div class="pmv-info-box pmv-info-box-accent">
+                <p class="pmv-muted" style="margin:0 0 4px;">You asked for</p>
+                <p style="margin:0;font-size:15px;line-height:1.5;font-weight:700;color:#0f172a;">{{preferredSlot}}</p>
+              </div>
+              {{/if}}
+
+              <p class="pmv-muted" style="margin-bottom:0;">If anything changes, just reply to this email.</p>
+              <p class="pmv-text" style="margin-top:16px;margin-bottom:0;">See you soon,<br/>The PropMv Team</p>
+              <div class="pmv-footer-minimal">&copy; {{currentYear}} PropMv. All rights reserved.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

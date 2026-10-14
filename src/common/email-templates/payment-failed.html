@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Payment failed - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Your payment for invoice {{invoiceNumber}} could not be processed.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <span class="pmv-pill pmv-pill-warning">Payment failed</span>
+              <h1 class="pmv-title">Payment could not be processed</h1>
+              <p class="pmv-greet">Hi {{recipientName}},</p>
+              <p class="pmv-text">Your payment for invoice <strong>#{{invoiceNumber}}</strong> was not completed. Please try again or use a different payment method.</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Invoice #</td>
+                  <td class="pmv-details-value">{{invoiceNumber}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Property</td>
+                  <td class="pmv-details-value">{{propertyName}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Amount due</td>
+                  <td class="pmv-details-value pmv-amount-due">{{amountDue}}</td>
+                </tr>
+                {{#if failureReason}}
+                <tr>
+                  <td class="pmv-details-label">Reason</td>
+                  <td class="pmv-details-value">{{failureReason}}</td>
+                </tr>
+                {{/if}}
+              </table>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{paymentUrl}}" class="pmv-cta" target="_blank">Try again</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted" style="text-align:center;margin-top:12px;">
+                <a href="{{viewInvoiceUrl}}" class="pmv-link">View invoice</a>
+              </p>
+              <p class="pmv-muted" style="text-align:center;margin-top:12px;">Need help? Try a different payment method or contact your property manager.</p>
+              <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

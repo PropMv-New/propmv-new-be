@@ -1,0 +1,36 @@
+idParam:
+  name: id
+  in: path
+  required: true
+  schema:
+    $ref: '../schemas/common.yaml#/ObjectId'
+  description: The MongoDB ObjectId of the resource.
+
+pageParam:
+  name: page
+  in: query
+  required: false
+  schema:
+    type: integer
+    default: 1
+    example: 1
+  description: Page number for pagination list endpoints.
+
+pageSizeParam:
+  name: pageSize
+  in: query
+  required: false
+  schema:
+    type: integer
+    default: 10
+    example: 20
+  description: Number of items per page for pagination list endpoints.
+
+
+createdByParam:
+  name: createdBy
+  in: query
+  required: false
+  schema:
+    type: string
+  description: Filter by the creator ID.

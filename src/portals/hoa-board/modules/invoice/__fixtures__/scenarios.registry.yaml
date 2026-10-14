@@ -1,0 +1,311 @@
+# HOA Invoice Edge-Case Scenario Registry
+#
+# Each scenario has a stable ID used across backend tests, UI parity tests, and bug reports.
+# When fixing a bug: add/update an entry here BEFORE merging code.
+#
+# Schema:
+#   id: INV-SC-NNN
+#   legacyIds: [4]           # optional - old inline "scenario N" labels in test names
+#   title: short description
+#   tags: [fifo, credit, reversal, auto-credit, processing, waive]
+#   domain: payment-allocation | payment-reversal | credit-balance | auto-credit | display
+#   tests:
+#     backend: path/to/test.js#test name substring
+#     ui: path/to/test.ts#test name substring   # optional
+#   status: covered | pending | known-failure
+#   notes: free-form context
+
+scenarios:
+  - id: INV-SC-004
+    legacyIds: [4]
+    title: Store excess as credit when no older invoices remain
+    tags: [fifo, credit, overpayment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 4
+    status: covered
+
+  - id: INV-SC-005
+    legacyIds: [5]
+    title: Store excess as credit; leave future invoices unchanged when A is paid
+    tags: [fifo, credit, overpayment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 5
+    status: covered
+
+  - id: INV-SC-008
+    legacyIds: [8]
+    title: Removing $210 payment reverses B, downstream credit on C, and remaining credit
+    tags: [reversal, credit, downstream-credit]
+    domain: payment-reversal
+    tests:
+      backend: invoiceCreditAllocation.reversal.test.js#scenario 8
+    status: covered
+
+  - id: INV-SC-010
+    legacyIds: [10]
+    title: Allocate $250 across four invoices when paying the newest
+    tags: [fifo, allocation]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 10
+    status: covered
+
+  - id: INV-SC-011
+    legacyIds: [11]
+    title: Exactly clear three invoices with $300
+    tags: [fifo, allocation]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 11
+    status: covered
+
+  - id: INV-SC-012
+    legacyIds: [12]
+    title: Store $50 credit after clearing three invoices with $350
+    tags: [fifo, credit, overpayment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 12
+    status: covered
+
+  - id: INV-SC-013
+    legacyIds: [13]
+    title: Store credit when paying the oldest invoice with excess
+    tags: [fifo, credit, overpayment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 13
+    status: covered
+
+  - id: INV-SC-014
+    legacyIds: [14]
+    title: Settle partially paid older invoice before the selected invoice
+    tags: [fifo, partial-payment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 14
+    status: covered
+
+  - id: INV-SC-015
+    legacyIds: [15]
+    title: Leave a fully paid older invoice untouched
+    tags: [fifo]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 15
+    status: covered
+
+  - id: INV-SC-016
+    legacyIds: [16]
+    title: Ignore a waived older invoice during FIFO allocation
+    tags: [fifo, waive]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 16
+    status: covered
+
+  - id: INV-SC-017
+    legacyIds: [17]
+    title: Do not allocate cash to a processing older invoice with remaining balance
+    tags: [fifo, processing]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 17
+    status: covered
+
+  - id: INV-SC-018
+    legacyIds: [18]
+    title: Split payment between partially paid older invoice and selected invoice
+    tags: [fifo, partial-payment]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenario 18
+    status: covered
+
+  - id: INV-SC-019
+    legacyIds: [19]
+    title: Do not treat existing property credit as part of a new payment
+    tags: [credit, auto-credit]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenarios 19-20
+    status: covered
+
+  - id: INV-SC-020
+    legacyIds: [20]
+    title: Existing property credit must not inflate recorded payment allocation
+    tags: [credit, auto-credit]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenarios 19-20
+    status: covered
+
+  - id: INV-SC-022
+    legacyIds: [22]
+    title: Slice combined credit applications by originating payment (allocation side)
+    tags: [credit, reversal]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#scenarios 22-23
+    status: covered
+
+  - id: INV-SC-023
+    legacyIds: [23]
+    title: Removing Payment 1 only reverses Payment 1 portion of combined credit application
+    tags: [credit, reversal, downstream-credit]
+    domain: payment-reversal
+    tests:
+      backend: invoiceCreditAllocation.reversal.test.js#scenario 23
+    status: covered
+
+  - id: INV-SC-024
+    title: Delete Invoice A payment after credit consumed through B–F chain; reclaim pool credit
+    tags: [reversal, auto-credit, downstream-credit, fifo]
+    domain: payment-reversal
+    tests:
+      backend: invoiceCreditAllocation.reversal.test.js#INV-SC-024
+      matrix: invoiceEdgeCase.matrix.test.js#INV-SC-024 / Untitled-1
+      service: invoice.service.js#deleteInvoicePayment → applyAllUnappliedCreditToDueInvoices
+      ui: invoicePaymentTotals.test.ts#INV-SC-024 payment display parity
+    status: covered
+    notes: |
+      Documented in invoice.md / Untitled-1.
+      Steps: A=$100 pay $150 → credit $50; B auto-credit $50 + pay $50;
+      C/D/E overdue, pay $550 on D → credit $250; F=$200 auto-credit $200 → credit $50;
+      delete A $150 payment → D-pool $50 preserved and auto-applied to open due invoices.
+
+  - id: INV-SC-026
+    title: Delete recorded payment is available only on the source invoice
+    tags: [fifo, allocation, reversal, display]
+    domain: payment-reversal
+    tests:
+      backend: owners/tests/invoiceEdgeCase.matrix.test.js#INV-SC-026
+      integration: invoice/service/invoicePaymentSourceGuard.integration.test.js#INV-SC-026
+      ui: invoicePaymentTotals.test.ts#INV-SC-026
+      component: InvoiceLayout.paymentSource.test.tsx#INV-SC-026
+    status: covered
+    notes: |
+      A payment recorded on Invoice B may create prior_allocation rows on older Invoice A.
+      Only Invoice B exposes payment deletion; direct deletion through Invoice A is rejected.
+
+  - id: INV-SC-027
+    title: Invoice list/detail hydrates current unit owners and HOA deposit bank for display and record payment
+    tags: [display, owner-mapping, deposit-bank, record-payment]
+    domain: display
+    tests:
+      backend: invoicePayerHydration.helper.test.js
+      helper: hoaOnboardingStatus.helper.test.js#community deposit label
+      ui: ownerInvoicesDateFilter.test.ts#this-month prior outstanding
+    status: covered
+    notes: |
+      Unpopulated invoice.tenants and unit-level missing depositBankAccountId must not
+      render "Unknown owner" or a blank deposit bank when the HOA has an active payout
+      account and the unit has associated owners. Record Payment uses the same payers.
+
+  - id: INV-SC-028
+    title: FIFO allocation persists when the open-invoice scan returns lean documents
+    tags: [fifo, allocation]
+    domain: payment-allocation
+    tests:
+      backend: ledgerChronologicalPayment.test.js#INV-SC-028
+    status: covered
+    notes: |
+      Production loadOpenAllocatableInvoicesForUnit uses .lean(). Recording $1000
+      against a $110 invoice with an older $1000 opening-balance sibling must
+      reload mongoose documents before save. Otherwise PUT /hoa/invoice/:id 500s
+      with "inv.save is not a function".
+
+  - id: INV-SC-025
+    title: Late fees evaluate each invoice against its own due date; never charge future invoices
+    tags: [late-fee, due-date, grace-period, multi-rule]
+    domain: late-fee
+    tests:
+      backend: owners/tests/unitLateFee.test.js#INV-SC-025
+      service: unitLateFee.service.js#getMaxSequenceForRule + ensureLateFeeInvoicesForUnit
+    status: covered
+    notes: |
+      Grace=0 → first fee on dueDate+1. Future invoices (due after today) must get $0 late fee
+      and no late-fee email. Past unpaid invoices remain eligible per schedule.
+      Fee types: percentage-outstanding, percentage-total, flat-fee.
+      Also strips premature system late fees previously applied to future invoices.
+
+  - id: INV-SC-029
+    title: Assign unverified owners without invoices; generate invoices only after verification
+    tags: [owner-assignment, verification, invoice-generation]
+    domain: invoice-generation
+    tests:
+      backend: owners/helpers/ownerEligibility.helper.test.js#INV-SC-029
+      service: owners/tests/ownerVerificationInvoiceGate.test.js
+      existing: owners/tests/linkOwnerToUnitsFromOwnerFlow.test.js#invitation_sent
+      ui: ownerAssignmentEligibility.test.ts#INV-SC-029
+      component: AddOwnerFlow.assignment.test.tsx
+    status: covered
+    notes: |
+      Board can associate Invitation Sent, Pending Verification, Unverified, or Inactive
+      owners to a unit. Invoice generation is deferred until the owner is Verified
+      (portal onboarding complete and account active). If invoices already exist for
+      the unit, verification must not create duplicates.
+
+  - id: MX-MATRIX
+    title: Board payment allocation / reversal matrix (MX-01 … MX-30)
+    tags: [fifo, credit, reversal, matrix]
+    domain: payment-allocation
+    tests:
+      backend: invoiceEdgeCase.matrix.test.js
+      existing: ledgerChronologicalPayment.test.js (scenarios 4–23)
+      existing: invoiceCreditAllocation.reversal.test.js (scenarios 7–8, 23)
+    status: covered
+    notes: |
+      Automated unit coverage for allocation + reversal edge cases.
+      UI copy: invoicePaymentRemovalCopy.test.ts (MX-24), invoiceActivityTimelineCopy.test.ts (MX-25).
+      Not automated (manual/UI/e2e): MX-26 payment-method variants, MX-30 multi-entry-point parity.
+
+  - id: INV-SC-030
+    title: HOA invoice jobs and activity times use property timezone midnight, not browser/server TZ
+    tags: [timezone, reminders, next-year, display, auto-credit]
+    domain: display
+    tests:
+      backend: billingCalendar.test.js#EDT midnight
+      backend: paymentReminderAutomation.service.test.js#Eastern midnight EDT
+      backend: invoiceScheduleMeta.test.js#idempotency
+      backend: invoiceActivityTimeline.builder.test.js#system triggered
+      ui: InvoiceActivityTimeline.test.tsx#System Triggered
+      ui: DualTimezoneDateTime.test.tsx#Your local time
+    status: covered
+    notes: |
+      Property billingTimezone (America/New_York for this HOA) is the source of truth.
+      Automated reminders/next-year generation run at 12:00 AM property-local time.
+      Activity timeline must show System Triggered and must not display browser local time.
+
+invariants:
+  - id: INV-INV-001
+    rule: Overpayment credit is tied to paymentGroupId on the originating payment
+    scenarios: [INV-SC-004, INV-SC-005, INV-SC-008, INV-SC-012, INV-SC-019, INV-SC-020]
+
+  - id: INV-INV-002
+    rule: Downstream auto-credit carries sourcePaymentGroupId for reversal tracing
+    scenarios: [INV-SC-008, INV-SC-023, INV-SC-024]
+
+  - id: INV-INV-003
+    rule: FIFO pays oldest calendar-due outstanding invoice first
+    scenarios: [INV-SC-010, INV-SC-011, INV-SC-012, INV-SC-013, INV-SC-014, INV-SC-015, INV-SC-016, INV-SC-017, INV-SC-018, INV-SC-026, INV-SC-028]
+
+  - id: INV-INV-004
+    rule: skipAutoCreditApply sticky flag blocks re-application after manual removal
+    scenarios: []
+    tests:
+      backend: invoiceAutoCredit.helper.test.js
+
+  - id: INV-INV-005
+    rule: UI payment display collapses rows by paymentGroupId (parity with backend)
+    scenarios: [INV-SC-026]
+    tests:
+      ui: invoicePaymentTotals.test.ts
+
+  - id: INV-INV-006
+    rule: Late fees never apply before an invoice due date (evaluate each invoice independently)
+    scenarios: [INV-SC-025]
+    tests:
+      backend: owners/tests/unitLateFee.test.js#INV-SC-025

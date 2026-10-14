@@ -1,0 +1,92 @@
+Invoice:
+  type: object
+  required:
+    - tenantId
+    - propertyId
+    - amount
+    - dueDate
+    - description
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    tenantId:
+      $ref: 'common.yaml#/ObjectId'
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    amount:
+      type: number
+    dueDate:
+      type: string
+      format: date
+    description:
+      type: string
+    invoiceType:
+      type: string
+      enum: [Rent, Deposit, Fee, LateFee, Refund, AdditionalFee]
+    status:
+      type: string
+      enum: [Pending, Paid, Unpaid, Overdue, Waived, PartiallyPaid]
+    paymentMethod:
+      type: string
+    sentOn:
+      type: string
+      format: date-time
+    paidOn:
+      type: string
+      format: date-time
+    comments:
+      type: array
+      items:
+        type: string
+
+CreateInvoiceRequest:
+  type: object
+  required:
+    - tenantId
+    - propertyId
+    - amount
+    - dueDate
+    - description
+  properties:
+    tenantId:
+      type: string
+    propertyId:
+      type: string
+    amount:
+      type: number
+    dueDate:
+      type: string
+      format: date
+    description:
+      type: string
+    invoiceType:
+      type: string
+    status:
+      type: string
+
+UpdateInvoiceRequest:
+  type: object
+  properties:
+    tenantId:
+      type: string
+    propertyId:
+      type: string
+    amount:
+      type: number
+    dueDate:
+      type: string
+      format: date
+    description:
+      type: string
+    invoiceType:
+      type: string
+    status:
+      type: string
+
+AddCommentRequest:
+  type: object
+  required:
+    - comment
+  properties:
+    comment:
+      type: string

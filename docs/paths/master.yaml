@@ -1,0 +1,97 @@
+/api/v1/master:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: List master data records
+    parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: Create master data record
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - key
+              - value
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+    responses:
+      '201':
+        description: Created.
+
+/api/v1/master/keys:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: Get master data by key array
+    parameters:
+      - name: keys
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/master/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: Get master data by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: Update master data record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Master Data
+    summary: Delete master data record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.

@@ -1,0 +1,43 @@
+/api/v1/landlord/insurance/quote-estimates:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Insurance)
+    summary: List tenant insurance quote estimates
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Insurance)
+    summary: Create tenant liability insurance estimate (address optional)
+    responses:
+      '201':
+        description: Estimate created.
+
+/api/v1/landlord/insurance/instant-quote-estimates:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Insurance)
+    summary: Create instant policy quote estimate (strict address verification)
+    responses:
+      '201':
+        description: Instant quote created.
+
+/api/v1/landlord/insurance/quote-estimates/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Insurance)
+    summary: Get quote details by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success

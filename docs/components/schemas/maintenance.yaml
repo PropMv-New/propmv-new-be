@@ -1,0 +1,129 @@
+MaintenanceRequest:
+  type: object
+  required:
+    - propertyId
+    - tenantId
+    - description
+    - priority
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    tenantId:
+      $ref: 'common.yaml#/ObjectId'
+    description:
+      type: string
+    priority:
+      type: string
+      enum: [low, medium, high, urgent]
+    category:
+      type: string
+    location:
+      type: string
+    status:
+      type: string
+      enum: [open, in_progress, resolved, closed]
+    comments:
+      type: array
+      items:
+        $ref: '#/MaintenanceComment'
+    notes:
+      type: array
+      items:
+        $ref: '#/MaintenanceNote'
+    documents:
+      type: array
+      items:
+        type: string
+
+MaintenanceComment:
+  type: object
+  required:
+    - comment
+    - createdBy
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    comment:
+      type: string
+    createdBy:
+      $ref: 'common.yaml#/ObjectId'
+    createdAt:
+      type: string
+      format: date-time
+
+MaintenanceNote:
+  type: object
+  required:
+    - note
+    - createdBy
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    note:
+      type: string
+    createdBy:
+      $ref: 'common.yaml#/ObjectId'
+    createdAt:
+      type: string
+      format: date-time
+
+CreateMaintenanceRequest:
+  type: object
+  required:
+    - propertyId
+    - tenantId
+    - description
+    - priority
+  properties:
+    propertyId:
+      type: string
+    tenantId:
+      type: string
+    description:
+      type: string
+    priority:
+      type: string
+    category:
+      type: string
+    location:
+      type: string
+
+UpdateMaintenanceRequest:
+  type: object
+  properties:
+    propertyId:
+      type: string
+    tenantId:
+      type: string
+    description:
+      type: string
+    priority:
+      type: string
+    category:
+      type: string
+    location:
+      type: string
+
+DamageReport:
+  type: object
+  required:
+    - title
+    - description
+    - propertyId
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    title:
+      type: string
+    description:
+      type: string
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    images:
+      type: array
+      items:
+        type: string
+    status:
+      type: string

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>{{screeningTitle}} - {{appDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Complete your tenant screening for {{propertyName}}.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">{{screeningTitle}}</h1>
+              <p class="pmv-greet">Hi {{tenantName}},</p>
+              <p class="pmv-text">{{screeningIntro}}</p>
+              <div class="pmv-checks">{{screeningChecksList}}</div>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{applicationUrl}}" class="pmv-cta" target="_blank">{{screeningCtaText}}</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted" style="margin-top:14px;">Property: <strong>{{propertyName}}</strong></p>
+              <p class="pmv-muted">If the button does not work, copy this link:<br /><a href="{{applicationUrl}}" class="pmv-link">{{applicationUrl}}</a></p>
+              <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

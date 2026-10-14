@@ -1,0 +1,191 @@
+/api/v1/landlord/invoice:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Get landlord invoices list
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Create an invoice (multipart payload)
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                description: JSON string metadata
+              documents:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '201':
+        description: Invoice created.
+
+/api/v1/landlord/invoice/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Export invoices to CSV format
+    responses:
+      '200':
+        description: CSV file stream.
+
+/api/v1/landlord/invoice/export-multi:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Export invoices to multi-format (CSV, Excel, JSON)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/invoice/statistics:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Get invoices statistics counts
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/invoice/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Get invoice details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Update invoice details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Delete an invoice
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/invoice/{id}/comments:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Add comments to invoice
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/invoice.yaml#/AddCommentRequest'
+    responses:
+      '201':
+        description: Comment posted.
+
+/api/v1/landlord/invoice/{id}/remind:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Trigger payment email reminder
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Reminder sent.
+
+/api/v1/landlord/invoice/generate-rent-deposit:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Generate rent & deposit invoices for active leases
+    responses:
+      '200':
+        description: Invoices processed.
+
+/api/v1/landlord/invoice/generate-additional-fees:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Generate additional fee bills
+    responses:
+      '200':
+        description: Invoices processed.
+
+/api/v1/landlord/invoice/generate-late-fees:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Trigger cron task to process late fees on overdue bills
+    responses:
+      '200':
+        description: Completed.
+
+/api/v1/landlord/invoice/generate-deposit-refunds:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Generate deposit refund invoices
+    responses:
+      '200':
+        description: Completed.
+
+/api/v1/landlord/invoice/{id}/generate-late-fee:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Invoices)
+    summary: Force late fee invoice on specific invoice
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Late fee calculated and created.

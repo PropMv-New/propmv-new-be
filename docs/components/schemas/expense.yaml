@@ -1,0 +1,120 @@
+Expense:
+  type: object
+  required:
+    - category
+    - vendor
+    - amount
+    - totalAmount
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    category:
+      type: string
+    vendor:
+      type: string
+    vendorEmail:
+      type: string
+      format: email
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    amount:
+      type: number
+    tax:
+      type: number
+    totalAmount:
+      type: number
+    status:
+      type: string
+      enum: [pending, paid, unpaid, overdue]
+    expenseDate:
+      type: string
+      format: date
+    memo:
+      type: string
+    notes:
+      type: array
+      items:
+        type: string
+    documents:
+      type: array
+      items:
+        type: string
+
+CreateExpenseRequest:
+  type: object
+  required:
+    - category
+    - vendor
+    - amount
+    - totalAmount
+  properties:
+    category:
+      type: string
+    vendor:
+      type: string
+    vendorEmail:
+      type: string
+      format: email
+    propertyId:
+      type: string
+    amount:
+      type: number
+    tax:
+      type: number
+    totalAmount:
+      type: number
+    status:
+      type: string
+    expenseDate:
+      type: string
+      format: date
+    memo:
+      type: string
+
+UpdateExpenseRequest:
+  type: object
+  properties:
+    category:
+      type: string
+    vendor:
+      type: string
+    vendorEmail:
+      type: string
+      format: email
+    propertyId:
+      type: string
+    amount:
+      type: number
+    tax:
+      type: number
+    totalAmount:
+      type: number
+    status:
+      type: string
+    expenseDate:
+      type: string
+      format: date
+    memo:
+      type: string
+
+AddNoteRequest:
+  type: object
+  required:
+    - note
+  properties:
+    note:
+      type: string
+
+MarkPaidRequest:
+  type: object
+  required:
+    - paymentMethod
+    - paidDate
+  properties:
+    paymentMethod:
+      type: string
+    paidDate:
+      type: string
+      format: date
+    notes:
+      type: string

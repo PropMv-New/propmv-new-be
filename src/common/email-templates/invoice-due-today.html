@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice due today - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Invoice #{{invoiceNumber}} is due today.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+        <tr><td class="pmv-card-inner">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <span class="pmv-pill pmv-pill-warning">Due today</span>
+          <h1 class="pmv-title">{{headline}}</h1>
+          <p class="pmv-greet">Hi {{recipientName}},</p>
+          <p class="pmv-text">{{noticeText}}</p>
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="pmv-details-label">Invoice #</td><td class="pmv-details-value">{{invoiceNumber}}</td></tr>
+            <tr><td class="pmv-details-label">Property</td><td class="pmv-details-value">{{propertyName}}</td></tr>
+            <tr><td class="pmv-details-label">Unit</td><td class="pmv-details-value">{{unitNumber}}</td></tr>
+            <tr><td class="pmv-details-label">Amount due</td><td class="pmv-details-value pmv-amount-due">{{amountDue}}</td></tr>
+            <tr><td class="pmv-details-label">Due date</td><td class="pmv-details-value">{{dueDate}}</td></tr>
+          </table>
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                  <a href="{{ctaUrl}}" class="pmv-cta" target="_blank">{{ctaText}}</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

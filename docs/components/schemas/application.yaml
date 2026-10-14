@@ -1,0 +1,114 @@
+Application:
+  type: object
+  required:
+    - propertyId
+    - personalInformation
+    - addressInformation
+    - references
+    - emergencyContact
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    personalInformation:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - mobileNumber
+        - email
+        - birthDate
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        mobileNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        birthDate:
+          type: string
+          format: date
+    addressInformation:
+      type: object
+      required:
+        - addressLine1
+        - city
+        - state
+        - zip
+      properties:
+        addressLine1:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    references:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - mobileNumber
+        - email
+        - relation
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        mobileNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        relation:
+          type: string
+    emergencyContact:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - mobileNumber
+        - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        mobileNumber:
+          type: string
+        email:
+          type: string
+          format: email
+    status:
+      type: string
+      enum: [Pending, Approved, Rejected]
+    notes:
+      type: array
+      items:
+        type: string
+
+CreateApplicationRequest:
+  type: object
+  required:
+    - propertyId
+    - personalInformation
+    - addressInformation
+    - references
+    - emergencyContact
+  properties:
+    propertyId:
+      type: string
+    personalInformation:
+      type: object
+    addressInformation:
+      type: object
+    references:
+      type: object
+    emergencyContact:
+      type: object

@@ -1,0 +1,46 @@
+/api/v1/zillow/callback:
+  get:
+    tags:
+      - Zillow syndication
+    summary: Realtime callback for Zillow XML scraping poll
+    responses:
+      '200':
+        description: XML payload.
+  post:
+    tags:
+      - Zillow syndication
+    summary: Realtime callback for Zillow XML scraping poll (alternative POST)
+    responses:
+      '200':
+        description: XML payload.
+
+/api/v1/zillow/config:
+  get:
+    tags:
+      - Zillow syndication
+    summary: Get public syndication settings properties
+    responses:
+      '200':
+        description: Success
+
+/api/v1/zillow/bulk-feed/regenerate:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Zillow syndication
+    summary: Force regenerate bulk XML feed file manually
+    responses:
+      '200':
+        description: Success
+
+/api/v1/zillow/bulk-feed/confirm:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Zillow syndication
+    summary: Confirm bulk feed regeneration threshold breach confirmation
+    responses:
+      '200':
+        description: Success

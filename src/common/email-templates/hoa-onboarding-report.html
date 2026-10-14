@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>PropMv HOA Onboarding Report</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Daily: {{dailyCount}} new HOAs · Monthly: {{monthlyCount}} new HOAs</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <span class="pmv-pill">Internal report</span>
+              <h1 class="pmv-title">PropMv HOA Onboarding Report</h1>
+              <p class="pmv-muted" style="margin-top:0;">Report date {{reportDate}} ({{timeZone}}).</p>
+
+              <!-- ── SUMMARY: Daily + Monthly only ────────────────────────────── -->
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+                <tr>
+                  <td class="pmv-details-label">Daily</td>
+                  <td class="pmv-details-value">{{dailyCount}} new HOAs</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Monthly</td>
+                  <td class="pmv-details-value">{{monthlyCount}} new HOAs</td>
+                </tr>
+              </table>
+
+              <!-- ── TODAY'S NEW HOAs ─────────────────────────────────────────── -->
+              <h2 class="pmv-subtitle" style="margin-top:0; margin-bottom:12px;">Today's new HOAs</h2>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+                     style="border-collapse:collapse; width:100%;">
+                {{#if hasDailyHoas}}
+                <!-- Header row -->
+                <tr>
+                  <th align="left" style="padding:8px 10px; font-size:11px; font-weight:700; text-transform:uppercase;
+                                          letter-spacing:0.06em; color:#64748b; background:#f1f5f9;
+                                          border-bottom:2px solid #e2e8f0; white-space:nowrap;">
+                    Community
+                  </th>
+                  <th align="left" style="padding:8px 10px; font-size:11px; font-weight:700; text-transform:uppercase;
+                                          letter-spacing:0.06em; color:#64748b; background:#f1f5f9;
+                                          border-bottom:2px solid #e2e8f0; white-space:nowrap;">
+                    Created
+                  </th>
+                  <th align="left" style="padding:8px 10px; font-size:11px; font-weight:700; text-transform:uppercase;
+                                          letter-spacing:0.06em; color:#64748b; background:#f1f5f9;
+                                          border-bottom:2px solid #e2e8f0;">
+                    Created By
+                  </th>
+                </tr>
+                {{#each dailyHoas}}
+                <tr>
+                  <td style="padding:9px 10px; font-size:13px; font-weight:600; color:#0f172a;
+                              border-bottom:1px solid #f1f5f9; vertical-align:top;">
+                    {{name}}
+                  </td>
+                  <td style="padding:9px 10px; font-size:13px; color:#475569;
+                              border-bottom:1px solid #f1f5f9; vertical-align:top; white-space:nowrap;">
+                    {{createdAt}}
+                  </td>
+                  <td style="padding:9px 10px; font-size:13px; color:#475569;
+                              border-bottom:1px solid #f1f5f9; vertical-align:top; word-break:break-all;">
+                    {{#if hasCreatorName}}
+                    <div style="font-weight:600; color:#0f172a; margin-bottom:2px;">{{createdByName}}</div>
+                    {{/if}}
+                    {{#if createdByEmail}}
+                    <div><a href="mailto:{{createdByEmail}}" class="pmv-link" style="color:#f97316; text-decoration:none;">{{createdByEmail}}</a></div>
+                    {{/if}}
+                    {{#unless hasCreatorInfo}}
+                    <span class="pmv-muted">Unknown</span>
+                    {{/unless}}
+                  </td>
+                </tr>
+                {{/each}}
+                {{/if}}
+
+                {{#unless hasDailyHoas}}
+                <tr>
+                  <td colspan="3" style="padding:4px 0 12px; font-size:13px; color:#64748b; font-style:italic;">
+                    No new HOAs were onboarded today.
+                  </td>
+                </tr>
+                {{/unless}}
+
+                <!-- ── DASHBOARD CTA & FOOTER ────────────────────────────────────── -->
+                {{#if hasDashboardUrl}}
+                <tr>
+                  <td colspan="3" align="center" style="padding-top:28px; text-align:center;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
+                      <tr>
+                        <td align="center" bgcolor="#f97316" style="background-color:#f97316; border-radius:6px;">
+                          <a href="{{dashboardUrl}}"
+                             style="display:inline-block; padding:11px 26px; background-color:#f97316;
+                                    color:#ffffff; text-decoration:none; border-radius:6px;
+                                    font-size:14px; font-weight:700; letter-spacing:0.01em;">
+                            Open HOA Onboarding Dashboard
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                    <p class="pmv-muted" style="margin:10px 0 0; font-size:12px; text-align:center;">
+                      View the complete report and full history in the Admin portal.
+                    </p>
+                  </td>
+                </tr>
+                {{/if}}
+              </table>
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

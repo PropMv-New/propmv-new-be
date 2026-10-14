@@ -1,0 +1,146 @@
+{
+  "sampleExpenseCreate": {
+    "taxableEntity": "PropMv LLC",
+    "bankAccount": "Chase Business - 1234567890",
+    "property": "507f1f77bcf86cd799439011",
+    "unit": "Apt 2B",
+    "payees": [
+      {
+        "name": "ABC Plumbing Services",
+        "contact": "Mike Johnson",
+        "phone": "+1-555-0123",
+        "email": "mike@abcplumbing.com",
+        "website": "https://abcplumbing.com"
+      },
+      {
+        "name": "Home Depot",
+        "contact": "Store Manager",
+        "phone": "+1-555-0456"
+      }
+    ],
+    "expenseItems": [
+      {
+        "date": "2024-01-15T09:00:00.000Z",
+        "category": "Plumbing",
+        "description": "Emergency pipe repair in kitchen",
+        "amount": 285.00
+      },
+      {
+        "date": "2024-01-15T14:30:00.000Z",
+        "category": "Materials",
+        "description": "Copper pipes and fittings",
+        "amount": 127.50
+      },
+      {
+        "date": "2024-01-15T14:30:00.000Z",
+        "category": "Materials",
+        "description": "Plumbing tools and supplies",
+        "amount": 89.75
+      }
+    ],
+    "vendorPaidTo": "ABC Plumbing Services",
+    "expenseDate": "2024-01-15T00:00:00.000Z",
+    "paymentDate": null,
+    "status": "pending"
+  },
+  "sampleExpenseUpdate": {
+    "status": "paid",
+    "paymentDate": "2024-01-20T00:00:00.000Z"
+  },
+  "sampleListQuery": {
+    "property": "507f1f77bcf86cd799439011",
+    "status": "pending",
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-01-31T23:59:59.000Z",
+    "pageNumber": 1,
+    "pageSize": 10
+  },
+  "expectedResponse": {
+    "success": true,
+    "message": "Expense created",
+    "data": {
+      "expense": {
+        "_id": "507f1f77bcf86cd799439013",
+        "taxableEntity": "PropMv LLC",
+        "bankAccount": "Chase Business - 1234567890",
+        "property": {
+          "_id": "507f1f77bcf86cd799439011",
+          "name": "Sunset Apartments",
+          "address": "123 Main Street, Anytown, ST 12345"
+        },
+        "unit": "Apt 2B",
+        "payees": [
+          {
+            "name": "ABC Plumbing Services",
+            "contact": "Mike Johnson",
+            "phone": "+1-555-0123",
+            "email": "mike@abcplumbing.com",
+            "website": "https://abcplumbing.com"
+          },
+          {
+            "name": "Home Depot",
+            "contact": "Store Manager",
+            "phone": "+1-555-0456"
+          }
+        ],
+        "expenseItems": [
+          {
+            "_id": "507f1f77bcf86cd799439014",
+            "date": "2024-01-15T09:00:00.000Z",
+            "category": "Plumbing",
+            "description": "Emergency pipe repair in kitchen",
+            "amount": 285.00
+          },
+          {
+            "_id": "507f1f77bcf86cd799439015",
+            "date": "2024-01-15T14:30:00.000Z",
+            "category": "Materials",
+            "description": "Copper pipes and fittings",
+            "amount": 127.50
+          },
+          {
+            "_id": "507f1f77bcf86cd799439016",
+            "date": "2024-01-15T14:30:00.000Z",
+            "category": "Materials",
+            "description": "Plumbing tools and supplies",
+            "amount": 89.75
+          }
+        ],
+        "total": 502.25,
+        "vendorPaidTo": "ABC Plumbing Services",
+        "expenseDate": "2024-01-15T00:00:00.000Z",
+        "paymentDate": null,
+        "status": "pending",
+        "createdBy": "507f1f77bcf86cd799439017",
+        "isDeleted": false,
+        "createdAt": "2024-01-15T10:30:00.000Z",
+        "updatedAt": "2024-01-15T10:30:00.000Z"
+      }
+    }
+  },
+  "categoryExamples": [
+    "Maintenance",
+    "Repairs",
+    "Plumbing",
+    "Electrical",
+    "HVAC",
+    "Landscaping",
+    "Cleaning",
+    "Materials",
+    "Labor",
+    "Utilities",
+    "Insurance",
+    "Property Management",
+    "Legal",
+    "Advertising",
+    "Office Supplies",
+    "Travel",
+    "Professional Services"
+  ],
+  "statusOptions": [
+    "pending",
+    "paid",
+    "unpaid",
+    "overdue"
+  ]
+}

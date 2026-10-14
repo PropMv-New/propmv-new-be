@@ -1,0 +1,383 @@
+{
+  "ranAt": "2026-10-09T12:58:27.533Z",
+  "decision": "GO",
+  "mode": "full",
+  "counts": {
+    "PASS": 18,
+    "WARN": 4
+  },
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Sandbox client configured",
+      "data": {
+        "baseURL": "https://api.payload.com",
+        "environment": "sandbox",
+        "merchantOnboardingMode": "plugin"
+      }
+    },
+    {
+      "gate": "A_VENDOR_PA_CREATE_API",
+      "status": "PASS",
+      "message": "POST /processing_accounts succeeded (API path available)",
+      "data": {
+        "id": "acct_3fTiTBcLqAuFvprkMAxaD",
+        "status": "incomplete",
+        "object": "processing_account"
+      }
+    },
+    {
+      "gate": "G_PA_STATUS",
+      "status": "PASS",
+      "message": "GET processing account status readable",
+      "data": {
+        "id": "acct_3fTiTBcLqAuFvprkMAxaD",
+        "status": "incomplete",
+        "legal_entity_id": null,
+        "payment_methods_count": 0
+      }
+    },
+    {
+      "gate": "G_PA_SIMULATE_ACTIVE",
+      "status": "WARN",
+      "message": "Sandbox activation simulation result",
+      "data": {
+        "status": "incomplete"
+      }
+    },
+    {
+      "gate": "B_VENDOR_BANK_1",
+      "status": "PASS",
+      "message": "Created receive-only bank PM on Processing Account",
+      "data": {
+        "id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+        "transfer_type": "receive-only",
+        "default_deposit_method": true,
+        "status": "active",
+        "verification_status": "verified",
+        "account_id": "acct_3fTiTBcLqAuFvprkMAxaD"
+      }
+    },
+    {
+      "gate": "B_VENDOR_BANK_2",
+      "status": "PASS",
+      "message": "Second bank PM on same Processing Account",
+      "data": {
+        "id": "pm_3fTiTCY2ly7ZweLXdfBcq",
+        "transfer_type": "receive-only",
+        "default_deposit_method": false,
+        "status": "active",
+        "verification_status": "verified"
+      }
+    },
+    {
+      "gate": "B_VENDOR_MULTI_BANK_LIST",
+      "status": "PASS",
+      "message": "Listed 2 bank payment method(s) on Processing Account",
+      "data": [
+        {
+          "id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+          "transfer_type": "receive-only",
+          "default_deposit_method": true,
+          "status": "active"
+        },
+        {
+          "id": "pm_3fTiTCY2ly7ZweLXdfBcq",
+          "transfer_type": "receive-only",
+          "default_deposit_method": false,
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "gate": "K_TRANSFER_TYPE_UPDATE",
+      "status": "WARN",
+      "message": "PUT transfer_type response",
+      "data": {
+        "transfer_type": "receive-only"
+      }
+    },
+    {
+      "gate": "C_RECEIVING_DESTINATION",
+      "status": "PASS",
+      "message": "Vendor bank PM created with receive-only + default_deposit_method — eligible receiving destination fields present",
+      "data": {
+        "payment_method_id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+        "transfer_type": "receive-only",
+        "default_deposit_method": true
+      }
+    },
+    {
+      "gate": "HOA_PA_FOR_CUSTOMER",
+      "status": "PASS",
+      "data": {
+        "id": "acct_3fTiTCyK2sMCifUUBsnka",
+        "status": "incomplete"
+      }
+    },
+    {
+      "gate": "D_OWNER_CUSTOMER",
+      "status": "PASS",
+      "data": {
+        "id": "acct_3fTiTDT9cNjKVCfJfq60G",
+        "primary_processing_id": "acct_3fTiTCyK2sMCifUUBsnka"
+      }
+    },
+    {
+      "gate": "D_OWNER_SEND_ONLY_PM",
+      "status": "PASS",
+      "data": {
+        "id": "pm_3fTiTDfDrBrBMMCBY30IK",
+        "transfer_type": "send-only",
+        "customer_id": "acct_3fTiTDT9cNjKVCfJfq60G",
+        "status": "active",
+        "verification_status": "verified"
+      }
+    },
+    {
+      "gate": "E_BOARD_CUSTOMER",
+      "status": "PASS",
+      "data": {
+        "id": "acct_3fTiTE4AUltxCMJDqk1rK"
+      }
+    },
+    {
+      "gate": "E_BOARD_SEND_ONLY_PM",
+      "status": "PASS",
+      "data": {
+        "id": "pm_3fTiTEOpkiU4wPTIqkZXx",
+        "transfer_type": "send-only",
+        "customer_id": "acct_3fTiTE4AUltxCMJDqk1rK"
+      }
+    },
+    {
+      "gate": "D_OWNER_CHARGE_VENDOR_PA",
+      "status": "PASS",
+      "message": "Owner Customer PM charged Vendor Processing Account",
+      "data": {
+        "txn_id": "txn_3fTiTEZEsTlhYDmjLc5V4",
+        "type": "payment",
+        "status": "processed",
+        "processing_id": "acct_3fTiTBcLqAuFvprkMAxaD",
+        "payment_method_id": "pm_3fTiTDfDrBrBMMCBY30IK",
+        "processing_method_id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+        "amount": 12.34,
+        "funding_status": "pending"
+      }
+    },
+    {
+      "gate": "J_IDEMPOTENCY_SAME_KEY",
+      "status": "WARN",
+      "message": "Replay rejected: Payload could not use this saved payment method. Re-add it in Settings or choose another method.",
+      "data": {
+        "message": "Payload could not use this saved payment method. Re-add it in Settings or choose another method.",
+        "statusCode": 400,
+        "raw": {
+          "details": {
+            "amount": 12.34,
+            "attrs": {
+              "propmv_phase0": "owner_to_vendor",
+              "stamp": "1791550689815"
+            },
+            "avs": null,
+            "clearing_timing": "next_day",
+            "created_at": "Fri, 09 Oct 2026 12:58:25 GMT",
+            "customer_id": "acct_3fTiTDT9cNjKVCfJfq60G",
+            "description": "Phase0 Owner→Vendor 1791550689815",
+            "funding_delay": 1,
+            "funding_status": "pending",
+            "funding_timing": "standard",
+            "funding_type": "debit",
+            "id": "txn_3fTiTF09PAn092NfrrBXG",
+            "ledger": [],
+            "modified_at": "Fri, 09 Oct 2026 12:58:25 GMT",
+            "notes": null,
+            "object": "transaction",
+            "order_number": null,
+            "payment_method": {
+              "account_holder": "Phase0 Owner 1791550689815",
+              "attrs": null,
+              "bank_account": {
+                "account_class": "personal",
+                "account_currency": "USD",
+                "account_number": "xxxxxx7890",
+                "account_type": "checking",
+                "routing_number": "xxxxx0021"
+              },
+              "bank_name": "JPMORGAN CHASE BANK, NA",
+              "billing_address": {
+                "city": null,
+                "country_code": "US",
+                "postal_code": null,
+                "state_province": null,
+                "street_address": null,
+                "unit_number": null
+              },
+              "created_at": "Fri, 09 Oct 2026 12:58:20 GMT",
+              "customer_id": "acct_3fTiTDT9cNjKVCfJfq60G",
+              "default_credit_method": false,
+              "default_deposit_method": false,
+              "default_payment_method": false,
+              "default_reversal_method": null,
+              "description": "Checking x-7890",
+              "email": null,
+              "id": "pm_3fTiTDfDrBrBMMCBY30IK",
+              "keep_active": true,
+              "modified_at": "Fri, 09 Oct 2026 12:58:23 GMT",
+              "object": "payment_method",
+              "phone_number": null,
+              "status": "active",
+              "transfer_type": "send-only",
+              "type": "bank_account",
+              "verification_status": "verified"
+            },
+            "payment_method_id": "pm_3fTiTDfDrBrBMMCBY30IK",
+            "processed_date": "2026-10-09",
+            "processing_id": "acct_3fTiTBcLqAuFvprkMAxaD",
+            "processing_method": {
+              "account_holder": "Phase0 Vendor Bank1 1791550689815",
+              "attrs": null,
+              "bank_account": {
+                "account_class": "business",
+                "account_currency": "USD",
+                "account_number": "xxxxxx7890",
+                "account_type": "checking",
+                "routing_number": "xxxxx0021"
+              },
+              "bank_name": "JPMORGAN CHASE BANK, NA",
+              "billing_address": {
+                "city": null,
+                "country_code": "US",
+                "postal_code": null,
+                "state_province": null,
+                "street_address": null,
+                "unit_number": null
+              },
+              "created_at": "Fri, 09 Oct 2026 12:58:14 GMT",
+              "customer_id": "acct_3fTiTBcLqAuFvprkMAxaD",
+              "default_credit_method": false,
+              "default_deposit_method": true,
+              "default_payment_method": false,
+              "default_reversal_method": null,
+              "description": "Checking x-7890",
+              "email": null,
+              "id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+              "keep_active": true,
+              "modified_at": "Fri, 09 Oct 2026 12:58:14 GMT",
+              "object": "payment_method",
+              "phone_number": null,
+              "status": "active",
+              "transfer_type": "receive-only",
+              "type": "bank_account",
+              "verification_status": "verified"
+            },
+            "processing_method_id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+            "reader_id": null,
+            "ref_number": "PL-ZP1-ZPY-772",
+            "rejected_date": null,
+            "risk_flag": "allowed",
+            "risk_score": 0,
+            "source": "api",
+            "status": "declined",
+            "status_code": "duplicate_attempt",
+            "status_message": "This transaction appears be a duplicate attempt and has been prevented.",
+            "type": "payment"
+          },
+          "error_description": "This transaction appears be a duplicate attempt and has been prevented.",
+          "error_type": "TransactionDeclined",
+          "object": "error"
+        }
+      }
+    },
+    {
+      "gate": "F_SETTLEMENT_FIELDS",
+      "status": "PASS",
+      "message": "Transaction fields for settlement routing",
+      "data": {
+        "processing_id": "acct_3fTiTBcLqAuFvprkMAxaD",
+        "payment_method_id": "pm_3fTiTDfDrBrBMMCBY30IK",
+        "processing_method_id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+        "status": "processed",
+        "funding_status": "pending",
+        "type": "payment"
+      }
+    },
+    {
+      "gate": "H_ACH_LIFECYCLE",
+      "status": "PASS",
+      "message": "ACH payment created; status observed (sandbox may auto-process)",
+      "data": {
+        "status": "processed",
+        "funding_status": "pending",
+        "note": "Production ACH must stay Processing in PropMV until webhook/verified processed"
+      }
+    },
+    {
+      "gate": "E_BOARD_CHARGE_VENDOR_PA",
+      "status": "PASS",
+      "message": "Board Customer PM charged Vendor Processing Account",
+      "data": {
+        "txn_id": "txn_3fTiTFIJNI5EKODwEmdgk",
+        "status": "processed",
+        "processing_id": "acct_3fTiTBcLqAuFvprkMAxaD",
+        "payment_method_id": "pm_3fTiTEOpkiU4wPTIqkZXx",
+        "processing_method_id": "pm_3fTiTCLIPxC7sTgcvgoyH",
+        "type": "payment"
+      }
+    },
+    {
+      "gate": "H_CARD_LIFECYCLE",
+      "status": "WARN",
+      "message": "Could not create owner card PM",
+      "data": {
+        "message": "Billing address on this payment method is invalid. Update your saved card billing address in Settings and try again.",
+        "statusCode": 400,
+        "raw": {
+          "details": null,
+          "error_description": "Billing address details invalid",
+          "error_type": "Error",
+          "object": "error"
+        }
+      }
+    },
+    {
+      "gate": "I_WEBHOOK_EVENTS",
+      "status": "PASS",
+      "message": "Documented webhook triggers relevant to Vendor payments (verify in dashboard separately)",
+      "data": {
+        "triggers": [
+          "payment",
+          "processed",
+          "authorized",
+          "decline",
+          "reject",
+          "deposit",
+          "processing_status"
+        ],
+        "note": "Live webhook delivery to PropMV endpoint not exercised in this script; must be verified against registered webhook URL."
+      }
+    },
+    {
+      "gate": "K_FIELD_DICTIONARY",
+      "status": "PASS",
+      "message": "Exact Payload fields for Vendor payment architecture",
+      "data": {
+        "processing_id": "Processing Account receiving the payment (Vendor PA for Vendor invoices)",
+        "payment_method_id": "Payer Customer instrument (send-only ACH/card) OR destination for credit (not used in v1)",
+        "processing_method_id": "Optional funding/settlement bank PM on the receiving Processing Account",
+        "default_deposit_method": "Vendor bank PM flag for default settlement destination",
+        "transfer_type": "receive-only (Vendor banks) | send-only (Owner/Board Customer) | two-way (future HOA treasury only)",
+        "transaction_type": "payment (v1 Owner/Board → Vendor)",
+        "webhook_triggers": [
+          "payment",
+          "processed",
+          "decline",
+          "reject",
+          "deposit",
+          "processing_status"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+/api/v1/landlord/dashboard/summary:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Dashboard)
+    summary: Get dashboard totals (active properties, leases, total revenue)
+    responses:
+      '200':
+        description: Success

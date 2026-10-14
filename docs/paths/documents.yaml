@@ -1,0 +1,153 @@
+/api/v1/documents/hoa:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Get HOA documents list
+    responses:
+      '200':
+        description: Success
+
+/api/v1/documents/hoa/by-owner/{ownerId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Get HOA documents shared with specific owner
+    parameters:
+      - name: ownerId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+
+/api/v1/documents/hoa/upload:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Upload HOA document
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              document:
+                type: string
+                format: binary
+              data:
+                type: string
+                description: JSON string metadata
+    responses:
+      '201':
+        description: Document uploaded.
+
+/api/v1/documents/hoa/document/{documentId}:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Update HOA document metadata
+    parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Document updated.
+
+
+/api/v1/documents/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Get document metadata
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Remove document
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/documents/{id}/url:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Get presigned download URL
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/documents/{id}/download:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Download document directly
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Direct binary stream.
+/api/v1/documents/hoa/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Get HOA documents by category ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The category ID to filter documents by.
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Documents
+    summary: Delete HOA document
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The document ID to delete.
+    responses:
+      '200':
+        description: Document deleted.

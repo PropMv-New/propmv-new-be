@@ -1,0 +1,35 @@
+X-Pagination-Page:
+  description: The current page of the paginated list.
+  schema:
+    type: integer
+    example: 1
+
+X-Pagination-Limit:
+  description: The maximum number of items returned in this page.
+  schema:
+    type: integer
+    example: 10
+
+X-Pagination-Total-Count:
+  description: The total number of items available matching the query filter.
+  schema:
+    type: integer
+    example: 45
+
+X-RateLimit-Limit:
+  description: The maximum number of requests allowed in the current rate limit window.
+  schema:
+    type: integer
+    example: 100
+
+X-RateLimit-Remaining:
+  description: The remaining number of requests allowed within the current window.
+  schema:
+    type: integer
+    example: 99
+
+X-RateLimit-Reset:
+  description: The epoch timestamp (in seconds) when the current rate limit window resets.
+  schema:
+    type: integer
+    example: 1769308800

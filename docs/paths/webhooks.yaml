@@ -1,0 +1,171 @@
+/api/webhooks/straddle/payment-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle payment status webhook callback
+    description: Receives state changes from Straddle payments system asynchronously.
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/account-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle account create event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/account-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle account generic event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/capability-request:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle capability request event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/capability-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle capability state event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/charge-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle charge creation event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/charge-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle charge transition event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/customer-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle customer creation event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/customer-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle customer transition event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/funding-event-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle funding event creation
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/funding-event-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle funding event transitions
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/linked-bank-account-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle bank account link creation
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/linked-bank-account-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle bank account link transitions
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/paykey-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle paykey creation event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/paykey-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle paykey transition event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/payout-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle payout creation event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/payout-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle payout transition event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/representative-create:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle representative creation event
+    responses:
+      '200':
+        description: Event processed.
+
+/api/webhooks/straddle/representative-event:
+  post:
+    tags:
+      - Webhooks (Straddle)
+    summary: Straddle representative transition event
+    responses:
+      '200':
+        description: Event processed.

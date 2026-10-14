@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "Straddle Webhooks - Payment Module",
+    "_postman_id": "d3a9d6b2-4a7f-4b2f-9c1e-7f3c4b8e9a2d",
+    "description": "Collection to test all Straddle webhook endpoints under /api/webhooks/straddle",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Payment status",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"26de0dc0-0ee9-418f-a890-4a42fc3f9a3d\", \"status\": \"processed\" },\n  \"event_id\": \"85df84c7-a298-44bc-8040-7bd2ae372cbf\",\n  \"event_type\": \"payout.event.v1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","webhooks","straddle","payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Account create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"b3cc62dd-fe60-4b50-9271-d224f0429141\" },\n  \"event_id\": \"11111111-1111-1111-1111-111111111111\",\n  \"event_type\": \"account.created.v1\"\n}" },
+        "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/account-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","account-create"] }
+      }
+    },
+    {
+      "name": "Account event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"b3cc62dd-fe60-4b50-9271-d224f0429141\" },\n  \"event_id\": \"22222222-2222-2222-2222-222222222222\",\n  \"event_type\": \"account.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/account-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","account-event"] } }
+    },
+    {
+      "name": "Capability request",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"cap-req-1\" },\n  \"event_id\": \"33333333-3333-3333-3333-333333333333\",\n  \"event_type\": \"capability_request.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/capability-request", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","capability-request"] } }
+    },
+    {
+      "name": "Capability event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"cap-evt-1\" },\n  \"event_id\": \"44444444-4444-4444-4444-444444444444\",\n  \"event_type\": \"capability_request.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/capability-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","capability-event"] } }
+    },
+    {
+      "name": "Charge create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"chg-1\", \"amount\": 50 },\n  \"event_id\": \"55555555-5555-5555-5555-555555555555\",\n  \"event_type\": \"charge.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/charge-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","charge-create"] } }
+    },
+    {
+      "name": "Charge event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"chg-1\" },\n  \"event_id\": \"66666666-6666-6666-6666-666666666666\",\n  \"event_type\": \"charge.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/charge-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","charge-event"] } }
+    },
+    {
+      "name": "Customer create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"cust-1\", \"email\": \"customer@example.com\" },\n  \"event_id\": \"77777777-7777-7777-7777-777777777777\",\n  \"event_type\": \"customer.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/customer-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","customer-create"] } }
+    },
+    {
+      "name": "Customer event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"cust-1\" },\n  \"event_id\": \"88888888-8888-8888-8888-888888888888\",\n  \"event_type\": \"customer.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/customer-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","customer-event"] } }
+    },
+    {
+      "name": "Funding event create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"fund-1\", \"amount\": 100 },\n  \"event_id\": \"99999999-9999-9999-9999-999999999999\",\n  \"event_type\": \"funding_event.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/funding-event-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","funding-event-create"] } }
+    },
+    {
+      "name": "Funding event event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"fund-evt-1\" },\n  \"event_id\": \"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n  \"event_type\": \"funding_event.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/funding-event-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","funding-event-event"] } }
+    },
+    {
+      "name": "Linked bank account create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"lbank-1\" },\n  \"event_id\": \"bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb\",\n  \"event_type\": \"linked_bank_account.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/linked-bank-account-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","linked-bank-account-create"] } }
+    },
+    {
+      "name": "Linked bank account event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"lbank-1\" },\n  \"event_id\": \"cccccccc-cccc-cccc-cccc-cccccccccccc\",\n  \"event_type\": \"linked_bank_account.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/linked-bank-account-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","linked-bank-account-event"] } }
+    },
+    {
+      "name": "Paykey create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"pay-1\", \"balance\": 42 },\n  \"event_id\": \"dddddddd-dddd-dddd-dddd-dddddddddddd\",\n  \"event_type\": \"paykey.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/paykey-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","paykey-create"] } }
+    },
+    {
+      "name": "Paykey event",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"pay-1\" },\n  \"event_id\": \"eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee\",\n  \"event_type\": \"paykey.event.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/paykey-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","paykey-event"] } }
+    },
+    {
+      "name": "Payout create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": { \"id\": \"pout-1\", \"amount\": 42 },\n  \"event_id\": \"ffffffff-ffff-ffff-ffff-ffffffffffff\",\n  \"event_type\": \"payout.created.v1\"\n}" }, "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/payout-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","payout-create"] } }
+    },
+    {
+      "name": "Payout event (full example)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": {\n    \"amount\": 42,\n    \"config\": {},\n    \"consent_type\": \"string\",\n    \"created_at\": \"2026-06-10T09:30:17.124288070\",\n    \"currency\": \"string\",\n    \"customer_details\": {\n      \"customer_type\": \"string\",\n      \"email\": \"string\",\n      \"id\": \"03ece916-5d0e-46f7-a28a-e7f1aab1dbc3\",\n      \"name\": \"string\",\n      \"phone\": \"string\"\n    },\n    \"description\": \"string\",\n    \"device\": {\n      \"ip_address\": \"string\"\n    },\n    \"effective_at\": \"2026-06-10T09:30:17.124297865\",\n    \"external_id\": \"string\",\n    \"funding_ids\": [\n      \"4ae34665-b77e-4319-b189-e8f8b46d15f2\"\n    ],\n    \"has_resubmit\": true,\n    \"id\": \"26de0dc0-0ee9-418f-a890-4a42fc3f9a3d\",\n    \"is_refund\": true,\n    \"is_resubmit\": true,\n    \"metadata\": {},\n    \"paykey\": \"string\",\n    \"paykey_details\": {\n      \"balance\": 42,\n      \"customer_id\": \"a773843f-e6f0-4ac0-b3df-b1dc720a4d57\",\n      \"id\": \"033de251-fda3-4f86-90d7-2ce4000b2d51\",\n      \"label\": \"string\"\n    },\n    \"payment_date\": \"2026-06-10\",\n    \"payment_rail\": \"string\",\n    \"processed_at\": \"2026-06-10T09:30:17.124311905\",\n    \"related_payments\": [\n      {\n        \"id\": \"614c06b0-05cc-4d48-b4cb-a2badfb2d182\",\n        \"payment_type\": \"string\",\n        \"relationship\": \"string\"\n      }\n    ],\n    \"status\": \"string\",\n    \"status_details\": {\n      \"changed_at\": \"2026-06-10T09:30:17.124318848\",\n      \"code\": \"string\",\n      \"message\": \"string\",\n      \"reason\": \"string\",\n      \"source\": \"string\"\n    },\n    \"status_history\": [\n      {\n        \"changed_at\": \"2026-06-10T09:30:17.124323176\",\n        \"code\": \"string\",\n        \"message\": \"string\",\n        \"reason\": \"string\",\n        \"source\": \"string\",\n        \"status\": \"string\"\n      }\n    ],\n    \"updated_at\": \"2026-06-10T09:30:17.124327198\"\n  },\n  \"event_id\": \"85df84c7-a298-44bc-8040-7bd2ae372cbf\",\n  \"event_type\": \"payout.event.v1\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/payout-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","payout-event"] }
+      }
+    },
+    {
+      "name": "Representative create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": {\n    \"account_id\": \"b3cc62dd-fe60-4b50-9271-d224f0429141\",\n    \"created_at\": \"2025-09-16T12:47:10.255217936\",\n    \"dob\": \"1980-01-01\",\n    \"email\": \"ron.swanson@pawnee.com\",\n    \"external_id\": \"string\",\n    \"first_name\": \"Ron\",\n    \"id\": \"88da2ec1-b76f-4c97-82dc-58018872003d\",\n    \"last_name\": \"Swanson\",\n    \"metadata\": {},\n    \"mobile_number\": \"+12128675309\",\n    \"name\": \"string\",\n    \"phone\": \"string\",\n    \"relationship\": { \"control\": true, \"owner\": true, \"percent_ownership\": 3.14, \"primary\": true, \"title\": \"string\" },\n    \"ssn_last4\": \"1234\",\n    \"status\": \"string\",\n    \"status_detail\": { \"code\": \"string\", \"message\": \"string\", \"reason\": \"string\", \"source\": \"string\" },\n    \"updated_at\": \"2025-09-16T12:47:10.255234156\",\n    \"user_id\": \"e1b98523-b0f6-441b-be65-4194c8c2a5f0\"\n  },\n  \"event_id\": \"85df84c7-a298-44bc-8040-7bd2ae372cbf\",\n  \"event_type\": \"representative.created.v1\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/representative-create", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","representative-create"] }
+      }
+    },
+    {
+      "name": "Representative event",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"data\": {\n    \"account_id\": \"299e4d80-4532-47c6-b7f9-99c18a3c2512\",\n    \"created_at\": \"2025-09-16T12:47:10.255401087\",\n    \"dob\": \"1980-01-01\",\n    \"email\": \"ron.swanson@pawnee.com\",\n    \"external_id\": \"string\",\n    \"first_name\": \"Ron\",\n    \"id\": \"e80f99c2-b672-4c5e-9363-858776a2e96f\",\n    \"last_name\": \"Swanson\",\n    \"metadata\": {},\n    \"mobile_number\": \"+12128675309\",\n    \"name\": \"string\",\n    \"phone\": \"string\",\n    \"relationship\": { \"control\": true, \"owner\": true, \"percent_ownership\": 3.14, \"primary\": true, \"title\": \"string\" },\n    \"ssn_last4\": \"1234\",\n    \"status\": \"string\",\n    \"status_detail\": { \"code\": \"string\", \"message\": \"string\", \"reason\": \"string\", \"source\": \"string\" },\n    \"updated_at\": \"2025-09-16T12:47:10.255416007\",\n    \"user_id\": \"bd3663c9-89ac-4c71-83c2-d82c0e28bec4\"\n  },\n  \"event_id\": \"85df84c7-a298-44bc-8040-7bd2ae372cbf\",\n  \"event_type\": \"representative.event.v1\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/webhooks/straddle/representative-event", "host": ["{{baseUrl}}"], "path": ["api","webhooks","straddle","representative-event"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ]
+}

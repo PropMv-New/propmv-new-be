@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Note reminder - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Reminder for your note on {{entityName}}.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">Note reminder</h1>
+              <p class="pmv-greet">Hi {{recipientName}},</p>
+              <p class="pmv-text">This is your scheduled reminder for a note about <strong>{{entityName}}</strong>.</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Related to</td>
+                  <td class="pmv-details-value">{{moduleLabel}} - {{entityName}}</td>
+                </tr>
+                {{#if hasNoteTitle}}
+                <tr>
+                  <td class="pmv-details-label">Title</td>
+                  <td class="pmv-details-value">{{noteTitle}}</td>
+                </tr>
+                {{/if}}
+                <tr>
+                  <td class="pmv-details-label">Reminder</td>
+                  <td class="pmv-details-value">{{reminderAt}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Note</td>
+                  <td class="pmv-details-value" style="white-space:pre-line;">{{noteBody}}</td>
+                </tr>
+              </table>
+
+              {{#if hasViewUrl}}
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{viewUrl}}" class="pmv-cta" target="_blank">View in PropMv</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              {{/if}}
+
+              <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

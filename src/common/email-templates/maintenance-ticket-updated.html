@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance update - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">{{eventMessage}}</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+        <tr><td class="pmv-card-inner">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <span class="pmv-pill">Maintenance update</span>
+          <h1 class="pmv-title">Ticket updated</h1>
+          <p class="pmv-greet">Hi {{recipientName}},</p>
+          <p class="pmv-text">{{eventMessage}}</p>
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="pmv-details-label">Ticket #</td><td class="pmv-details-value">{{ticketNumber}}</td></tr>
+            <tr><td class="pmv-details-label">Title</td><td class="pmv-details-value">{{ticketTitle}}</td></tr>
+            {{#if ticketStatus}}
+            <tr><td class="pmv-details-label">Status</td><td class="pmv-details-value">{{ticketStatus}}</td></tr>
+            {{/if}}
+            {{#if propertyName}}
+            <tr><td class="pmv-details-label">Property</td><td class="pmv-details-value">{{propertyName}}</td></tr>
+            {{/if}}
+          </table>
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                  <a href="{{viewTicketUrl}}" class="pmv-cta" target="_blank">View ticket</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <div class="pmv-footer-minimal">This is an automated notification from PropMv.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

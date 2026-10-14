@@ -1,0 +1,707 @@
+openapi: 3.0.3
+info:
+  title: PropMv - Property Management API
+  version: 1.0.0
+  description: >
+    API for PropMv property management platform.
+    Contains Authentication & Access Control, and feature groups for Landlord Portal and HOA Board Portal.
+  contact:
+    name: PropMv Dev Team
+    email: support@propmv.io
+servers:
+  - url: https://api.propmv.com
+    description: Production
+  - url: http://localhost:5000
+    description: Local
+
+security: []
+
+
+paths:
+  "/api/v1/auth/signup":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1signup'
+  "/api/v1/auth/login":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1login'
+  "/api/v1/auth/check-identity":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1check-identity'
+  "/api/v1/auth/forgot-password":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1forgot-password'
+  "/api/v1/auth/verify-reset-otp":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1verify-reset-otp'
+  "/api/v1/auth/verify-otp-reset-password":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1verify-otp-reset-password'
+  "/api/v1/auth/send-mfa-otp":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1send-mfa-otp'
+  "/api/v1/auth/verify-mfa-otp":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1verify-mfa-otp'
+  "/api/v1/auth/refresh-token":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1refresh-token'
+  "/api/v1/auth/refresh":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1refresh'
+  "/api/v1/auth/logout":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1logout'
+  "/api/v1/auth/lock-account":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1lock-account'
+  "/api/v1/auth/unlock-account":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1unlock-account'
+  "/api/v1/auth/session":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1session'
+  "/api/v1/auth/reset-password":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1reset-password'
+  "/api/v1/auth/signup-roles":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1signup-roles'
+  "/api/v1/auth/role":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1role'
+  "/api/v1/auth/role/{id}":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1role~1{id}'
+  "/api/v1/auth/permissions":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1permissions'
+  "/api/v1/auth/modules":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1modules'
+  "/api/v1/auth/portal-invite/validate":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1portal-invite~1validate'
+  "/api/v1/auth/portal-invite/complete":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1portal-invite~1complete'
+  "/api/v1/auth/public/masterdata":
+    $ref: './paths/auth.yaml#/~1api~1v1~1auth~1public~1masterdata'
+  "/api/v1/users":
+    $ref: './paths/users.yaml#/~1api~1v1~1users'
+  "/api/v1/users/list":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1list'
+  "/api/v1/users/batch":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1batch'
+  "/api/v1/users/role":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1role'
+  "/api/v1/users/{id}":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1{id}'
+  "/api/v1/users/privileges/{id}":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1privileges~1{id}'
+  "/api/v1/users/picture/{id}":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1picture~1{id}'
+  "/api/v1/users/{id}/activate":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1{id}~1activate'
+  "/api/v1/users/weather":
+    $ref: './paths/users.yaml#/~1api~1v1~1users~1weather'
+
+  "/api/v1/documents/hoa":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1hoa'
+  "/api/v1/documents/hoa/by-owner/{ownerId}":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1hoa~1by-owner~1{ownerId}'
+  "/api/v1/documents/hoa/upload":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1hoa~1upload'
+  "/api/v1/documents/hoa/{id}":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1hoa~1{id}'
+  "/api/v1/documents/hoa/document/{documentId}":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1hoa~1document~1{documentId}'
+  "/api/v1/documents/{id}":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1{id}'
+  "/api/v1/documents/{id}/url":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1{id}~1url'
+  "/api/v1/documents/{id}/download":
+    $ref: './paths/documents.yaml#/~1api~1v1~1documents~1{id}~1download'
+  "/api/v1/master":
+    $ref: './paths/master.yaml#/~1api~1v1~1master'
+  "/api/v1/master/keys":
+    $ref: './paths/master.yaml#/~1api~1v1~1master~1keys'
+  "/api/v1/master/{id}":
+    $ref: './paths/master.yaml#/~1api~1v1~1master~1{id}'
+  "/api/v1/company":
+    $ref: './paths/company.yaml#/~1api~1v1~1company'
+  "/api/v1/company/{id}":
+    $ref: './paths/company.yaml#/~1api~1v1~1company~1{id}'
+  "/api/v1/company/{id}/roles":
+    $ref: './paths/company.yaml#/~1api~1v1~1company~1{id}~1roles'
+  "/api/v1/company/{id}/roles/{roleId}":
+    $ref: './paths/company.yaml#/~1api~1v1~1company~1{id}~1roles~1{roleId}'
+  "/api/v1/payments/customers":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1customers'
+  "/api/v1/payments/customers/{id}":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1customers~1{id}'
+  "/api/v1/payments/bank-accounts":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1bank-accounts'
+  "/api/v1/payments/bank-accounts/{id}":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1bank-accounts~1{id}'
+  "/api/v1/payments/bank-accounts/{id}/verify":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1bank-accounts~1{id}~1verify'
+  "/api/v1/payments/charges":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1charges'
+  "/api/v1/payments/charges/{id}":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1charges~1{id}'
+  "/api/v1/payments/payouts":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1payouts'
+  "/api/v1/payments/payouts/{id}":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1payouts~1{id}'
+  "/api/v1/payments/bridge/session":
+    $ref: './paths/payments.yaml#/~1api~1v1~1payments~1bridge~1session'
+  "/api/webhooks/straddle/payment-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1payment-event'
+  "/api/webhooks/straddle/account-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1account-create'
+  "/api/webhooks/straddle/account-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1account-event'
+  "/api/webhooks/straddle/capability-request":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1capability-request'
+  "/api/webhooks/straddle/capability-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1capability-event'
+  "/api/webhooks/straddle/charge-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1charge-create'
+  "/api/webhooks/straddle/charge-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1charge-event'
+  "/api/webhooks/straddle/customer-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1customer-create'
+  "/api/webhooks/straddle/customer-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1customer-event'
+  "/api/webhooks/straddle/funding-event-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1funding-event-create'
+  "/api/webhooks/straddle/funding-event-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1funding-event-event'
+  "/api/webhooks/straddle/linked-bank-account-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1linked-bank-account-create'
+  "/api/webhooks/straddle/linked-bank-account-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1linked-bank-account-event'
+  "/api/webhooks/straddle/paykey-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1paykey-create'
+  "/api/webhooks/straddle/paykey-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1paykey-event'
+  "/api/webhooks/straddle/payout-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1payout-create'
+  "/api/webhooks/straddle/payout-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1payout-event'
+  "/api/webhooks/straddle/representative-create":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1representative-create'
+  "/api/webhooks/straddle/representative-event":
+    $ref: './paths/webhooks.yaml#/~1api~1webhooks~1straddle~1representative-event'
+  "/api/v1/email/list":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1list'
+  "/api/v1/email/sent":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1sent'
+  "/api/v1/email/send":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1send'
+  "/api/v1/email/contacts":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1contacts'
+  "/api/v1/email/check-access":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1check-access'
+  "/api/v1/email/mark-read/{emailId}":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1mark-read~1{emailId}'
+  "/api/v1/email/{emailId}":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1{emailId}'
+  "/api/v1/email/draft/save":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1save'
+  "/api/v1/email/draft/list":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1list'
+  "/api/v1/email/failed/list":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1failed~1list'
+  "/api/v1/email/draft/{draftId}":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1{draftId}'
+  "/api/v1/email/draft/{draftId}/discard":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1{draftId}~1discard'
+  "/api/v1/email/draft/bulk-discard":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1bulk-discard'
+  "/api/v1/email/draft/{draftId}/send":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1draft~1{draftId}~1send'
+  "/api/v1/email/upload-attachments":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1upload-attachments'
+  "/api/v1/email/{emailId}/attachment/{attachmentId}/download":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1{emailId}~1attachment~1{attachmentId}~1download'
+  "/api/v1/email/{emailId}/attachment/{attachmentId}":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1{emailId}~1attachment~1{attachmentId}'
+  "/api/v1/email/smtp/test":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1smtp~1test'
+  "/api/v1/email/smtp/configure":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1smtp~1configure'
+  "/api/v1/email/smtp/config":
+    $ref: './paths/email.yaml#/~1api~1v1~1email~1smtp~1config'
+  "/api/v1/messaging/conversations":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1conversations'
+  "/api/v1/messaging/contacts":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1contacts'
+  "/api/v1/messaging/conversations/{otherUserId}":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1conversations~1{otherUserId}'
+  "/api/v1/messaging/send":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1send'
+  "/api/v1/messaging/mark-read":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1mark-read'
+  "/api/v1/messaging/upload":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1upload'
+  "/api/v1/messaging/{messageId}":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1{messageId}'
+  "/api/v1/messaging/unread-count":
+    $ref: './paths/messaging.yaml#/~1api~1v1~1messaging~1unread-count'
+  "/api/v1/maintenance/request":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request'
+  "/api/v1/maintenance/request/export":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1export'
+  "/api/v1/maintenance/active-tenants":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1active-tenants'
+  "/api/v1/maintenance/request/{id}":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}'
+  "/api/v1/maintenance/request/{id}/resolve":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}~1resolve'
+  "/api/v1/maintenance/request/{id}/comments":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}~1comments'
+  "/api/v1/maintenance/request/{id}/notes":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}~1notes'
+  "/api/v1/maintenance/request/{id}/documents":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}~1documents'
+  "/api/v1/maintenance/request/{id}/documents/{metadataId}":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1request~1{id}~1documents~1{metadataId}'
+  "/api/v1/maintenance/damage-report":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1damage-report'
+  "/api/v1/maintenance/damage-report/{id}":
+    $ref: './paths/maintenance.yaml#/~1api~1v1~1maintenance~1damage-report~1{id}'
+  "/api/v1/expense":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense'
+  "/api/v1/expense/customers":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1customers'
+  "/api/v1/expense/customers/{customerId}/bank-accounts":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1customers~1{customerId}~1bank-accounts'
+  "/api/v1/expense/export":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1export'
+  "/api/v1/expense/{id}":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1{id}'
+  "/api/v1/expense/{id}/items/{itemId}/document":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1{id}~1items~1{itemId}~1document'
+  "/api/v1/expense/{id}/notes":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1{id}~1notes'
+  "/api/v1/expense/{id}/mark-paid":
+    $ref: './paths/expense.yaml#/~1api~1v1~1expense~1{id}~1mark-paid'
+  "/api/v1/income":
+    $ref: './paths/income.yaml#/~1api~1v1~1income'
+  "/api/v1/income/{id}":
+    $ref: './paths/income.yaml#/~1api~1v1~1income~1{id}'
+  "/api/v1/events/events":
+    $ref: './paths/events.yaml#/~1api~1v1~1events~1events'
+  "/api/v1/events/events/{id}":
+    $ref: './paths/events.yaml#/~1api~1v1~1events~1events~1{id}'
+  "/api/v1/landlord/properties":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties'
+  "/api/v1/landlord/properties/check-name":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1check-name'
+  "/api/v1/landlord/property/search":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1property~1search'
+  "/api/v1/landlord/property/export":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1property~1export'
+  "/api/v1/landlord/property/template":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1property~1template'
+  "/api/v1/landlord/property/properties/import":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1property~1properties~1import'
+  "/api/v1/landlord/properties/{id}/images":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1{id}~1images'
+  "/api/v1/landlord/properties/{id}":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1{id}'
+  "/api/v1/landlord/properties/{id}/archive":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1{id}~1archive'
+  "/api/v1/landlord/properties/{id}/notes":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1{id}~1notes'
+  "/api/v1/landlord/properties/{id}/profile-image":
+    $ref: './paths/landlord-property.yaml#/~1api~1v1~1landlord~1properties~1{id}~1profile-image'
+  "/api/v1/landlord/tenants":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants'
+  "/api/v1/landlord/tenants/setup":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1setup'
+  "/api/v1/landlord/tenants/send-application":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1send-application'
+  "/api/v1/landlord/tenants/update-setup":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1update-setup'
+  "/api/v1/landlord/tenants/setup/{id}":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1setup~1{id}'
+  "/api/v1/landlord/tenants/export-multi":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1export-multi'
+  "/api/v1/landlord/tenants/export":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1export'
+  "/api/v1/landlord/tenants/list-with-details":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1list-with-details'
+  "/api/v1/landlord/tenants/names":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1names'
+  "/api/v1/landlord/tenants/details":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1details'
+  "/api/v1/landlord/tenants/import":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1import'
+  "/api/v1/landlord/tenants/resend-invite":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1resend-invite'
+  "/api/v1/landlord/tenants/search/by-email":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1search~1by-email'
+  "/api/v1/landlord/tenants/lease-onboarding-status/{leaseId}":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1lease-onboarding-status~1{leaseId}'
+  "/api/v1/landlord/tenants/resend-lease-communication":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1resend-lease-communication'
+  "/api/v1/landlord/tenants/screening-context/{leaseId}/{tenantId}":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1screening-context~1{leaseId}~1{tenantId}'
+  "/api/v1/landlord/tenants/{id}":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1{id}'
+  "/api/v1/landlord/tenants/{id}/documents":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1{id}~1documents'
+  "/api/v1/landlord/tenants/{id}/archive":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1{id}~1archive'
+  "/api/v1/landlord/tenants/{id}/unarchive":
+    $ref: './paths/landlord-tenant.yaml#/~1api~1v1~1landlord~1tenants~1{id}~1unarchive'
+  "/api/v1/landlord/leasing/create-lease":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1create-lease'
+  "/api/v1/landlord/leasing/lease":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease'
+  "/api/v1/landlord/leasing/lease/list":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1list'
+  "/api/v1/landlord/leasing/lease/export":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1export'
+  "/api/v1/landlord/leasing/lease/tenure-availability":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1tenure-availability'
+  "/api/v1/landlord/leasing/lease/{id}":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1{id}'
+  "/api/v1/landlord/leasing/edit-lease/{id}":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1edit-lease~1{id}'
+  "/api/v1/landlord/leasing/lease/{id}/document":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1{id}~1document'
+  "/api/v1/landlord/leasing/lease/{id}/terminate":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1{id}~1terminate'
+  "/api/v1/landlord/leasing/lease/{id}/notes":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1{id}~1notes'
+  "/api/v1/landlord/leasing/lease/tenant":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1tenant'
+  "/api/v1/landlord/leasing/renew-lease/{id}":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1renew-lease~1{id}'
+  "/api/v1/landlord/leasing/lease/{id}/activate":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1lease~1{id}~1activate'
+  "/api/v1/landlord/leasing/process-lease-lifecycle":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1process-lease-lifecycle'
+  "/api/v1/landlord/leasing/creator/{createdBy}/templates":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1creator~1{createdBy}~1templates'
+  "/api/v1/landlord/leasing/templates/{templateId}":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1templates~1{templateId}'
+  "/api/v1/landlord/leasing/templates/{templateId}/download":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1templates~1{templateId}~1download'
+  "/api/v1/landlord/leasing/creator/{createdBy}/templates/{templateId}":
+    $ref: './paths/landlord-lease.yaml#/~1api~1v1~1landlord~1leasing~1creator~1{createdBy}~1templates~1{templateId}'
+  "/api/v1/landlord/invoice":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice'
+  "/api/v1/landlord/invoice/export":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1export'
+  "/api/v1/landlord/invoice/export-multi":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1export-multi'
+  "/api/v1/landlord/invoice/statistics":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1statistics'
+  "/api/v1/landlord/invoice/{id}":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1{id}'
+  "/api/v1/landlord/invoice/{id}/comments":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1{id}~1comments'
+  "/api/v1/landlord/invoice/{id}/remind":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1{id}~1remind'
+  "/api/v1/landlord/invoice/generate-rent-deposit":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1generate-rent-deposit'
+  "/api/v1/landlord/invoice/generate-additional-fees":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1generate-additional-fees'
+  "/api/v1/landlord/invoice/generate-late-fees":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1generate-late-fees'
+  "/api/v1/landlord/invoice/generate-deposit-refunds":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1generate-deposit-refunds'
+  "/api/v1/landlord/invoice/{id}/generate-late-fee":
+    $ref: './paths/landlord-invoice.yaml#/~1api~1v1~1landlord~1invoice~1{id}~1generate-late-fee'
+  "/api/v1/landlord/listings":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings'
+  "/api/v1/landlord/listings/{id}":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}'
+  "/api/v1/landlord/listings/{id}/publish":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1publish'
+  "/api/v1/landlord/listings/{id}/activate":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1activate'
+  "/api/v1/landlord/listings/{id}/inactive":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1inactive'
+  "/api/v1/landlord/listings/{id}/publish-from-inactive":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1publish-from-inactive'
+  "/api/v1/landlord/listings/{id}/syndication":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1syndication'
+  "/api/v1/landlord/listings/{id}/syndication/live":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1syndication~1live'
+  "/api/v1/landlord/listings/{id}/syndication/zillow/sync":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1syndication~1zillow~1sync'
+  "/api/v1/landlord/listings/{id}/syndication/zillow/remove":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1syndication~1zillow~1remove'
+  "/api/v1/landlord/listings/{id}/images":
+    $ref: './paths/landlord-listing.yaml#/~1api~1v1~1landlord~1listings~1{id}~1images'
+  "/api/v1/landlord/application":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application'
+  "/api/v1/landlord/application/submit/{leaseId}/{tenantId}":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1submit~1{leaseId}~1{tenantId}'
+  "/api/v1/landlord/application/submit":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1submit'
+  "/api/v1/landlord/application/tenant/blank":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1tenant~1blank'
+  "/api/v1/landlord/application/lease-invite-ack":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1lease-invite-ack'
+  "/api/v1/landlord/application/export":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1export'
+  "/api/v1/landlord/application/names":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1names'
+  "/api/v1/landlord/application/{id}/lease-screening-summary":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1lease-screening-summary'
+  "/api/v1/landlord/application/{id}":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}'
+  "/api/v1/landlord/application/{id}/approve":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1approve'
+  "/api/v1/landlord/application/{id}/reject":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1reject'
+  "/api/v1/landlord/application/{id}/screening":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1screening'
+  "/api/v1/landlord/application/{id}/notes":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1notes'
+  "/api/v1/landlord/application/{id}/share-email":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1share-email'
+  "/api/v1/landlord/application/{id}/share-url":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1{id}~1share-url'
+  "/api/v1/landlord/application/request":
+    $ref: './paths/landlord-application.yaml#/~1api~1v1~1landlord~1application~1request'
+  "/api/v1/landlord/dashboard/summary":
+    $ref: './paths/landlord-dashboard.yaml#/~1api~1v1~1landlord~1dashboard~1summary'
+  "/api/v1/landlord/insurance/quote-estimates":
+    $ref: './paths/landlord-insurance.yaml#/~1api~1v1~1landlord~1insurance~1quote-estimates'
+  "/api/v1/landlord/insurance/instant-quote-estimates":
+    $ref: './paths/landlord-insurance.yaml#/~1api~1v1~1landlord~1insurance~1instant-quote-estimates'
+  "/api/v1/landlord/insurance/quote-estimates/{id}":
+    $ref: './paths/landlord-insurance.yaml#/~1api~1v1~1landlord~1insurance~1quote-estimates~1{id}'
+  "/api/v1/landlord/payment-management/settings":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1settings'
+  "/api/v1/landlord/payment-management":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management'
+  "/api/v1/landlord/payment-management/summary":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1summary'
+  "/api/v1/landlord/payment-management/{propertyId}":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1{propertyId}'
+  "/api/v1/landlord/payment-management/{propertyId}/assign-landlord":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1{propertyId}~1assign-landlord'
+  "/api/v1/landlord/payment-management/{propertyId}/record-payment":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1{propertyId}~1record-payment'
+  "/api/v1/landlord/payment-management/{propertyId}/payment-history":
+    $ref: './paths/landlord-payment-management.yaml#/~1api~1v1~1landlord~1payment-management~1{propertyId}~1payment-history'
+  "/api/v1/landlord/billing-settings/effective":
+    $ref: './paths/landlord-billing-settings.yaml#/~1api~1v1~1landlord~1billing-settings~1effective'
+  "/api/v1/landlord/billing-settings":
+    $ref: './paths/landlord-billing-settings.yaml#/~1api~1v1~1landlord~1billing-settings'
+  "/api/v1/landlord/tenant-screening-settings":
+    $ref: './paths/landlord-screening-settings.yaml#/~1api~1v1~1landlord~1tenant-screening-settings'
+  "/api/v1/landlord/tenant-screening-settings/{id}":
+    $ref: './paths/landlord-screening-settings.yaml#/~1api~1v1~1landlord~1tenant-screening-settings~1{id}'
+  "/api/v1/hoa/property/properties":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties'
+  "/api/v1/hoa/property/search":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1search'
+  "/api/v1/hoa/property/picker":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1picker'
+  "/api/v1/hoa/property/portfolio-overview":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1portfolio-overview'
+  "/api/v1/hoa/property/properties/export":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1export'
+  "/api/v1/hoa/property/properties/import":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1import'
+  "/api/v1/hoa/property/properties/{id}":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1{id}'
+  "/api/v1/hoa/property/properties/{id}/images":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1{id}~1images'
+  "/api/v1/hoa/property/properties/{id}/archive":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1{id}~1archive'
+  "/api/v1/hoa/property/properties/{id}/notes":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1{id}~1notes'
+  "/api/v1/hoa/property/properties/{id}/notes/{noteId}":
+    $ref: './paths/hoa-property.yaml#/~1api~1v1~1hoa~1property~1properties~1{id}~1notes~1{noteId}'
+  "/api/v1/hoa/tenants":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants'
+  "/api/v1/hoa/tenants/setup":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1setup'
+  "/api/v1/hoa/tenants/update-setup":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1update-setup'
+  "/api/v1/hoa/tenants/setup/{id}":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1setup~1{id}'
+  "/api/v1/hoa/tenants/export":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1export'
+  "/api/v1/hoa/tenants/list-with-details":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1list-with-details'
+  "/api/v1/hoa/tenants/names":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1names'
+  "/api/v1/hoa/tenants/details":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1details'
+  "/api/v1/hoa/tenants/import":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1import'
+  "/api/v1/hoa/tenants/resend-invite":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1resend-invite'
+  "/api/v1/hoa/tenants/{id}":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1{id}'
+  "/api/v1/hoa/tenants/{id}/documents":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1{id}~1documents'
+  "/api/v1/hoa/tenants/{id}/archive":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1{id}~1archive'
+  "/api/v1/hoa/tenants/{id}/unarchive":
+    $ref: './paths/hoa-tenant.yaml#/~1api~1v1~1hoa~1tenants~1{id}~1unarchive'
+  "/api/v1/hoa/leasing/create-lease":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1create-lease'
+  "/api/v1/hoa/leasing/lease":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease'
+  "/api/v1/hoa/leasing/lease/list":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1list'
+  "/api/v1/hoa/leasing/lease/{id}":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1{id}'
+  "/api/v1/hoa/leasing/edit-lease/{id}":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1edit-lease~1{id}'
+  "/api/v1/hoa/leasing/lease/{id}/document":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1{id}~1document'
+  "/api/v1/hoa/leasing/lease/{id}/terminate":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1{id}~1terminate'
+  "/api/v1/hoa/leasing/lease/{id}/notes":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1{id}~1notes'
+  "/api/v1/hoa/leasing/lease/tenant":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1lease~1tenant'
+  "/api/v1/hoa/leasing/renew-lease/{id}":
+    $ref: './paths/hoa-lease.yaml#/~1api~1v1~1hoa~1leasing~1renew-lease~1{id}'
+  "/api/v1/hoa/invoice":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice'
+  "/api/v1/hoa/invoice/export":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1export'
+  "/api/v1/hoa/invoice/generation/{jobId}/status":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1generation~1{jobId}~1status'
+  "/api/v1/hoa/invoice/statistics":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1statistics'
+  "/api/v1/hoa/invoice/{id}":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}'
+  "/api/v1/hoa/invoice/{id}/payment-transactions":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1payment-transactions'
+  "/api/v1/hoa/invoice/{id}/comments":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1comments'
+  "/api/v1/hoa/invoice/{id}/notes":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1notes'
+  "/api/v1/hoa/invoice/{id}/notes/{noteId}":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1notes~1{noteId}'
+  "/api/v1/hoa/invoice/{id}/payments/{paymentId}":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1payments~1{paymentId}'
+  "/api/v1/hoa/invoice/{id}/send-reminder":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1send-reminder'
+  "/api/v1/hoa/invoice/{id}/waive":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1{id}~1waive'
+  "/api/v1/hoa/invoice/generate-rent-deposit":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1generate-rent-deposit'
+  "/api/v1/hoa/invoice/generate-additional-fees":
+    $ref: './paths/hoa-invoice.yaml#/~1api~1v1~1hoa~1invoice~1generate-additional-fees'
+  "/api/v1/hoa/expense":
+    $ref: './paths/hoa-expense.yaml#/~1api~1v1~1hoa~1expense'
+  "/api/v1/hoa/expense/{id}":
+    $ref: './paths/hoa-expense.yaml#/~1api~1v1~1hoa~1expense~1{id}'
+  "/api/v1/hoa/expense/{id}/items/{itemId}/document":
+    $ref: './paths/hoa-expense.yaml#/~1api~1v1~1hoa~1expense~1{id}~1items~1{itemId}~1document'
+  "/api/v1/hoa/expense/payees":
+    $ref: './paths/hoa-expense.yaml#/~1api~1v1~1hoa~1expense~1payees'
+  "/api/v1/hoa/expense/payees/{id}":
+    $ref: './paths/hoa-expense.yaml#/~1api~1v1~1hoa~1expense~1payees~1{id}'
+  "/api/v1/hoa/owners":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners'
+  "/api/v1/hoa/owners/me/units":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1me~1units'
+  "/api/v1/hoa/owners/me/units/{id}/balance":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1me~1units~1{id}~1balance'
+  "/api/v1/hoa/owners/me/units/balances":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1me~1units~1balances'
+  "/api/v1/hoa/owners/picker":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1picker'
+  "/api/v1/hoa/owners/import":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1import'
+  "/api/v1/hoa/owners/export":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1export'
+  "/api/v1/hoa/owners/template":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1template'
+  "/api/v1/hoa/owners/units/import":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1import'
+  "/api/v1/hoa/owners/units/import/{jobId}/status":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1import~1{jobId}~1status'
+  "/api/v1/hoa/owners/units/export":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1export'
+  "/api/v1/hoa/owners/units/template":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1template'
+  "/api/v1/hoa/owners/deposit-bank-accounts/{bankAccountId}/usage":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1deposit-bank-accounts~1{bankAccountId}~1usage'
+  "/api/v1/hoa/owners/deposit-bank-accounts/reassign":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1deposit-bank-accounts~1reassign'
+  "/api/v1/hoa/owners/units":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units'
+  "/api/v1/hoa/owners/units/{id}":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}'
+  "/api/v1/hoa/owners/units/{id}/adjustment":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1adjustment'
+  "/api/v1/hoa/owners/units/balances":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1balances'
+  "/api/v1/hoa/owners/units/{id}/balance":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1balance'
+  "/api/v1/hoa/owners/units/{id}/ledger":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1ledger'
+  "/api/v1/hoa/owners/units/{id}/ledger/invoice/{invoiceId}":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1ledger~1invoice~1{invoiceId}'
+  "/api/v1/hoa/owners/units/{id}/add-owner":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1add-owner'
+  "/api/v1/hoa/owners/units/{id}/remove-owner":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1remove-owner'
+  "/api/v1/hoa/owners/units/{id}/change-ownership":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1units~1{id}~1change-ownership'
+  "/api/v1/hoa/owners/{id}":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}'
+  "/api/v1/hoa/owners/{id}/resend-invite":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}~1resend-invite'
+  "/api/v1/hoa/owners/{id}/archive":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}~1archive'
+  "/api/v1/hoa/owners/{id}/delete-preview":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}~1delete-preview'
+  "/api/v1/hoa/owners/{id}/notes":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}~1notes'
+  "/api/v1/hoa/owners/{id}/notes/{noteId}":
+    $ref: './paths/hoa-owners.yaml#/~1api~1v1~1hoa~1owners~1{id}~1notes~1{noteId}'
+  "/api/v1/hoa/board-members":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members'
+  "/api/v1/hoa/board-members/invite-preview":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1invite-preview'
+  "/api/v1/hoa/board-members/my-hoas":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1my-hoas'
+  "/api/v1/hoa/board-members/accept-invite":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1accept-invite'
+  "/api/v1/hoa/board-members/{hoaId}/profile":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1profile'
+  "/api/v1/hoa/board-members/{hoaId}/invite/validate":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1invite~1validate'
+  "/api/v1/hoa/board-members/{hoaId}/invite":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1invite'
+  "/api/v1/hoa/board-members/{hoaId}/members":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1members'
+  "/api/v1/hoa/board-members/{hoaId}/members/{membershipId}/revoke":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1members~1{membershipId}~1revoke'
+  "/api/v1/hoa/board-members/{hoaId}/members/{membershipId}/restore":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1members~1{membershipId}~1restore'
+  "/api/v1/hoa/board-members/{hoaId}/members/{membershipId}":
+    $ref: './paths/hoa-board-members.yaml#/~1api~1v1~1hoa~1board-members~1{hoaId}~1members~1{membershipId}'
+  "/api/v1/hoa/dashboard/summary":
+    $ref: './paths/hoa-dashboard.yaml#/~1api~1v1~1hoa~1dashboard~1summary'
+  "/api/v1/hoa/dashboard/recent-activity":
+    $ref: './paths/hoa-dashboard.yaml#/~1api~1v1~1hoa~1dashboard~1recent-activity'
+  "/api/v1/hoa/dashboard/recent":
+    $ref: './paths/hoa-dashboard.yaml#/~1api~1v1~1hoa~1dashboard~1recent'
+  "/api/v1/hoa/dashboard/log":
+    $ref: './paths/hoa-dashboard.yaml#/~1api~1v1~1hoa~1dashboard~1log'
+  "/api/v1/hoa/hoa-settings":
+    $ref: './paths/hoa-settings.yaml#/~1api~1v1~1hoa~1hoa-settings'
+  "/api/v1/hoa/hoa-settings/{hoaId}":
+    $ref: './paths/hoa-settings.yaml#/~1api~1v1~1hoa~1hoa-settings~1{hoaId}'
+  "/api/v1/hoa/billing-settings/effective":
+    $ref: './paths/hoa-billing-settings.yaml#/~1api~1v1~1hoa~1billing-settings~1effective'
+  "/api/v1/hoa/billing-settings":
+    $ref: './paths/hoa-billing-settings.yaml#/~1api~1v1~1hoa~1billing-settings'
+  "/api/v1/hoa/support/init":
+    $ref: './paths/hoa-support.yaml#/~1api~1v1~1hoa~1support~1init'
+  "/api/v1/hoa/support/message":
+    $ref: './paths/hoa-support.yaml#/~1api~1v1~1hoa~1support~1message'
+  "/api/v1/hoa/support/history":
+    $ref: './paths/hoa-support.yaml#/~1api~1v1~1hoa~1support~1history'
+  "/api/v1/hoa/support/close/{chatId}":
+    $ref: './paths/hoa-support.yaml#/~1api~1v1~1hoa~1support~1close~1{chatId}'
+  "/api/v1/zillow/callback":
+    $ref: './paths/zillow.yaml#/~1api~1v1~1zillow~1callback'
+  "/api/v1/zillow/config":
+    $ref: './paths/zillow.yaml#/~1api~1v1~1zillow~1config'
+  "/api/v1/zillow/bulk-feed/regenerate":
+    $ref: './paths/zillow.yaml#/~1api~1v1~1zillow~1bulk-feed~1regenerate'
+  "/api/v1/zillow/bulk-feed/confirm":
+    $ref: './paths/zillow.yaml#/~1api~1v1~1zillow~1bulk-feed~1confirm'
+
+components:
+  securitySchemes:
+    $ref: './components/security.yaml#/securitySchemes'

@@ -1,0 +1,293 @@
+/api/v1/landlord/tenants:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: List landlord tenants
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Add new tenant record
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/tenant.yaml#/CreateTenantRequest'
+    responses:
+      '201':
+        description: Tenant created.
+
+/api/v1/landlord/tenants/setup:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Link/Setup tenant credentials
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/tenant.yaml#/SetupTenantRequest'
+    responses:
+      '200':
+        description: Setup complete.
+
+/api/v1/landlord/tenants/send-application:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Invite tenant to fill screening application
+    responses:
+      '200':
+        description: Invitation email sent.
+
+/api/v1/landlord/tenants/update-setup:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Modify tenant screening setup state
+    responses:
+      '200':
+        description: Updated.
+
+/api/v1/landlord/tenants/setup/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Update tenant credentials setup details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+
+/api/v1/landlord/tenants/export-multi:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Export tenant rosters with metadata
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Export tenants to simple CSV
+    responses:
+      '200':
+        description: CSV content stream.
+
+/api/v1/landlord/tenants/list-with-details:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Get all tenants annotated with active leases and balances
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/names:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Filter helper list for dropdowns (IDs and full names only)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/details:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Detailed lookup of tenant status
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Import tenants CSV file
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/resend-invite:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Resend verification credentials link to tenant email
+    responses:
+      '200':
+        description: Invite sent.
+
+/api/v1/landlord/tenants/search/by-email:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Search tenant by exact email match
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/lease-onboarding-status/{leaseId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Get lease onboarding checklist completion status
+    parameters:
+      - name: leaseId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/resend-lease-communication:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Re-deliver lease summary and payment reminder emails
+    responses:
+      '200':
+        description: Emails dispatched.
+
+/api/v1/landlord/tenants/screening-context/{leaseId}/{tenantId}:
+  get:
+    tags:
+      - Landlord (Tenants)
+    summary: Public access to fetch basic lease context for onboarding form
+    parameters:
+      - name: leaseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Context payload.
+
+/api/v1/landlord/tenants/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Get tenant by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Update tenant
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/tenant.yaml#/UpdateTenantRequest'
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Soft-delete tenant
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/tenants/{id}/documents:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Upload files/leases/ID document scans to tenant files
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Files saved.
+
+/api/v1/landlord/tenants/{id}/archive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Mark tenant profile as Archived
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Archived.
+
+/api/v1/landlord/tenants/{id}/unarchive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Tenants)
+    summary: Restore tenant status from archive
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success

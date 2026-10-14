@@ -1,0 +1,132 @@
+/api/v1/hoa/leasing/create-lease:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Create a lease record
+    responses:
+      '201':
+        description: Lease created.
+
+/api/v1/hoa/leasing/lease:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: List all leases with filter presets
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/lease/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: List leases scoped by creator/landlord
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/lease/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Get lease by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Delete a lease record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/edit-lease/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Update lease parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/lease/{id}/document:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Upload PDF lease document
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/lease/{id}/terminate:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Force terminate active lease early
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/lease/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Add notes to lease portfolio file
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/hoa/leasing/lease/tenant:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Retrieve lease details corresponding to tenant and unit query parameters
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/leasing/renew-lease/{id}:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Leasing)
+    summary: Process contract renewal
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Lease renewed.

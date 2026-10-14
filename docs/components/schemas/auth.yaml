@@ -1,0 +1,279 @@
+SignupRequest:
+  type: object
+  required:
+    - email
+    - password
+    - confirmPassword
+    - firstName
+    - lastName
+    - roleId
+  properties:
+    email:
+      type: string
+      format: email
+    password:
+      type: string
+    confirmPassword:
+      type: string
+    firstName:
+      type: string
+    lastName:
+      type: string
+    phone:
+      type: string
+    roleId:
+      type: string
+    additionalInfo:
+      type: object
+      properties:
+        numberOfProperties:
+          type: string
+          enum: [1-5, 5-20, 20+]
+        companyName:
+          type: string
+        businessAddress:
+          type: string
+        portfolioSize:
+          type: number
+        teamSize:
+          type: number
+        hoaName:
+          type: string
+        communityName:
+          type: string
+        numberOfUnits:
+          type: number
+        propertyAddress:
+          type: string
+        associationType:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+
+LoginRequest:
+  type: object
+  required:
+    - email
+    - password
+  properties:
+    email:
+      type: string
+      format: email
+    password:
+      type: string
+  example:
+    email: "user@example.com"
+    password: "<password>"
+
+
+ForgotPasswordRequest:
+  type: object
+  required:
+    - email
+  properties:
+    email:
+      type: string
+      format: email
+
+VerifyResetOtpRequest:
+  type: object
+  required:
+    - email
+    - otp
+  properties:
+    email:
+      type: string
+      format: email
+    otp:
+      type: string
+
+VerifyOtpResetPasswordRequest:
+  type: object
+  required:
+    - email
+    - otp
+    - newPassword
+    - confirmPassword
+  properties:
+    email:
+      type: string
+      format: email
+    otp:
+      type: string
+    newPassword:
+      type: string
+    confirmPassword:
+      type: string
+
+ResetPasswordRequest:
+  type: object
+  required:
+    - currentPassword
+    - newPassword
+    - confirmPassword
+  properties:
+    currentPassword:
+      type: string
+    newPassword:
+      type: string
+    confirmPassword:
+      type: string
+
+LockAccountRequest:
+  type: object
+  required:
+    - userId
+  properties:
+    userId:
+      type: string
+
+RefreshTokenRequest:
+  type: object
+  required:
+    - refreshToken
+  properties:
+    refreshToken:
+      type: string
+
+SendMfaOtpRequest:
+  type: object
+  required:
+    - email
+    - action
+  properties:
+    email:
+      type: string
+      format: email
+    action:
+      type: string
+      enum: [login, signup]
+
+VerifyMfaOtpRequest:
+  type: object
+  required:
+    - email
+    - otp
+  properties:
+    email:
+      type: string
+      format: email
+    otp:
+      type: string
+
+PortalInviteCompleteRequest:
+  type: object
+  required:
+    - userId
+    - token
+    - newPassword
+    - confirmPassword
+  properties:
+    userId:
+      type: string
+    token:
+      type: string
+    newPassword:
+      type: string
+    confirmPassword:
+      type: string
+
+Role:
+  type: object
+  required:
+    - name
+    - functions
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    description:
+      type: string
+    functions:
+      type: array
+      items:
+        type: string
+    isActive:
+      type: boolean
+    isDeleted:
+      type: boolean
+
+Permission:
+  type: object
+  required:
+    - name
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    name:
+      type: string
+    description:
+      type: string
+
+LoginResponse:
+  type: object
+  properties:
+    accessToken:
+      type: string
+      description: JWT access token.
+    refreshToken:
+      type: string
+      description: JWT refresh token.
+    user:
+      $ref: 'user.yaml#/User'
+    mfaRequired:
+      type: boolean
+      example: false
+    mfaSkipped:
+      type: boolean
+      example: true
+    mfaValidUntil:
+      type: string
+      format: date-time
+      example: "2026-07-16T18:00:00.000Z"
+    privileges:
+      type: array
+      items:
+        type: string
+      example: ["view_properties", "edit_properties", "manage_leases"]
+  example:
+    accessToken: "<access_token>"
+    refreshToken: "<refresh_token>"
+    user:
+      _id: "60ac8defe1c9080015d1dbac"
+      email: "user@example.com"
+      firstName: "John"
+      lastName: "Doe"
+      phone: "+15555551234"
+      isActive: true
+      roles: ["60ac8defe1c9080015d1dba0"]
+    mfaRequired: false
+    mfaSkipped: true
+    mfaValidUntil: "2026-07-17T06:33:17.000Z"
+    privileges: ["view_properties", "edit_properties", "manage_leases"]
+
+MfaLoginRequiredResponse:
+  type: object
+  properties:
+    email:
+      type: string
+      format: email
+    mfaRequired:
+      type: boolean
+      example: true
+    privileges:
+      type: array
+      items:
+        type: string
+      example: ["view_properties", "edit_properties", "manage_leases"]
+  example:
+    email: "user@example.com"
+    mfaRequired: true
+    privileges: ["view_properties", "edit_properties", "manage_leases"]
+

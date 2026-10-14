@@ -1,0 +1,43 @@
+/api/v1/hoa/dashboard/summary:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Dashboard)
+    summary: HOA board summary widget metrics
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/dashboard/recent-activity:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Dashboard)
+    summary: List recent association activities logs
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/dashboard/recent:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Dashboard)
+    summary: Get recent client activities logs
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/dashboard/log:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Dashboard)
+    summary: Log client-side activity record
+    responses:
+      '201':
+        description: Logged.

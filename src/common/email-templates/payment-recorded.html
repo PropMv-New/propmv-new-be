@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment recorded - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Payment of {{paymentAmount}} recorded for invoice {{invoiceNumber}}.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+        <tr><td class="pmv-card-inner">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <span class="pmv-pill" style="background:#dcfce7;color:#16a34a;">Payment recorded</span>
+          <h1 class="pmv-title">Payment applied to your invoice</h1>
+          <p class="pmv-greet">Hi {{recipientName}},</p>
+          <p class="pmv-text">We've posted a payment to invoice <strong>#{{invoiceNumber}}</strong>.</p>
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr><td class="pmv-details-label">Amount</td><td class="pmv-details-value">{{paymentAmount}}</td></tr>
+            <tr><td class="pmv-details-label">Payment method</td><td class="pmv-details-value">{{paymentMethod}}</td></tr>
+            <tr><td class="pmv-details-label">Payment date</td><td class="pmv-details-value">{{paidOn}}</td></tr>
+            <tr><td class="pmv-details-label">Posted by</td><td class="pmv-details-value">{{recordedByName}}</td></tr>
+            <tr><td class="pmv-details-label">Posted on</td><td class="pmv-details-value">{{recordedAt}}</td></tr>
+            <tr><td class="pmv-details-label">Remaining balance</td><td class="pmv-details-value">{{remainingBalance}}</td></tr>
+            <tr><td class="pmv-details-label">Property</td><td class="pmv-details-value">{{propertyName}} · {{unitNumber}}</td></tr>
+          </table>
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                  <a href="{{viewInvoiceUrl}}" class="pmv-cta" target="_blank">View invoice</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <div class="pmv-footer-minimal">This is an automated message - please do not reply.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

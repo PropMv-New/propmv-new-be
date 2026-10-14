@@ -1,0 +1,142 @@
+{
+  "info": {
+    "name": "Straddle Payment Webhook",
+    "description": "Test collection for Straddle payment status webhooks with actual API structure",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Payment Created - Full Payload",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_id\": \"evt_created_{{$timestamp}}\",\n  \"event_type\": \"payout.event.v1\",\n  \"data\": {\n    \"id\": \"payout_{{$timestamp}}\",\n    \"status\": \"created\",\n    \"amount\": 50000,\n    \"currency\": \"usd\",\n    \"description\": \"Rent payment\",\n    \"paykey\": \"pk_test_123\",\n    \"paykey_details\": {\n      \"id\": \"033de251-fda3-4f86-90d7-2ce4000b2d51\",\n      \"customer_id\": \"a773843f-e6f0-4ac0-b3df-b1dc720a4d57\",\n      \"label\": \"Primary Account\",\n      \"balance\": 50000\n    },\n    \"customer_details\": {\n      \"id\": \"03ece916-5d0e-46f7-a28a-e7f1aab1dbc3\",\n      \"name\": \"John Doe\",\n      \"email\": \"john@example.com\",\n      \"phone\": \"+1234567890\",\n      \"customer_type\": \"individual\"\n    },\n    \"payment_rail\": \"ach\",\n    \"consent_type\": \"web\",\n    \"metadata\": {\n      \"tenantId\": \"tenant_123\",\n      \"propertyId\": \"prop_456\"\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Payment Paid with Status History",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_id\": \"evt_paid_{{$timestamp}}\",\n  \"event_type\": \"payout.event.v1\",\n  \"data\": {\n    \"id\": \"payout_001\",\n    \"status\": \"paid\",\n    \"amount\": 50000,\n    \"currency\": \"usd\",\n    \"description\": \"Rent payment completed\",\n    \"paykey\": \"pk_test_123\",\n    \"payment_rail\": \"ach\",\n    \"processed_at\": \"2026-06-10T09:30:17.124311905\",\n    \"status_details\": {\n      \"changed_at\": \"2026-06-10T09:30:17.124318848\",\n      \"code\": \"payment_completed\",\n      \"message\": \"Payment processed successfully\",\n      \"source\": \"straddle\"\n    },\n    \"status_history\": [\n      {\n        \"status\": \"created\",\n        \"changed_at\": \"2026-06-10T09:30:17.124323176\",\n        \"code\": \"payment_initiated\"\n      },\n      {\n        \"status\": \"pending\",\n        \"changed_at\": \"2026-06-10T09:30:17.124323176\",\n        \"code\": \"payment_processing\"\n      },\n      {\n        \"status\": \"paid\",\n        \"changed_at\": \"2026-06-10T09:30:17.124323176\",\n        \"code\": \"payment_completed\"\n      }\n    ]\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Payment Failed with Reason",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_id\": \"evt_failed_{{$timestamp}}\",\n  \"event_type\": \"payout.event.v1\",\n  \"data\": {\n    \"id\": \"payout_002\",\n    \"status\": \"failed\",\n    \"amount\": 30000,\n    \"currency\": \"usd\",\n    \"description\": \"Failed payment\",\n    \"paykey\": \"pk_test_456\",\n    \"payment_rail\": \"ach\",\n    \"status_details\": {\n      \"changed_at\": \"2026-06-10T09:30:17.124318848\",\n      \"code\": \"insufficient_funds\",\n      \"message\": \"Payment failed due to insufficient funds\",\n      \"reason\": \"NSF\",\n      \"source\": \"bank\"\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Payment Refund with Related Payments",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_id\": \"evt_refund_{{$timestamp}}\",\n  \"event_type\": \"payout.event.v1\",\n  \"data\": {\n    \"id\": \"payout_003\",\n    \"status\": \"paid\",\n    \"amount\": 10000,\n    \"currency\": \"usd\",\n    \"description\": \"Refund payment\",\n    \"is_refund\": true,\n    \"paykey\": \"pk_test_789\",\n    \"related_payments\": [\n      {\n        \"id\": \"614c06b0-05cc-4d48-b4cb-a2badfb2d182\",\n        \"payment_type\": \"charge\",\n        \"relationship\": \"refund_of\"\n      }\n    ]\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Invalid - Missing event_id",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_type\": \"payout.event.v1\",\n  \"data\": {\n    \"id\": \"payout_003\",\n    \"status\": \"paid\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    },
+    {
+      "name": "Invalid - Missing data object",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account_id\": \"857c679a-8e80-47f1-9334-39dd08ea801f\",\n  \"event_id\": \"evt_invalid_001\",\n  \"event_type\": \"payout.event.v1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/webhooks/straddle/payment-status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "webhooks", "straddle", "payment-status"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

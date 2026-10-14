@@ -1,0 +1,243 @@
+{
+  "info": {
+    "name": "PropMv Zillow Syndication",
+    "description": "Test Zillow Rentals feed integration. Set collection variables to match your .env (API_PUBLIC_BASE_URL, ZILLOW_* URLs).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "apiPublicBaseUrl",
+      "value": "http://localhost:5000"
+    },
+    {
+      "key": "baseUrl",
+      "value": "{{apiPublicBaseUrl}}/api/v1"
+    },
+    {
+      "key": "landlordBase",
+      "value": "{{baseUrl}}/landlord"
+    },
+    {
+      "key": "zillowApiPrefix",
+      "value": "/api/v1/zillow"
+    },
+    {
+      "key": "zillowCallbackUrl",
+      "value": "{{apiPublicBaseUrl}}/api/v1/zillow/callback"
+    },
+    {
+      "key": "zillowBulkFeedUrl",
+      "value": "{{apiPublicBaseUrl}}/feeds/zillow/hotpads.xml"
+    },
+    {
+      "key": "zillowBulkFeedRegenerateUrl",
+      "value": "{{apiPublicBaseUrl}}/api/v1/zillow/bulk-feed/regenerate"
+    },
+    {
+      "key": "zillowBulkFeedConfirmUrl",
+      "value": "{{apiPublicBaseUrl}}/api/v1/zillow/bulk-feed/confirm"
+    },
+    {
+      "key": "zillowConfigUrl",
+      "value": "{{baseUrl}}/zillow/config"
+    },
+    {
+      "key": "authToken",
+      "value": "YOUR_JWT_BEARER_TOKEN"
+    },
+    {
+      "key": "listingId",
+      "value": "507f1f77bcf86cd799439011"
+    },
+    {
+      "key": "feedListingId",
+      "value": "507f1f77bcf86cd799439011"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Zillow Config",
+      "item": [
+        {
+          "name": "Get Public Zillow Config",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{zillowConfigUrl}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Zillow Public Callback",
+      "item": [
+        {
+          "name": "Callback - Fetch Listing XML",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{zillowCallbackUrl}}?feedListingIds={{feedListingId}}",
+              "host": [
+                "{{zillowCallbackUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "feedListingIds",
+                  "value": "{{feedListingId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Callback - Empty (no IDs)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": "{{zillowCallbackUrl}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bulk Feed Admin",
+      "item": [
+        {
+          "name": "Regenerate Bulk Feed",
+          "request": {
+            "method": "POST",
+            "url": "{{zillowBulkFeedRegenerateUrl}}"
+          }
+        },
+        {
+          "name": "Regenerate Bulk Feed (force)",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{zillowBulkFeedRegenerateUrl}}?force=true",
+              "query": [
+                {
+                  "key": "force",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirm After Threshold Breach",
+          "request": {
+            "method": "POST",
+            "url": "{{zillowBulkFeedConfirmUrl}}"
+          }
+        },
+        {
+          "name": "Get Static Bulk Feed File",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": "{{zillowBulkFeedUrl}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listing Syndication",
+      "item": [
+        {
+          "name": "Get Listing Syndication Status",
+          "request": {
+            "method": "GET",
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/syndication"
+          }
+        },
+        {
+          "name": "Get Live Zillow Status",
+          "request": {
+            "method": "GET",
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/syndication/live"
+          }
+        },
+        {
+          "name": "Sync Listing to Zillow",
+          "request": {
+            "method": "POST",
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/syndication/zillow/sync"
+          }
+        },
+        {
+          "name": "Remove Listing from Zillow",
+          "request": {
+            "method": "POST",
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/syndication/zillow/remove"
+          }
+        },
+        {
+          "name": "Publish Listing",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Publishing to Zillow test feed\"\n}"
+            },
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/publish"
+          }
+        },
+        {
+          "name": "Set Listing Inactive",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Removing from syndication\"\n}"
+            },
+            "url": "{{landlordBase}}/listing/listings/{{listingId}}/inactive"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+/api/v1/users:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Get own user profile
+    responses:
+      '200':
+        description: Profile retrieved.
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Create a user profile
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/CreateUserRequest'
+    responses:
+      '201':
+        description: User created.
+
+/api/v1/users/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: List all users (Admin/Operator)
+    responses:
+      '200':
+        description: Success
+
+/api/v1/users/batch:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Create multiple users in batch
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/user.yaml#/CreateUserRequest'
+    responses:
+      '201':
+        description: Users created.
+
+/api/v1/users/role:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Assign role to user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/AssignRoleRequest'
+    responses:
+      '200':
+        description: Role assigned.
+
+/api/v1/users/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Update user profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/user.yaml#/UserProfileUpdate'
+    responses:
+      '200':
+        description: User profile updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Soft-delete user
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: User deleted.
+
+/api/v1/users/privileges/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Get user privilege set
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/users/picture/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Update profile picture url
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Profile picture updated.
+
+/api/v1/users/{id}/activate:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Activate user account
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: User activated.
+
+/api/v1/users/weather:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Users
+    summary: Get weather forecast data for user location
+    parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The address to query weather details for.
+    responses:
+      '200':
+        description: Success
+

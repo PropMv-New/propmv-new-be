@@ -1,0 +1,238 @@
+/api/v1/maintenance/request:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: List maintenance requests
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Create a maintenance request
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                description: JSON maintenance details
+              documents:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '201':
+        description: Request created.
+
+/api/v1/maintenance/request/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Export maintenance requests to CSV/Excel
+    responses:
+      '200':
+        description: Binary file stream.
+
+/api/v1/maintenance/active-tenants:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Get active tenants by property and unit
+    responses:
+      '200':
+        description: Success
+
+/api/v1/maintenance/request/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Get specific maintenance request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Update maintenance request details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Request updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Delete maintenance request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Request deleted.
+
+/api/v1/maintenance/request/{id}/resolve:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Mark maintenance request as resolved
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Marked as resolved.
+
+/api/v1/maintenance/request/{id}/comments:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: List comments on request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Add comment to request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Comment added.
+
+/api/v1/maintenance/request/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Add internal staff note to request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/maintenance/request/{id}/documents:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Get documents uploaded for request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Upload additional documents to request
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Uploaded.
+
+/api/v1/maintenance/request/{id}/documents/{metadataId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance
+    summary: Download specific maintenance document
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: metadataId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: File downloaded.
+
+/api/v1/maintenance/damage-report:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance (Damage Reports)
+    summary: List damage reports
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance (Damage Reports)
+    summary: Create a damage report
+    responses:
+      '201':
+        description: Report created.
+
+/api/v1/maintenance/damage-report/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance (Damage Reports)
+    summary: Get damage report details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance (Damage Reports)
+    summary: Update damage report details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Report updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Maintenance (Damage Reports)
+    summary: Soft-delete damage report
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Report deleted.

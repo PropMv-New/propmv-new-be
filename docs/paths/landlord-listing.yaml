@@ -1,0 +1,186 @@
+/api/v1/landlord/listings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: List all rental listings
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Create a listing with images (multipart)
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                description: JSON string metadata
+              images:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '201':
+        description: Listing created.
+
+/api/v1/landlord/listings/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Get listing details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Update listing details (JSON/multipart)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Listing updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Permanently delete listing
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/listings/{id}/publish:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Set listing status to Published
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Published.
+
+/api/v1/landlord/listings/{id}/activate:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Set listing status to Active
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Activated.
+
+/api/v1/landlord/listings/{id}/inactive:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Suspend listing (status to Inactive)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deactivated.
+
+/api/v1/landlord/listings/{id}/publish-from-inactive:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Re-publish a suspended listing
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/listings/{id}/syndication:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings syndication)
+    summary: Get listing Zillow syndication configuration sync state
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/listings/{id}/syndication/live:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings syndication)
+    summary: Live status lookup for Zillow endpoint sync
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/listings/{id}/syndication/zillow/sync:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings syndication)
+    summary: Sync listing to Zillow API
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Synced successfully.
+
+/api/v1/landlord/listings/{id}/syndication/zillow/remove:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings syndication)
+    summary: Remove listing from Zillow feed index
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Removed.
+
+/api/v1/landlord/listings/{id}/images:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Listings)
+    summary: Upload extra listing photos
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Images added.

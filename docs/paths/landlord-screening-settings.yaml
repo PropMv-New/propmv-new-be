@@ -1,0 +1,52 @@
+/api/v1/landlord/tenant-screening-settings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Settings)
+    summary: List screening presets criteria configuration
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Settings)
+    summary: Create screening presets criteria configuration
+    responses:
+      '201':
+        description: Presets created.
+
+/api/v1/landlord/tenant-screening-settings/{id}:
+  get:
+    tags:
+      - Landlord (Screening Settings)
+    summary: Public access of screening template requirements (for tenant onboarding page)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Settings)
+    summary: Update screening preset
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Screening Settings)
+    summary: Delete preset
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.

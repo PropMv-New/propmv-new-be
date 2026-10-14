@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Invoice #{{invoiceNumber}} - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Invoice #{{invoiceNumber}} - {{amountDue}} due {{dueDate}}.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table pmv-wide" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <h1 class="pmv-title">Invoice #{{invoiceNumber}}</h1>
+              <p class="pmv-muted">Billing period: <strong style="color:#0f172a;">{{billingPeriod}}</strong></p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Bill to</td>
+                  <td class="pmv-details-value">{{payerName}}<br /><span class="pmv-muted">{{tenantEmail}}</span></td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Property</td>
+                  <td class="pmv-details-value">{{propertyAddress}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Lease</td>
+                  <td class="pmv-details-value">{{leaseStart}} to {{leaseEnd}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Amount due</td>
+                  <td class="pmv-details-value pmv-total">{{amountDue}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Due date</td>
+                  <td class="pmv-details-value">{{dueDate}}</td>
+                </tr>
+              </table>
+
+              <div class="pmv-section-title" style="margin-top:18px;">Invoice details</div>
+              <table class="pmv-table" role="table" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th style="width:28%;">Period</th>
+                    <th style="width:22%;">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each invoiceLines}}
+                  <tr>
+                    <td>{{description}}</td>
+                    <td>{{period}}</td>
+                    <td>{{amount}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+                <tr>
+                  <td align="right" style="font-size:14px;line-height:1.6;">
+                    <span class="pmv-muted">Subtotal:</span> <strong>{{subTotal}}</strong><br />
+                    <span class="pmv-muted">Adjustments:</span> <strong>{{adjustments}}</strong><br />
+                    <span style="font-size:17px;font-weight:800;color:#0f172a;">Total due: {{amountDue}}</span>
+                  </td>
+                </tr>
+              </table>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{invoiceUrl}}" class="pmv-cta" target="_blank">View and pay invoice</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted" style="margin-top:16px;">Billed by: {{billedByName}}</p>
+              <div class="pmv-footer-minimal">Questions? Sign in to PropMv or contact your property manager.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

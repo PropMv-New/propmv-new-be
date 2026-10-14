@@ -1,0 +1,30 @@
+/api/v1/hoa/billing-settings/effective:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Billing Settings)
+    summary: Get active billing calculations and rates
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/billing-settings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Billing Settings)
+    summary: Get billing configuration parameters (board access)
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Billing Settings)
+    summary: Update billing configurations (board access)
+    responses:
+      '200':
+        description: Settings saved.

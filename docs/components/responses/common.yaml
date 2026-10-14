@@ -1,0 +1,34 @@
+Unauthorized401:
+  description: Unauthorized. Missing, expired, or invalid authorization token.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml#/ErrorResponse'
+
+Forbidden403:
+  description: Forbidden. Authenticated user lacks necessary privileges or permissions.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml#/ErrorResponse'
+
+NotFound404:
+  description: Resource not found.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml#/ErrorResponse'
+
+ValidationError400:
+  description: Bad Request. Input validation failed.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml#/ValidationErrorResponse'
+
+ServerError500:
+  description: Internal Server Error.
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml#/ErrorResponse'

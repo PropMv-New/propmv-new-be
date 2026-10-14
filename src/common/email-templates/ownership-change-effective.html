@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Ownership change effective - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">{{headline}}</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <span class="pmv-pill">Ownership change effective</span>
+              <h1 class="pmv-title">{{headline}}</h1>
+              <p class="pmv-greet">Hi {{recipientName}},</p>
+              <p class="pmv-text">{{introParagraph}}</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Property / unit</td>
+                  <td class="pmv-details-value">{{propertyName}} &middot; {{unitName}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Address</td>
+                  <td class="pmv-details-value">{{unitAddress}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Previous owner</td>
+                  <td class="pmv-details-value">{{currentOwnerNames}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">New owner</td>
+                  <td class="pmv-details-value">{{futureOwnerNames}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Effective date</td>
+                  <td class="pmv-details-value">{{effectiveDateLabel}}</td>
+                </tr>
+              </table>
+
+              <p class="pmv-text">The property is now associated with the new owner. Future invoices and owner communications will follow the updated ownership.</p>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{dashboardUrl}}" class="pmv-cta" target="_blank">Open dashboard</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="pmv-footer-minimal">This is an automated notification from PropMv.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

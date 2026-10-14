@@ -1,0 +1,145 @@
+{
+  "ranAt": "2026-10-10T06:12:47.638Z",
+  "outcome": "fail",
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Sandbox + vendorMerchant + vendorPay enabled for gates",
+      "data": {
+        "environment": "sandbox",
+        "vendorPayEnabled": true,
+        "productionReadyClaim": false
+      }
+    },
+    {
+      "gate": "ATLAS_CONNECT",
+      "status": "PASS",
+      "message": "Connected to Atlas"
+    },
+    {
+      "gate": "SANDBOX_VENDOR_PA",
+      "status": "PASS",
+      "message": "Vendor PA created",
+      "data": {
+        "vendorPaId": "acct_3fTmLGs6iBUMMsLm4PGSc",
+        "status": "incomplete"
+      }
+    },
+    {
+      "gate": "ATLAS_VENDOR_DEFAULT_BANK",
+      "status": "PASS",
+      "message": "Default bank persisted; non-default also present",
+      "data": {
+        "defaultPm": "pm_3fTmLIQs1ApxwEKH7KJd3"
+      }
+    },
+    {
+      "gate": "OWNER_PM_FIXTURE",
+      "status": "PASS",
+      "message": "Owner customer + send-only PM (existing; execute will not mutate)",
+      "data": {
+        "ownerCustomerId": "acct_3fTmLIxLuGcNmsA3FH19J",
+        "ownerPmId": "pm_3fTmLJEpU9EjidmMpo9xO",
+        "localId": "6ac9d74b2ebb8c248e844b42"
+      }
+    },
+    {
+      "gate": "AMOUNT_CALC_NO_METHOD",
+      "status": "PASS",
+      "message": "Without methodType: invoicePaymentAmount only; fee=0",
+      "data": {
+        "invoicePaymentAmount": 15,
+        "chargeAmountDollars": 15,
+        "chargeAmountCents": 1500,
+        "processingFeeAmount": 0,
+        "processingFeePaidBy": "",
+        "platformFeeCents": 0
+      }
+    },
+    {
+      "gate": "DEFAULT_BANK_ONLY",
+      "status": "PASS",
+      "message": "Resolved configured default only (no first-bank fallback)",
+      "data": {
+        "resolved": "pm_3fTmLIQs1ApxwEKH7KJd3",
+        "expected": "pm_3fTmLIQs1ApxwEKH7KJd3"
+      }
+    },
+    {
+      "gate": "SETTLE_PREDICATE_ACH",
+      "status": "PASS",
+      "message": "ACH stays pending until util allows settlement",
+      "data": {
+        "processing": "none",
+        "succeeded": "settle"
+      }
+    },
+    {
+      "gate": "AUTH_ASSIGNEE_ONLY",
+      "status": "PASS",
+      "message": "Access denied"
+    },
+    {
+      "gate": "EXECUTE_OWNER_TO_VENDOR",
+      "status": "FAIL",
+      "message": "Payin shape mismatch",
+      "data": {
+        "transactionId": "txn_3fTmLLUtrZq6kkFb78nKs",
+        "status": "SUCCEEDED",
+        "destination": "pm_3fTmLIQs1ApxwEKH7KJd3",
+        "amount": 5,
+        "fee": 2,
+        "duplicate": false
+      }
+    },
+    {
+      "gate": "IDEMPOTENCY_PRIMARY",
+      "status": "PASS",
+      "message": "Same paymentAttemptId returns duplicate; single row",
+      "data": {
+        "duplicate": true,
+        "count": 1,
+        "transactionId": "txn_3fTmLLUtrZq6kkFb78nKs"
+      }
+    },
+    {
+      "gate": "ATLAS_VENDOR_PAYIN",
+      "status": "FAIL",
+      "message": "Row mismatch",
+      "data": {
+        "id": "6ac9d7522ebb8c248e844b67",
+        "transactionId": "txn_3fTmLLUtrZq6kkFb78nKs",
+        "status": "SUCCEEDED",
+        "settledAt": "2026-10-10T06:12:36.890Z"
+      }
+    },
+    {
+      "gate": "WEBHOOK_APPLY",
+      "status": "PASS",
+      "message": "Webhook path applied via settlement util + re-fetched payload",
+      "data": {
+        "status": "SUCCEEDED",
+        "settledAt": "2026-10-10T06:12:36.890Z",
+        "invoiceAmountPaidBefore": 5,
+        "invoiceAmountPaidAfter": 5
+      }
+    },
+    {
+      "gate": "PARTIAL_SUPPORTED",
+      "status": "PASS",
+      "message": "Partials allowed under existing VendorInvoice rules",
+      "data": {
+        "remaining": 10,
+        "nextPartial": 3
+      }
+    },
+    {
+      "gate": "PRODUCTION_NOT_CLAIMED",
+      "status": "PASS",
+      "message": "Sandbox gates do not enable production; keep PAYLOAD_VENDOR_PAY_ENABLED=false until live checklist"
+    }
+  ],
+  "productionReady": false,
+  "note": "Sandbox COMPLETE does not mean production-ready"
+}

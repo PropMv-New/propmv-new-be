@@ -1,0 +1,211 @@
+{
+  "ranAt": "2026-10-09T14:40:35.548Z",
+  "outcome": "no_go_pending_production_canary",
+  "enablementAllowed": false,
+  "productionRailEvidenceRequired": true,
+  "note": "Sandbox/regression PASS is not sufficient for enablement GO. Keep PAYLOAD_VENDOR_PAY_ENABLED=false until G1–G14 PASS with production-rail evidence and explicit enablement approval.",
+  "results": [
+    {
+      "gate": "FLAG_OFF_PRECONDITION",
+      "status": "PASS",
+      "message": "PAYLOAD_VENDOR_PAY_ENABLED is false (required until explicit enablement GO)",
+      "data": {
+        "vendorPayEnabled": false,
+        "vendorMerchantEnabled": true,
+        "environment": "sandbox",
+        "phase4ProdCanary": false,
+        "liveRailAllowedThisRun": false
+      }
+    },
+    {
+      "gate": "CREDENTIAL_ISOLATION",
+      "status": "PASS",
+      "message": "Credential isolation rule respected for this run",
+      "data": {
+        "environment": "sandbox",
+        "phase4ProdCanary": false
+      }
+    },
+    {
+      "gate": "REGRESSION_UNIT",
+      "status": "PASS",
+      "message": "Phase 1–4 unit + HOA payin helpers PASS",
+      "data": {
+        "exitCode": 0,
+        "tail": "belongs to the charge merchant\n      ---\n      duration_ms: 0.191287\n      ...\n    # Subtest: retries without customer_id when Payload rejects payment_method_id\n    ok 5 - retries without customer_id when Payload rejects payment_method_id\n      ---\n      duration_ms: 0.175799\n      ...\n    1..5\nok 5 - payloadPayinCharge HOA pay-in helpers\n  ---\n  duration_ms: 10.489434\n  type: 'suite'\n  ...\n1..5\n# tests 34\n# suites 5\n# pass 34\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 766.833346\n"
+      }
+    },
+    {
+      "gate": "REGRESSION_UI_GATE",
+      "status": "PASS",
+      "message": "Vendor pay UI gate truth table PASS",
+      "data": {
+        "exitCode": 0
+      }
+    },
+    {
+      "gate": "SETTLEMENT_UTIL_AUTHORITY",
+      "status": "PASS",
+      "message": "resolvePayloadPayinSettlementAction remains sole settle authority (code)",
+      "data": {
+        "achPending": "none",
+        "achSettle": "settle",
+        "cardSettle": "settle"
+      }
+    },
+    {
+      "gate": "AMOUNT_RULE_NO_HOA_FEE",
+      "status": "PASS",
+      "message": "invoicePaymentAmount only; processingFeeAmount=0",
+      "data": {
+        "invoicePaymentAmount": 12.34,
+        "chargeAmountDollars": 12.34,
+        "chargeAmountCents": 1234,
+        "processingFeeAmount": 0
+      }
+    },
+    {
+      "gate": "WEBHOOK_AUTH_CONFIG",
+      "status": "BLOCKED",
+      "message": "Webhook auth live proof deferred until production canary run",
+      "data": {
+        "bearerConfigured": false,
+        "note": "HMAC PAYLOAD_WEBHOOK_SECRET is not used (undocumented for Payload v2)"
+      }
+    },
+    {
+      "gate": "ATLAS_INVENTORY",
+      "status": "PASS",
+      "message": "Inventory against configured Mongo (sandbox env keys). Not proof of production ACTIVE underwriting.",
+      "data": {
+        "vendorAccountCount": 0,
+        "activeVendorCount": 0,
+        "activeWithDefaultBankSampled": 0,
+        "payloadVendorPayinRows": 0,
+        "environmentConfigured": "sandbox"
+      }
+    },
+    {
+      "gate": "G2_DEFAULT_BANK_ONLY",
+      "status": "PASS",
+      "message": "Code enforces default deposit bank only (no first-bank fallback). Live prod bank readiness still required under G1 canary.",
+      "data": {
+        "codeEnforced": true,
+        "liveProdBankProof": "blocked_pending_canary"
+      }
+    },
+    {
+      "gate": "G1_PA_ACTIVE_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Production Vendor PA ACTIVE (Payload + PropMV). BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G3_CARD_LIFECYCLE_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Live production Card charge + settle/fail via util. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G4_ACH_LIFECYCLE_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Live production ACH pending→settle + return path. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G5_WEBHOOK_DELIVERY_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Live webhook delivery to PropMV production URL. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G6_WEBHOOK_AUTH_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Live webhook bearer/OAuth verified. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G7_REFETCH_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Secret-key GET /transactions before Vendor settle. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G8_IDEMPOTENCY_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Duplicate webhook + attempt id on production rail. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G9_RECOVERY_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Timeout/crash recovery on production rail. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G10_CONCURRENCY_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "Overpay protection under parallel prod canary load. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G11_BOOKS_PRODUCTION",
+      "status": "BLOCKED",
+      "message": "VendorInvoice settle/reverse + Record Payment coexistence. BLOCKED: production-rail evidence requires PHASE4_PROD_CANARY=1 and PAYLOAD_ENVIRONMENT=production. Sandbox/production-like runs are insufficient for enablement GO.",
+      "data": {
+        "productionRailRequired": true
+      }
+    },
+    {
+      "gate": "G12_MONITORING",
+      "status": "BLOCKED",
+      "message": "Stuck Processing / missed webhook detectable — requires production canary window + ops runbook execution",
+      "data": {
+        "requires": "production_canary"
+      }
+    },
+    {
+      "gate": "G13_ROLLBACK_DRILL",
+      "status": "BLOCKED",
+      "message": "Flag-off drill with HOA flows intact — requires production canary window + ops runbook execution",
+      "data": {
+        "requires": "production_canary"
+      }
+    },
+    {
+      "gate": "G14_REGRESSION_PACK",
+      "status": "PARTIAL",
+      "message": "Unit/UI/HOA helper regression PASS; full production smoke of Autopay/Check21/Rainforest/Straddle still requires ops sign-off on canary window",
+      "data": {
+        "unitOk": true,
+        "uiOk": true
+      }
+    },
+    {
+      "gate": "ENABLEMENT_AUTO",
+      "status": "PASS",
+      "message": "Script will not enable PAYLOAD_VENDOR_PAY_ENABLED. Stop for explicit enablement approval after GO.",
+      "data": {
+        "enablementAllowed": false
+      }
+    }
+  ]
+}

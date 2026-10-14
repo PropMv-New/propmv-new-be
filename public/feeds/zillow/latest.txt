@@ -1,0 +1,16 @@
+FEED RUN REPORT
+Feed ID: testcompany001-feed
+Run Timestamp: 2026-07-04T09:15:00.000Z
+Feed URL: https://www.testrentalsllc.com/feeds/zillow_rentals_test_feed.xml
+Status: COMPLETED WITH WARNINGS
+
+Total Listings in Feed: 1
+Listings Accepted: 1
+Listings Rejected: 0
+Listings Blocked: 0
+
+Listing Validity Errors:
+Accepted listing id=6a48dd03f0c0cf924a0216dc
+Accepted listing id=6a49094587c16ebe4db73b24
+
+End of Report

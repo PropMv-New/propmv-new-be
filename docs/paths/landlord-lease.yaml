@@ -1,0 +1,308 @@
+/api/v1/landlord/leasing/create-lease:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Create a lease
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/lease.yaml#/CreateLeaseRequest'
+    responses:
+      '201':
+        description: Lease created.
+
+/api/v1/landlord/leasing/lease:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: List all leases with filter options
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/lease/list:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: List leases scoped by creator/landlord and status
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/lease/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Export leases in multi-format formats
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/lease/tenure-availability:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Check if dates collide with current occupancy schedules
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/lease/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Get lease by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Delete a lease record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.
+
+/api/v1/landlord/leasing/edit-lease/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Update lease details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/lease.yaml#/UpdateLeaseRequest'
+    responses:
+      '200':
+        description: Lease updated.
+
+/api/v1/landlord/leasing/lease/{id}/document:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Upload signed lease doc binary to file list
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Uploaded.
+
+/api/v1/landlord/leasing/lease/{id}/terminate:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Force terminate lease early
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Lease status changed to Terminated.
+
+/api/v1/landlord/leasing/lease/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Write internal notes to lease
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/landlord/leasing/lease/tenant:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Retrieve active lease corresponding to tenant ID, property, and unit
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/renew-lease/{id}:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Renew/Extend lease contract parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/lease.yaml#/RenewLeaseRequest'
+    responses:
+      '200':
+        description: Lease renewed.
+
+/api/v1/landlord/leasing/lease/{id}/activate:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Transition pending lease to Active and generate invoice structures
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Activated.
+
+/api/v1/landlord/leasing/process-lease-lifecycle:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing)
+    summary: Execute state transitions engine manually (cron simulation)
+    responses:
+      '200':
+        description: Lifecycle evaluated.
+
+/api/v1/landlord/leasing/creator/{createdBy}/templates:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: List templates stored by creator
+    parameters:
+      - name: createdBy
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Filter by the creator ID.
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: Upload PDF template config
+    parameters:
+      - name: createdBy
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Filter by the creator ID.
+    responses:
+      '201':
+        description: Template created.
+
+/api/v1/landlord/leasing/templates/{templateId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: Get template by templateId
+    parameters:
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/leasing/templates/{templateId}/download:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: Download template PDF
+    parameters:
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/landlord/leasing/creator/{createdBy}/templates/{templateId}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: Update template files
+    parameters:
+      - name: createdBy
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Filter by the creator ID.
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Leasing Templates)
+    summary: Delete template record
+    parameters:
+      - name: createdBy
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Filter by the creator ID.
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Deleted.

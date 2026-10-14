@@ -1,0 +1,152 @@
+/api/v1/expense:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: List expenses
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Create expense record
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              data:
+                type: string
+                description: JSON expense payload
+              documents:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '201':
+        description: Expense created.
+
+/api/v1/expense/customers:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Get customers (taxable entities) for dropdown
+    responses:
+      '200':
+        description: Success
+
+/api/v1/expense/customers/{customerId}/bank-accounts:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Get bank accounts linked to customer
+    parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/expense/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Export expenses to CSV/Excel
+    responses:
+      '200':
+        description: Success
+
+/api/v1/expense/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Get expense by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Update expense record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Expense updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Soft-delete expense
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Expense deleted.
+
+/api/v1/expense/{id}/items/{itemId}/document:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Upload document/receipt for specific expense item
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '201':
+        description: Receipt uploaded.
+
+/api/v1/expense/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Add internal notes to expense
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/expense/{id}/mark-paid:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - Expenses
+    summary: Mark expense status as paid
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success

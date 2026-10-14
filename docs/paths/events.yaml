@@ -1,0 +1,54 @@
+/api/v1/events/events:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Events & Calendar
+    summary: List events with filters
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Events & Calendar
+    summary: Create a calendar event
+    responses:
+      '201':
+        description: Event created.
+
+/api/v1/events/events/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Events & Calendar
+    summary: Get calendar event by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Events & Calendar
+    summary: Update calendar event details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Event updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - Events & Calendar
+    summary: Delete calendar event
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Event deleted.

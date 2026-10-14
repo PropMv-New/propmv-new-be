@@ -1,0 +1,276 @@
+{
+  "info": {
+    "name": "Activate Lease API",
+    "description": "Collection for testing the Activate Lease API endpoint",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Activate Lease - Fixed Term Monthly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Monthly frequency"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Fixed Term Bi-Monthly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Bi-Monthly frequency (2 payments per month)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Fixed Term Weekly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Weekly frequency"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Fixed Term Bi-Weekly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Bi-Weekly frequency (every other week)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Fixed Term Semi-Annually",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Semi-Annually frequency (2 payments per year)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Fixed Term Custom",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Fixed Term lease with Custom frequency (one-time payment)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Month-to-Month Monthly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Month-to-Month lease with Monthly frequency (12 months)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Month-to-Month Bi-Monthly",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Activates a Month-to-Month lease with Bi-Monthly frequency (24 invoices per year)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Already Active (Error)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/{{leaseId}}/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "{{leaseId}}", "activate"]
+        },
+        "description": "Attempts to activate an already active lease (should return 400 error)"
+      },
+      "response": []
+    },
+    {
+      "name": "Activate Lease - Not Found (Error)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/leasing/lease/000000000000000000000000/activate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "leasing", "lease", "000000000000000000000000", "activate"]
+        },
+        "description": "Attempts to activate a non-existent lease (should return 404 error)"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "your_auth_token_here",
+      "type": "string"
+    },
+    {
+      "key": "leaseId",
+      "value": "507f1f77bcf86cd799439011",
+      "type": "string"
+    }
+  ]
+}

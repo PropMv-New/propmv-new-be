@@ -1,0 +1,88 @@
+Listing:
+  type: object
+  required:
+    - title
+    - description
+    - propertyId
+    - rentAmount
+  properties:
+    _id:
+      $ref: 'common.yaml#/ObjectId'
+    title:
+      type: string
+    description:
+      type: string
+    propertyId:
+      $ref: 'common.yaml#/ObjectId'
+    unitName:
+      type: string
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    availableFrom:
+      type: string
+      format: date
+    leaseType:
+      type: string
+      enum: [Fixed Term, Month-to-Month, Short Term]
+    isAcceptingApplications:
+      type: boolean
+    images:
+      type: array
+      items:
+        type: string
+    status:
+      type: string
+      enum: [Active, Published, Inactive]
+
+CreateListingRequest:
+  type: object
+  required:
+    - title
+    - description
+    - propertyId
+    - rentAmount
+  properties:
+    title:
+      type: string
+    description:
+      type: string
+    propertyId:
+      type: string
+    unitName:
+      type: string
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    availableFrom:
+      type: string
+      format: date
+    leaseType:
+      type: string
+    isAcceptingApplications:
+      type: boolean
+
+UpdateListingRequest:
+  type: object
+  properties:
+    title:
+      type: string
+    description:
+      type: string
+    propertyId:
+      type: string
+    unitName:
+      type: string
+    rentAmount:
+      type: number
+    securityDeposit:
+      type: number
+    availableFrom:
+      type: string
+      format: date
+    leaseType:
+      type: string
+    isAcceptingApplications:
+      type: boolean

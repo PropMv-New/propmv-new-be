@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Late fee assessment - {{organizationDisplayName}}</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body" bgcolor="#f8fafc" style="background-color:#f8fafc;">
+  <span class="pmv-preheader">Late fee of {{lateFeeAmount}} assessed for overdue rent invoice.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="background-color:#f8fafc;">
+    <tr><td align="center" class="pmv-shell-pad">
+      <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:600px;background-color:#ffffff;border:1px solid #e2e8f0;border-radius:16px;">
+        <tr><td class="pmv-top-accent" bgcolor="#dc2626" height="4" style="height:4px;line-height:4px;font-size:4px;background:linear-gradient(135deg,#dc2626 0%,#ea580c 100%);border-radius:16px 16px 0 0;">&nbsp;</td></tr>
+        <tr><td class="pmv-card-inner" style="padding:24px 28px;">
+          <!-- PMV_EMAIL_BRAND_HEADER -->
+          <h1 class="pmv-title" style="font-size:22px;font-weight:800;margin:0 0 12px;color:#0f172a;">Late fee assessment</h1>
+          <p class="pmv-greet" style="font-size:15px;font-weight:700;margin:0 0 12px;color:#0f172a;">Hi {{tenantName}},</p>
+          <p class="pmv-text" style="font-size:15px;line-height:1.6;color:#0f172a;margin:0 0 14px;">A late fee was added because your rent payment is past due. Please review the details below and pay as soon as you can.</p>
+          
+          <div class="pmv-alert" style="background-color:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px 16px;margin:16px 0;">
+            <p style="font-size:14px;color:#991b1b;margin:0;font-weight:600;">Payment overdue</p>
+            <p style="font-size:13px;color:#7f1d1d;margin:6px 0 0;line-height:1.5;">Your rent is past due. Pay now to avoid additional late fees.</p>
+          </div>
+
+          <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f8fafc" style="width:100%;border-collapse:collapse;margin:16px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
+            <tr><td colspan="2" class="pmv-section-header" style="padding:12px 14px;font-size:13px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;">Original Rent Invoice</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Invoice #</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{rentInvoiceNumber}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Original due date</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{rentDueDate}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Days overdue</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#dc2626;font-weight:700;border-bottom:1px solid #e2e8f0;">{{daysOverdue}} days</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Outstanding rent</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#dc2626;font-weight:700;border-bottom:1px solid #e2e8f0;">{{rentBalance}}</td></tr>
+            
+            <tr><td colspan="2" class="pmv-section-header" style="padding:12px 14px;font-size:13px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;">Late Fee Invoice</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Invoice #</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{lateFeeInvoiceNumber}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Property</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{propertyName}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Unit</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{unitNumber}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Late fee amount</td><td class="pmv-details-value pmv-total" style="padding:10px 14px;font-size:16px;color:#dc2626;font-weight:800;border-bottom:1px solid #e2e8f0;">{{lateFeeAmount}}</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;border-bottom:1px solid #e2e8f0;">Grace period</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;border-bottom:1px solid #e2e8f0;">{{gracePeriod}} days</td></tr>
+            <tr><td class="pmv-details-label" style="padding:10px 14px;font-size:14px;color:#64748b;font-weight:600;width:40%;">Due date</td><td class="pmv-details-value" style="padding:10px 14px;font-size:14px;color:#0f172a;font-weight:500;">{{lateFeeDueDate}}</td></tr>
+          </table>
+
+          <div class="pmv-total-box" style="background-color:#fef2f2;border:2px solid #dc2626;border-radius:10px;padding:16px;margin:20px 0;text-align:center;">
+            <p style="font-size:13px;color:#7f1d1d;margin:0 0 6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Total Amount Due</p>
+            <p style="font-size:28px;color:#dc2626;margin:0;font-weight:800;">{{totalAmountDue}}</p>
+            <p style="font-size:12px;color:#991b1b;margin:6px 0 0;">(Rent + Late Fee)</p>
+          </div>
+
+          <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:20px 0 8px;text-align:center;">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="pmv-cta-cell" align="center" bgcolor="#dc2626" style="background:linear-gradient(135deg,#dc2626 0%,#ea580c 100%);border-radius:12px;">
+                  <a href="{{viewInvoiceUrl}}" class="pmv-cta" target="_blank" style="display:inline-block;padding:14px 28px;color:#ffffff !important;text-decoration:none !important;border-radius:12px;font-weight:700;font-size:15px;">View and pay invoice</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+
+          <div class="pmv-info-box" style="background-color:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px 16px;margin:20px 0;">
+            <p style="font-size:13px;color:#075985;margin:0;font-weight:600;">Avoid future late fees</p>
+            <p style="font-size:13px;color:#0c4a6e;margin:6px 0 0;line-height:1.5;">Set up automatic payments or calendar reminders so future payments arrive on time.</p>
+          </div>
+
+          <p class="pmv-text" style="font-size:14px;line-height:1.6;color:#475569;margin:16px 0 8px;">Questions about this late fee or need a payment plan? Please contact your property manager as soon as possible.</p>
+
+          <div class="pmv-footer-minimal" style="font-size:12px;color:#64748b;margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;">This is an automated message - please do not reply.</div>
+        </td></tr>
+        <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

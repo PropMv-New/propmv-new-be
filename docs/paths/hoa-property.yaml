@@ -1,0 +1,180 @@
+/api/v1/hoa/property/properties:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: List HOA board properties
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Create a property/unit under HOA association
+    responses:
+      '201':
+        description: Property created.
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Update property parameters
+    responses:
+      '200':
+        description: Property updated.
+
+/api/v1/hoa/property/search:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Quick search properties
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/picker:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Autocomplete search picker properties listing
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/portfolio-overview:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: High-level overview counts of properties portfolio
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/properties/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Export properties roster
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/properties/import:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Import properties list from CSV template
+    responses:
+      '200':
+        description: Completed.
+
+/api/v1/hoa/property/properties/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Get HOA property by ID
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Delete a property
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/properties/{id}/images:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Upload image gallery photos to property portfolio
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Uploaded.
+
+/api/v1/hoa/property/properties/{id}/archive:
+  patch:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Soft-archive property record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/property/properties/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Write internal staff note to property file
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/hoa/property/properties/{id}/notes/{noteId}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Update specific property note
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Properties)
+    summary: Delete note from property portfolio
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Note removed.

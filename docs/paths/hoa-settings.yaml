@@ -1,0 +1,51 @@
+/api/v1/hoa/hoa-settings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Settings)
+    summary: Get association settings for the active context
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Settings)
+    summary: Save association settings
+    responses:
+      '200':
+        description: Settings saved.
+
+/api/v1/hoa/hoa-settings/{hoaId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Settings)
+    summary: Get explicit association settings
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Settings)
+    summary: Save settings explicitly for HOA
+    parameters:
+      - name: hoaId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Settings saved.

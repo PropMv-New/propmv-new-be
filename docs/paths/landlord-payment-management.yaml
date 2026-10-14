@@ -1,0 +1,109 @@
+/api/v1/landlord/payment-management/settings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Get property billing bank accounts settings
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Create/Update property payment accounts
+    responses:
+      '200':
+        description: Saved.
+
+/api/v1/landlord/payment-management:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Get property balance metrics
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/payment-management/summary:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Overview dashboard summary of system payouts and balances
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/payment-management/{propertyId}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Details for specific property
+    parameters:
+      - name: propertyId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/payment-management/{propertyId}/assign-landlord:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Link landlord identity to property portfolio
+    parameters:
+      - name: propertyId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/payment-management/{propertyId}/record-payment:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Record a bank payment manually
+    parameters:
+      - name: propertyId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '201':
+        description: Payment recorded.
+
+/api/v1/landlord/payment-management/{propertyId}/payment-history:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Payment Settings)
+    summary: Get manual payout entries log
+    parameters:
+      - name: propertyId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Success

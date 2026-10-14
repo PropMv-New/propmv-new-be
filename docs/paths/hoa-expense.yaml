@@ -1,0 +1,127 @@
+/api/v1/hoa/expense:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: List HOA board expenses
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Create expense record
+    responses:
+      '201':
+        description: Expense created.
+
+/api/v1/hoa/expense/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Get expense details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Update expense parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Expense updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Delete expense (soft delete)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.
+
+/api/v1/hoa/expense/{id}/items/{itemId}/document:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Upload document/receipt for expense item
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '201':
+        description: Document uploaded.
+
+/api/v1/hoa/expense/payees:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: List vendor payees
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Create payee vendor profile
+    responses:
+      '201':
+        description: Payee created.
+
+/api/v1/hoa/expense/payees/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Get payee vendor details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Update payee vendor profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Expenses)
+    summary: Delete payee vendor profile
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Deleted.

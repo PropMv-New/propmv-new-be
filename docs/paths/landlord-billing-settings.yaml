@@ -1,0 +1,30 @@
+/api/v1/landlord/billing-settings/effective:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Billing Settings)
+    summary: Get active billing calculations and rates
+    responses:
+      '200':
+        description: Success
+
+/api/v1/landlord/billing-settings:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Billing Settings)
+    summary: Get operator billing configuration
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - Landlord (Billing Settings)
+    summary: Create/Update billing configuration
+    responses:
+      '200':
+        description: Saved.

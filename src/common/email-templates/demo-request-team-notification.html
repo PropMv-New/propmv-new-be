@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>New demo request - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">New demo request from {{requesterName}} via the {{source}} page.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <span class="pmv-pill">New lead</span>
+              <h1 class="pmv-title">New demo request</h1>
+              <p class="pmv-muted" style="margin-top:0;">Submitted from the {{source}} page.</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Name</td>
+                  <td class="pmv-details-value">{{requesterName}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Email</td>
+                  <td class="pmv-details-value"><a href="mailto:{{requesterEmail}}" class="pmv-link">{{requesterEmail}}</a></td>
+                </tr>
+                {{#if hasPhone}}
+                <tr>
+                  <td class="pmv-details-label">Phone</td>
+                  <td class="pmv-details-value">{{requesterPhone}}</td>
+                </tr>
+                {{/if}}
+                {{#if hasRole}}
+                <tr>
+                  <td class="pmv-details-label">Role</td>
+                  <td class="pmv-details-value">{{role}}</td>
+                </tr>
+                {{/if}}
+                {{#if hasPropertyCount}}
+                <tr>
+                  <td class="pmv-details-label">Properties</td>
+                  <td class="pmv-details-value">{{propertyCount}}</td>
+                </tr>
+                {{/if}}
+                {{#if hasPreferredDate}}
+                <tr>
+                  <td class="pmv-details-label">Preferred date</td>
+                  <td class="pmv-details-value">{{preferredDate}}</td>
+                </tr>
+                {{/if}}
+                {{#if hasPreferredTime}}
+                <tr>
+                  <td class="pmv-details-label">Preferred time</td>
+                  <td class="pmv-details-value">{{preferredTime}}</td>
+                </tr>
+                {{/if}}
+              </table>
+
+              {{#if hasMessage}}
+              <div class="pmv-info-box" style="margin-top:16px;">
+                <p class="pmv-muted" style="margin:0 0 8px;">Message</p>
+                <p class="pmv-text" style="margin:0;white-space:pre-line;">{{message}}</p>
+              </div>
+              {{/if}}
+
+              <p class="pmv-muted" style="margin:16px 0 0;">Reply directly to reach {{requesterName}}.</p>
+              <div class="pmv-footer-minimal">Internal notification from PropMv marketing.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

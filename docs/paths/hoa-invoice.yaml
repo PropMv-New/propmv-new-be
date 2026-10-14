@@ -1,0 +1,232 @@
+/api/v1/hoa/invoice:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Get HOA invoices with filters
+    responses:
+      '200':
+        description: Success
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Create invoice (JSON/multipart)
+    responses:
+      '201':
+        description: Invoice created.
+
+/api/v1/hoa/invoice/export:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Export invoices log to CSV
+    responses:
+      '200':
+        description: File stream.
+
+/api/v1/hoa/invoice/generation/{jobId}/status:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Check status of async batch policy generation job
+    parameters:
+      - name: jobId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Job progress details.
+
+/api/v1/hoa/invoice/statistics:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Statistics summary for billing dashboard widget
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/invoice/{id}:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Get invoice details
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Update invoice parameters
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Invoice updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Soft-delete invoice record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/invoice/{id}/payment-transactions:
+  get:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Retrieve payment transaction logs for specific invoice
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Success
+
+/api/v1/hoa/invoice/{id}/comments:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Add comment to invoice timeline (legacy)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Comment created.
+
+/api/v1/hoa/invoice/{id}/notes:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Create internal note for invoice folder (supports attachments)
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '201':
+        description: Note added.
+
+/api/v1/hoa/invoice/{id}/notes/{noteId}:
+  put:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Update internal note text
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Note updated.
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Delete internal note record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: noteId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Note deleted.
+
+/api/v1/hoa/invoice/{id}/payments/{paymentId}:
+  delete:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Delete/Void specific invoice payment transaction record
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+      - name: paymentId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Payment entry deleted.
+
+/api/v1/hoa/invoice/{id}/send-reminder:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Send payment reminder email notification
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Email reminder sent.
+
+/api/v1/hoa/invoice/{id}/waive:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Waive remaining balance on invoice
+    parameters:
+      - $ref: '../components/parameters/common.yaml#/idParam'
+    responses:
+      '200':
+        description: Invoice balance waived.
+
+/api/v1/hoa/invoice/generate-rent-deposit:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Generate rent and deposit invoices for active leases
+    responses:
+      '200':
+        description: Processed.
+
+/api/v1/hoa/invoice/generate-additional-fees:
+  post:
+    security:
+      - bearerAuth: []
+    tags:
+      - HOA Board (Invoices)
+    summary: Generate additional fees for HOA members
+    responses:
+      '200':
+        description: Processed.

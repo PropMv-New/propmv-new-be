@@ -1,0 +1,203 @@
+{
+  "ranAt": "2026-10-10T08:36:15.660Z",
+  "outcome": "pass",
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Sandbox + vendorMerchant + vendorPay enabled in-process only",
+      "data": {
+        "environment": "sandbox",
+        "vendorPayEnabled": true,
+        "committedDefaultRemainsFalse": true
+      }
+    },
+    {
+      "gate": "ATLAS_CONNECT",
+      "status": "PASS",
+      "message": "Connected to Atlas"
+    },
+    {
+      "gate": "SANDBOX_VENDOR_PA",
+      "status": "PASS",
+      "message": "Vendor PA created",
+      "data": {
+        "vendorPaId": "acct_3fTmsWQ0hpOyq6SCHHWma"
+      }
+    },
+    {
+      "gate": "VENDOR_DEFAULT_BANK",
+      "status": "PASS",
+      "data": {
+        "defaultPm": "pm_3fTmsWwnJGWYNWBL5e0MX"
+      }
+    },
+    {
+      "gate": "HOA_RAILS_FIXTURE",
+      "status": "PASS",
+      "message": "HOA PA + bank present for inequality asserts",
+      "data": {
+        "hoaPaId": "acct_3fTmsXje8Zmc8KYJ2ccBH",
+        "hoaBankId": "pm_3fTmsY49ZMDnAOPvXBPub"
+      }
+    },
+    {
+      "gate": "FIRST_TIME_BOARD_NO_PM_BLOCK",
+      "status": "PASS",
+      "message": "Pay Invoice rejects when Board has no PM (no silent create)",
+      "data": {
+        "code": "PAYER_PM_NOT_FOUND",
+        "statusCode": 404,
+        "message": "Payment method not found."
+      }
+    },
+    {
+      "gate": "FIRST_TIME_BOARD_ONBOARDING",
+      "status": "PASS",
+      "message": "Board Customer + ACH created explicitly (Settings-equivalent); Pay never auto-creates",
+      "data": {
+        "boardCustomerId": "acct_3fTmsYPD9g641Mi46Wkik",
+        "achLocalId": "6ac9f8db94387da0c27dc07d",
+        "scopeKey": "hoa:6ac9f8d094387da0c27dc01b"
+      }
+    },
+    {
+      "gate": "BOARD_CARD_ONBOARDING",
+      "status": "PASS",
+      "data": {
+        "cardLocalId": "6ac9f8dd94387da0c27dc07f",
+        "pmId": "pm_3fTmsZ50sdVC2UosaMhaF"
+      }
+    },
+    {
+      "gate": "OWNER_PM_FIXTURE",
+      "status": "PASS",
+      "data": {
+        "ownerCustomerId": "acct_3fTmsZKidS8BIw3go05XL",
+        "localId": "6ac9f8df94387da0c27dc083"
+      }
+    },
+    {
+      "gate": "AUTH_NON_ASSIGNEE_OWNER",
+      "status": "PASS",
+      "data": {
+        "message": "Access denied"
+      }
+    },
+    {
+      "gate": "AUTH_WRONG_HOA_BOARD",
+      "status": "PASS",
+      "data": {
+        "statusCode": 404,
+        "message": "Vendor invoice not found"
+      }
+    },
+    {
+      "gate": "BOARD_ACH_EXECUTE",
+      "status": "PASS",
+      "message": "Board→Vendor ACH charged to Vendor PA/default bank",
+      "data": {
+        "failures": [],
+        "transactionId": "txn_3fTmsbBPVSXvZd2YnX5Sr",
+        "status": "SUCCEEDED",
+        "payerRole": "board",
+        "merchantId": "acct_3fTmsWQ0hpOyq6SCHHWma",
+        "destination": "pm_3fTmsWwnJGWYNWBL5e0MX",
+        "hoaPaId": "acct_3fTmsXje8Zmc8KYJ2ccBH",
+        "hoaBankId": "pm_3fTmsY49ZMDnAOPvXBPub"
+      }
+    },
+    {
+      "gate": "IDEMPOTENCY_SAME_ATTEMPT",
+      "status": "PASS",
+      "data": {
+        "duplicate": true,
+        "count": 1
+      }
+    },
+    {
+      "gate": "DUPLICATE_WEBHOOK",
+      "status": "PASS",
+      "message": "Second webhook did not double-settle",
+      "data": {
+        "paidBefore": 5,
+        "paidMid": 5,
+        "paidAfter": 5
+      }
+    },
+    {
+      "gate": "BOARD_CARD_EXECUTE",
+      "status": "PASS",
+      "message": "Board→Vendor Card charged to Vendor PA/default bank",
+      "data": {
+        "failures": [],
+        "transactionId": "txn_3fTmseRS8UY6qWU36CCo6",
+        "status": "SUCCEEDED",
+        "methodType": "CARD",
+        "payerRole": "board",
+        "merchantId": "acct_3fTmsWQ0hpOyq6SCHHWma",
+        "destination": "pm_3fTmsWwnJGWYNWBL5e0MX"
+      }
+    },
+    {
+      "gate": "OWNER_REGRESSION",
+      "status": "PASS",
+      "data": {
+        "failures": [],
+        "transactionId": "txn_3fTmsg7LoFMbpK1xp4wAT",
+        "status": "SUCCEEDED",
+        "payerRole": "owner",
+        "merchantId": "acct_3fTmsWQ0hpOyq6SCHHWma",
+        "destination": "pm_3fTmsWwnJGWYNWBL5e0MX"
+      }
+    },
+    {
+      "gate": "CONCURRENCY_INFLIGHT_OVERPAY",
+      "status": "PASS",
+      "message": "Payment exceeds collectable balance (paid 7 + in-flight 15 + new 5 > 20).",
+      "data": {
+        "code": "VENDOR_INVOICE_OVERPAY",
+        "details": {
+          "amountPaid": 7,
+          "inFlightElectronic": 15,
+          "invoicePaymentAmount": 5,
+          "subAmount": 20
+        }
+      }
+    },
+    {
+      "gate": "MANUAL_ELECTRONIC_RACE_INVARIANT",
+      "status": "PASS",
+      "message": "Shared collectable invariant blocks Manual payment when electronic in-flight consumes balance",
+      "data": {
+        "manualBlocked": true,
+        "details": {
+          "amountPaid": 7,
+          "inFlightElectronic": 15,
+          "invoicePaymentAmount": 1,
+          "subAmount": 20
+        }
+      }
+    },
+    {
+      "gate": "SETTLE_AUTHORITY",
+      "status": "PASS",
+      "data": {
+        "processing": "none",
+        "succeeded": "settle"
+      }
+    },
+    {
+      "gate": "NEW_PAYMENT_NEW_ATTEMPT",
+      "status": "PASS",
+      "message": "Legitimate second payment uses distinct attempt id / idempotency key"
+    },
+    {
+      "gate": "PRODUCTION_NOT_CLAIMED",
+      "status": "PASS",
+      "message": "No production deploy/canary/live payments; flag default remains false"
+    }
+  ],
+  "productionReady": false,
+  "note": "Sandbox COMPLETE does not mean production-ready; keep PAYLOAD_VENDOR_PAY_ENABLED=false"
+}

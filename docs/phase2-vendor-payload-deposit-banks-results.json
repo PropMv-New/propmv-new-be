@@ -1,0 +1,147 @@
+{
+  "ranAt": "2026-10-09T13:51:14.636Z",
+  "outcome": "pass",
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Payload sandbox configured; vendorMerchantEnabled=true for script",
+      "data": {
+        "environment": "sandbox",
+        "merchantOnboardingMode": "plugin"
+      }
+    },
+    {
+      "gate": "ATLAS_CONNECT",
+      "status": "PASS",
+      "message": "Connected to Atlas / Mongo"
+    },
+    {
+      "gate": "SANDBOX_PA",
+      "status": "PASS",
+      "message": "Created Vendor Processing Account in sandbox",
+      "data": {
+        "vendorPaId": "acct_3fTifSkKkjhuvbZegdIzK",
+        "status": "incomplete"
+      }
+    },
+    {
+      "gate": "ATLAS_VENDOR_ACCOUNT",
+      "status": "PASS",
+      "message": "Live Atlas insert/read of Vendor PayloadAccount",
+      "data": {
+        "id": "6ac8f14b6398cc24471a2f9f",
+        "entityType": "vendor",
+        "merchantId": "acct_3fTifSkKkjhuvbZegdIzK",
+        "externalId": "payload_vendor_6ac8f1476398cc24471a2f88"
+      }
+    },
+    {
+      "gate": "SANDBOX_TWO_BANKS",
+      "status": "PASS",
+      "message": "Two bank PMs created under Vendor PA",
+      "data": {
+        "pm1": "pm_3fTifU9EvQhqjmC2sSdYg",
+        "pm2": "pm_3fTifUQIspBHgWvaZEiKy",
+        "pm1Default": true,
+        "pm2Default": false,
+        "pm1Transfer": "receive-only",
+        "pm2Transfer": "receive-only",
+        "pm1Verification": "verified"
+      }
+    },
+    {
+      "gate": "ATLAS_DEPOSIT_METHODS",
+      "status": "PASS",
+      "message": "Live Atlas insert/read of two Vendor PayloadDepositMethod rows",
+      "data": {
+        "bank1": {
+          "id": "6ac8f14f6398cc24471a2fc9",
+          "pm": "pm_3fTifU9EvQhqjmC2sSdYg",
+          "primary": true,
+          "verification": "verified",
+          "transfer": "receive-only"
+        },
+        "bank2": {
+          "id": "6ac8f14f6398cc24471a2fcd",
+          "pm": "pm_3fTifUQIspBHgWvaZEiKy",
+          "primary": false
+        }
+      }
+    },
+    {
+      "gate": "PRIMARY_DEFAULT",
+      "status": "PASS",
+      "message": "Exactly one intended default_deposit_method / local mirror",
+      "data": {
+        "defaultCount": 1,
+        "defaultPm": "pm_3fTifU9EvQhqjmC2sSdYg"
+      }
+    },
+    {
+      "gate": "TWO_BANKS_COEXIST",
+      "status": "PASS",
+      "message": "Two Vendor banks coexist under same Vendor Processing Account"
+    },
+    {
+      "gate": "INDEXES",
+      "status": "PASS",
+      "message": "depositMethodId uniqueness and payloadAccountRef indexes present",
+      "data": {
+        "indexNames": [
+          "_id_",
+          "provider_1",
+          "payloadAccountRef_1",
+          "businessId_1",
+          "entityType_1",
+          "entityId_1",
+          "merchantId_1",
+          "depositMethodId_1",
+          "routeType_1",
+          "isPrimaryPayout_1",
+          "status_1",
+          "fingerprint_1",
+          "verificationStatus_1",
+          "transferType_1",
+          "defaultDepositMethod_1",
+          "isDeleted_1",
+          "payloadAccountRef_1_isDeleted_1_createdAt_-1",
+          "payloadAccountRef_1_isPrimaryPayout_1_isDeleted_1",
+          "payloadAccountRef_1_depositMethodId_1_isDeleted_1",
+          "entityType_1_entityId_1_isDeleted_1",
+          "provider_1_depositMethodId_1"
+        ]
+      }
+    },
+    {
+      "gate": "CROSS_VENDOR_PM_REJECT",
+      "status": "PASS",
+      "message": "Other Vendor cannot attach pm_ belonging to first Vendor account"
+    },
+    {
+      "gate": "CROSS_VENDOR_ACCESS",
+      "status": "PASS",
+      "message": "Other Vendor cannot manage first Vendor PayloadAccount"
+    },
+    {
+      "gate": "FLAG_OFF_DEPOSIT_GATE",
+      "status": "PASS",
+      "message": "Vendor deposit ops rejected when PAYLOAD_VENDOR_MERCHANT_ENABLED=false"
+    },
+    {
+      "gate": "STRADDLE_PRESERVED",
+      "status": "PASS",
+      "message": "No Straddle Vendor bank APIs/models mutated in Phase 2 (flag-off UI unchanged)"
+    },
+    {
+      "gate": "CLEANUP",
+      "status": "PASS",
+      "message": "Soft-deleted Phase 2 Atlas docs; sandbox PA/PMs left for inspection",
+      "data": {
+        "vendorPaId": "acct_3fTifSkKkjhuvbZegdIzK",
+        "pm1": "pm_3fTifU9EvQhqjmC2sSdYg",
+        "pm2": "pm_3fTifUQIspBHgWvaZEiKy"
+      }
+    }
+  ]
+}

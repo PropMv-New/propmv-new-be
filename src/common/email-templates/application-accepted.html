@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Application approved - PropMv</title>
+  <!-- PMV_EMAIL_THEME -->
+</head>
+<body class="pmv-body">
+  <span class="pmv-preheader">Your rental application for {{propertyName}} was approved.</span>
+  <table role="presentation" class="pmv-shell" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center" class="pmv-shell-pad">
+        <table role="presentation" class="pmv-card-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="pmv-top-accent">&nbsp;</td></tr>
+          <tr>
+            <td class="pmv-card-inner">
+              <!-- PMV_EMAIL_BRAND_HEADER -->
+
+              <span class="pmv-success-banner">Application approved</span>
+              <h1 class="pmv-title">Congratulations, {{applicantName}}!</h1>
+              <p class="pmv-text">Your application for <strong>{{propertyName}}</strong> was approved by {{landlordName}}.</p>
+
+              <table class="pmv-details-table" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="pmv-details-label">Property</td>
+                  <td class="pmv-details-value">{{propertyName}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Address</td>
+                  <td class="pmv-details-value">{{propertyAddress}}</td>
+                </tr>
+                <tr>
+                  <td class="pmv-details-label">Approved on</td>
+                  <td class="pmv-details-value">{{approvalDate}}</td>
+                </tr>
+              </table>
+
+              <p class="pmv-text">Your landlord will contact you with next steps for your lease.</p>
+
+              <table role="presentation" class="pmv-cta-wrap" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td class="pmv-cta-cell" align="center" bgcolor="#f97316">
+                          <a href="{{dashboardUrl}}" class="pmv-cta" target="_blank">View dashboard</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <p class="pmv-muted">Questions? Contact <a href="mailto:{{landlordEmail}}" class="pmv-link">{{landlordEmail}}</a></p>
+              <div class="pmv-footer-minimal">&copy; {{currentYear}} PropMv. All rights reserved.</div>
+            </td>
+          </tr>
+          <tr><td><!-- PMV_EMAIL_BRAND_FOOTER --></td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

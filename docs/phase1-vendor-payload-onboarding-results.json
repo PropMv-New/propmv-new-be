@@ -1,0 +1,95 @@
+{
+  "ranAt": "2026-10-09T13:14:51.417Z",
+  "dbMode": "memory",
+  "results": [
+    {
+      "gate": "CONFIG",
+      "status": "PASS",
+      "message": "Payload client configured; vendorMerchantEnabled forced true for script",
+      "data": {
+        "environment": "sandbox",
+        "vendorMerchantEnabled": true,
+        "merchantOnboardingMode": "plugin"
+      }
+    },
+    {
+      "gate": "CONFIG_DB",
+      "status": "WARN",
+      "message": "Using in-memory PayloadAccount store (PHASE1_MEMORY_DB forced). Atlas/Mongo not used."
+    },
+    {
+      "gate": "A_INITIALIZE",
+      "status": "PASS",
+      "message": "PayloadAccount(entityType=vendor) created with correct Vendor mapping (memory)",
+      "data": {
+        "dbMode": "memory",
+        "accountId": "6ac8e8c90cc3aa8ebeb729d1",
+        "merchantId": null,
+        "onboardingStatus": "NOT_STARTED",
+        "alreadyExists": false,
+        "externalId": "payload_vendor_6ac8e8c90cc3aa8ebeb729cf",
+        "expectedExternalId": "payload_vendor_6ac8e8c90cc3aa8ebeb729cf",
+        "onboardingMode": "plugin"
+      }
+    },
+    {
+      "gate": "A2_SANDBOX_PA",
+      "status": "PASS",
+      "message": "Created throwaway Vendor-like Processing Account in Payload Sandbox",
+      "data": {
+        "sandboxPaId": "acct_3fTiX3VhAfDvF0d5aISFd",
+        "status": "incomplete",
+        "object": "processing_account"
+      }
+    },
+    {
+      "gate": "B_DUPLICATE_PREVENTION",
+      "status": "PASS",
+      "message": "Second initialize returned existing account; still one Vendor PayloadAccount",
+      "data": {
+        "alreadyExists": true,
+        "countAfter": 1,
+        "sameId": true
+      }
+    },
+    {
+      "gate": "C_LIST_SCOPING",
+      "status": "PASS",
+      "message": "listMerchantAccounts returns only this Vendor account",
+      "data": {
+        "count": 1,
+        "ids": [
+          "6ac8e8c90cc3aa8ebeb729d1"
+        ]
+      }
+    },
+    {
+      "gate": "D_AUTHORIZATION",
+      "status": "PASS",
+      "message": "Owner Vendor allowed; other Vendor denied",
+      "data": {
+        "authOwnerOk": true,
+        "authOtherDenied": true
+      }
+    },
+    {
+      "gate": "E_FEATURE_FLAG",
+      "status": "PASS",
+      "message": "initialize rejected when vendorMerchantEnabled=false"
+    },
+    {
+      "gate": "F_FIND_EXISTING",
+      "status": "PASS",
+      "message": "findExistingVendorPayloadAccount locates the Vendor PA mapping"
+    },
+    {
+      "gate": "G_CLEANUP",
+      "status": "PASS",
+      "message": "Memory store discarded at process exit; sandbox PA left in Payload dashboard",
+      "data": {
+        "accountId": "6ac8e8c90cc3aa8ebeb729d1",
+        "sandboxPaId": "acct_3fTiX3VhAfDvF0d5aISFd"
+      }
+    }
+  ]
+}
